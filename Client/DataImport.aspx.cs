@@ -35,13 +35,18 @@ namespace MLE.Client
                     {
                         using (var db = new MLEEntities())
                         {
-                            var fileIsAlreadyInDB = db.Example.Where(x => x.FileName == file.Name && x.Content == text).FirstOrDefault() != null ? true : false;
+                            var fileIsAlreadyInDB = db.Example.Where(x => x.FileName == file.Name || x.Content == text).FirstOrDefault() != null ? true : false;
                             if (!fileIsAlreadyInDB)
                             {
+                                var ls = text.Split('.').ToList();
+                                var new_text = "";
+                                for(int i = 1; i <= ls.Count - 1; i++)
+                                    new_text += "<span ID='" + i + "'>" + ls[i] + ".</span>";
+
                                 var example = new Example
                                 {
                                     FileName = file.Name,
-                                    Content = text,
+                                    Content = new_text,
                                     Description = "Uploaded data to Database",
                                     DateCreated = DateTime.Now,
                                     StatusId = 3 // U tijeku

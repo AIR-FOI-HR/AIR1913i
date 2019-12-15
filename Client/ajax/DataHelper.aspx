@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DataHelper.aspx.cs" Inherits="MLE.Client.ajax.DataHelper" %>

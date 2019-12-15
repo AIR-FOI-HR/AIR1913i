@@ -11,7 +11,7 @@ using System.Data.Entity;
 
 namespace MLE.Client.ajax
 {
-    public partial class SaveData : System.Web.UI.Page
+    public partial class DataHelper : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

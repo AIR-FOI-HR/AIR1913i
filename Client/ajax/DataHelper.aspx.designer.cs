@@ -10,6 +10,6 @@
 namespace MLE.Client.ajax {
     
     
-    public partial class SaveData {
+    public partial class DataHelper {
     }
 }

@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="/../CSS/client.less" />
 <script src="/../js/jquery-3.4.1.min.js"></script>
+<script src="/../js/SelectionHelper.js"></script>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -17,7 +18,7 @@
             <div class="bold center_text">Primjeri</div>
             <select id="choose_data" class="center">
                 <option value="all">Prikaži sve</option>
-                <option value="not_completed">Prikaži u tijeku</option>
+                <option value="not_completed" selected="selected">Prikaži u tijeku</option>
                 <option value="completed">Prikaži završene</option>
             </select>
             <hr class="line" />
@@ -38,7 +39,8 @@
                                 <input class="catButtons" style="background-color: <%= GetColor(cat.CategoryId.Value) %>" type="submit" value="<%= GetCategory(cat.CategoryId.Value) %>" onclick="Save('E' + <%= item.Id %> + '_C' + <%= cat.CategoryId %> + '_<%= GetColor(cat.CategoryId.Value) %>'); return false;" />
                                 <%} %>
                                 <div class="center">
-                                    <input class="finish" type="submit" value="Završi" onclick="return FinishExample(<%= item.Id %>);" /></div>
+                                    <input class="finish" type="submit" value="Završi" onclick="return FinishExample(<%= item.Id %>);" />
+                                </div>
                             </div>
                         </div>
                         <hr />
@@ -116,16 +118,30 @@
         cursor: pointer;
         outline: 0;
     }
+
+    .entity {
+        background-color: #9dc1fa;
+    }
+
+    .current {
+        background-color: #f7746f;
+    }
 </style>
 
 <script>
+    // handle on keyup
+    $(document).on('keyup', function (e) {
+        HandleKeyUP(e);
+    });
+
+    // marks marked text from db
     $("div[id^='Content_E'").each(function () {
         var _ = {};
         _.ExampleId = this.id.match(/\d+/).toString();
 
         $.ajax({
             type: "POST",
-            url: "/Client/ajax/SaveData.aspx/Get",
+            url: "/Client/ajax/DataHelper.aspx/Get",
             data: JSON.stringify(_),
             async: false,
             contentType: "application/json; charset=utf-8",
@@ -144,6 +160,7 @@
         });
     });
 
+    // save on category button click
     function Save(id) {
         //alert(id);
         var split = id.split('_');
@@ -155,7 +172,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/Client/ajax/SaveData.aspx/Save",
+            url: "/Client/ajax/DataHelper.aspx/Save",
             data: JSON.stringify(obj),
             async: false,
             contentType: "application/json; charset=utf-8",
@@ -166,6 +183,7 @@
         });
     }
 
+    // finishes example
     function FinishExample(id) {
         if (confirm('Želite li završiti označavanje?')) {
             var __ = {};
@@ -173,7 +191,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Client/ajax/SaveData.aspx/Finish",
+                url: "/Client/ajax/DataHelper.aspx/Finish",
                 data: JSON.stringify(__),
                 async: false,
                 contentType: "application/json; charset=utf-8",

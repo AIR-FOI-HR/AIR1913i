@@ -85,7 +85,7 @@
     <Content Include="Admin\Modules\Menu.ascx" />
     <Content Include="Admin\Modules\Projects.aspx" />
     <Content Include="Admin\Modules\Users.aspx" />
-    <Content Include="Client\ajax\SaveData.aspx" />
+    <Content Include="Client\ajax\DataHelper.aspx" />
     <Content Include="Client\ajax\ValidateLogin.aspx" />
     <Content Include="Client\DataImport.aspx" />
     <Content Include="Client\Examples.aspx" />
@@ -103,6 +103,7 @@
       <LastGenOutput>MLEModel.cs</LastGenOutput>
     </Content>
     <Content Include="js\jquery-3.4.1.min.js" />
+    <Content Include="js\SelectionHelper.js" />
     <Content Include="Plugins\bootstrap-4.3.1\css\bootstrap-grid.css" />
     <Content Include="Plugins\bootstrap-4.3.1\css\bootstrap-grid.min.css" />
     <Content Include="Plugins\bootstrap-4.3.1\css\bootstrap-reboot.css" />
@@ -114,7 +115,9 @@
     <Content Include="Plugins\bootstrap-4.3.1\js\bootstrap.js" />
     <Content Include="Plugins\bootstrap-4.3.1\js\bootstrap.min.js" />
     <Content Include="standard.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\index.aspx.cs">
@@ -166,12 +169,12 @@
     <Compile Include="Admin\Modules\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Client\ajax\SaveData.aspx.cs">
-      <DependentUpon>SaveData.aspx</DependentUpon>
+    <Compile Include="Client\ajax\DataHelper.aspx.cs">
+      <DependentUpon>DataHelper.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Client\ajax\SaveData.aspx.designer.cs">
-      <DependentUpon>SaveData.aspx</DependentUpon>
+    <Compile Include="Client\ajax\DataHelper.aspx.designer.cs">
+      <DependentUpon>DataHelper.aspx</DependentUpon>
     </Compile>
     <Compile Include="Client\ajax\ValidateLogin.aspx.cs">
       <DependentUpon>ValidateLogin.aspx</DependentUpon>

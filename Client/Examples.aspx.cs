@@ -16,7 +16,7 @@ namespace MLE.Client
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // pregledat user-a, vidjeti njegove ovlasti i prema tome prikazati sve exampleove
+            // provjeravati koje projekte ima korisnik i prema tome prikazati primjere!! 
             using(var db = new MLEEntities())
             {
                 var u = db.User.Where(x => x.Username == HttpContext.Current.User.Identity.Name.ToString()).FirstOrDefault();
