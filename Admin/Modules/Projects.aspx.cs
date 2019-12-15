@@ -46,13 +46,13 @@ namespace MLE.Admin.Modules
 
                 if(_dbProject != null)
                 {
-                    txtName.Text = _dbProject.Name;
-                    txtDescription.Text = _dbProject.Description;
-                    txtSpentTime.Text = _dbProject.TimeSpent.ToString();
-                    txtDateCreated.Text = _dbProject.DateCreated.Value.ToString("dd.MM.yyyy");
-                    txtStartDate.Text = _dbProject.Start_Date.Value.ToString("dd.MM.yyyy");
-                    txtEndDate.Text = _dbProject.End_Date.Value.ToString("dd.MM.yyyy");
-                    txtStatus.Text = _dbProject.StatusId.ToString();
+                    txtName.Text = _dbProject.Name != null ? _dbProject.Name : "";
+                    txtDescription.Text = _dbProject.Description != null ? _dbProject.Description : "";
+                    txtSpentTime.Text = _dbProject.TimeSpent != null ? _dbProject.TimeSpent.ToString() : "";
+                    txtDateCreated.Text = _dbProject.DateCreated != null ? _dbProject.DateCreated.Value.ToString("dd.MM.yyyy") : "";
+                    txtStartDate.Text = _dbProject.Start_Date != null ? _dbProject.Start_Date.Value.ToString("dd.MM.yyyy") : "";
+                    txtEndDate.Text = _dbProject.End_Date != null ? _dbProject.End_Date.Value.ToString("dd.MM.yyyy") : "";
+                    txtStatus.Text = _dbProject.StatusId != null ? _dbProject.StatusId.ToString() : "";
                 }
             }
         }
