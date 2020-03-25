@@ -16,10 +16,10 @@ namespace MLE.DB
     {
         public int Id { get; set; }
         public Nullable<int> ExampleId { get; set; }
-        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> SubcategoryId { get; set; }
         public string Text { get; set; }
     
-        public virtual Category Category { get; set; }
         public virtual Example Example { get; set; }
+        public virtual Subcategory Subcategory { get; set; }
     }
 }

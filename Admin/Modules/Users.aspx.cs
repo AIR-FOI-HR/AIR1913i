@@ -134,9 +134,7 @@ namespace MLE.Admin.Modules
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             if(userId != 0)
-            {
                 Update();
-            }
             else
                 Save();
         }

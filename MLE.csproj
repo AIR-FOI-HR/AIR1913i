@@ -224,9 +224,6 @@
     <Compile Include="DB\Example.cs">
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DB\ExampleCategory.cs">
-      <DependentUpon>MLEModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DB\ExampleType.cs">
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
@@ -255,6 +252,9 @@
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\Status.cs">
+      <DependentUpon>MLEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Subcategory.cs">
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\User.cs">

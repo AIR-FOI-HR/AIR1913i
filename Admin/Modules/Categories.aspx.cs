@@ -55,7 +55,6 @@ namespace MLE.Admin.Modules
                 {
                     txtCategoryName.Text = _dbCategory.Name;
                     txtDescription.Text = _dbCategory.Description;
-                    txtColor.Text = _dbCategory.Color;
                     cbIsActive.Checked = _dbCategory.isActive.Value;    
                 }
             }
@@ -70,7 +69,6 @@ namespace MLE.Admin.Modules
                     Name = txtCategoryName.Text,
                     Description = txtDescription.Text,
                     isActive = cbIsActive.Checked,
-                    Color = txtColor.Text
                     //ExampleId = 2
                 };
 

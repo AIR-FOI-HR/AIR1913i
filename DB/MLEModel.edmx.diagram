@@ -5,25 +5,25 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3222836f319e4bd7bc82d87370c775b9" Name="Diagram1">
-        <EntityTypeShape EntityType="MLEModel.Category" Width="1.5" PointX="8.25" PointY="3.875" />
-        <EntityTypeShape EntityType="MLEModel.Example" Width="1.5" PointX="5.25" PointY="9.125" />
-        <EntityTypeShape EntityType="MLEModel.ExampleCategory" Width="1.5" PointX="10.5" PointY="10" />
-        <EntityTypeShape EntityType="MLEModel.ExampleType" Width="1.5" PointX="7.5" PointY="13" />
-        <EntityTypeShape EntityType="MLEModel.Marked" Width="1.5" PointX="7.5" PointY="9.875" />
-        <EntityTypeShape EntityType="MLEModel.Project" Width="1.5" PointX="3" PointY="11.625" />
-        <EntityTypeShape EntityType="MLEModel.Role" Width="1.5" PointX="8.25" PointY="1.125" />
-        <EntityTypeShape EntityType="MLEModel.Status" Width="1.5" PointX="0.75" PointY="7.5" />
-        <EntityTypeShape EntityType="MLEModel.User" Width="1.5" PointX="5.25" PointY="4.5" />
-        <EntityTypeShape EntityType="MLEModel.UserExample" Width="1.5" PointX="7.5" PointY="7" />
-        <EntityTypeShape EntityType="MLEModel.UserRole" Width="1.5" PointX="10.5" PointY="5" />
-        <AssociationConnector Association="MLEModel.FK_Category_ExampleCategory" />
-        <AssociationConnector Association="MLEModel.FK_Marked_Category" />
-        <AssociationConnector Association="MLEModel.FK_Example_ExampleCategory" />
+        <EntityTypeShape EntityType="MLEModel.Category" Width="1.5" PointX="3" PointY="2.625" />
+        <EntityTypeShape EntityType="MLEModel.Example" Width="1.5" PointX="5.25" PointY="5.75" />
+        <EntityTypeShape EntityType="MLEModel.ExampleType" Width="1.5" PointX="7.5" PointY="9.75" />
+        <EntityTypeShape EntityType="MLEModel.Marked" Width="1.5" PointX="7.5" PointY="6.625" />
+        <EntityTypeShape EntityType="MLEModel.Project" Width="1.5" PointX="3" PointY="6.25" />
+        <EntityTypeShape EntityType="MLEModel.Role" Width="1.5" PointX="5.25" PointY="15.25" />
+        <EntityTypeShape EntityType="MLEModel.Status" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="MLEModel.Subcategory" Width="1.5" PointX="5.25" PointY="11.5" />
+        <EntityTypeShape EntityType="MLEModel.User" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="MLEModel.UserExample" Width="1.5" PointX="7.5" PointY="3.75" />
+        <EntityTypeShape EntityType="MLEModel.UserRole" Width="1.5" PointX="7.5" PointY="0.75" />
+        <AssociationConnector Association="MLEModel.FK_Example_Category" />
+        <AssociationConnector Association="MLEModel.FK_Subcategory_Category" />
         <AssociationConnector Association="MLEModel.FK_Example_Project" />
         <AssociationConnector Association="MLEModel.FK_Example_Status" />
         <AssociationConnector Association="MLEModel.FK_ExampleType_Example" />
         <AssociationConnector Association="MLEModel.FK_Marked_Example" />
         <AssociationConnector Association="MLEModel.FK_UserExample_Example" />
+        <AssociationConnector Association="MLEModel.FK_Marked_Subcategory" />
         <AssociationConnector Association="MLEModel.FK_Project_Status" />
         <AssociationConnector Association="MLEModel.FK_Role_UserRole" />
         <AssociationConnector Association="MLEModel.FK_User_UserRole" />

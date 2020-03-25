@@ -85,15 +85,29 @@ function PreviousEntity() {
 
 // sets positive sentiment to the entity
 function PositiveSentiment() {
-    alert("positive " + $(entity).text() + " ID sentence:" + $(entity).parent()[0].id);
+    alert("positive '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
 }
 
 // sets negative sentiment to the entity
 function NegativeSentiment() {
-    alert("negative " + $(entity).text() + " ID sentence:" + $(entity).parent()[0].id);
+    alert("negative '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
 }
 
 // sets neutral sentiment to the entity
 function NeutralSentiment() {
-    alert("neutral " + $(entity).text() + " ID sentence:" + $(entity).parent()[0].id);
+    alert("neutral '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
+}
+
+function WordSelection(class_name) {
+    $("." + class_name).click(function (e) {
+        var s = window.getSelection();
+        s.modify('extend', 'backward', 'word');
+        var b = s.toString();
+
+        s.modify('extend', 'forward', 'word');
+        var a = s.toString();
+        s.modify('move', 'forward', 'character');
+
+        alert(b + a);
+    });
 }

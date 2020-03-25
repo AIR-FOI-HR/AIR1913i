@@ -12,13 +12,23 @@ namespace MLE.DB
     using System;
     using System.Collections.Generic;
     
-    public partial class ExampleCategory
+    public partial class Subcategory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Subcategory()
+        {
+            this.Marked = new HashSet<Marked>();
+        }
+    
         public int Id { get; set; }
-        public Nullable<int> ExampleId { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public Nullable<bool> isActive { get; set; }
+        public string Color { get; set; }
         public Nullable<int> CategoryId { get; set; }
     
         public virtual Category Category { get; set; }
-        public virtual Example Example { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Marked> Marked { get; set; }
     }
 }

@@ -17,7 +17,6 @@ namespace MLE.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Example()
         {
-            this.ExampleCategory = new HashSet<ExampleCategory>();
             this.ExampleType = new HashSet<ExampleType>();
             this.Marked = new HashSet<Marked>();
             this.UserExample = new HashSet<UserExample>();
@@ -32,9 +31,9 @@ namespace MLE.DB
         public Nullable<int> ProjectId { get; set; }
         public Nullable<int> StatusId { get; set; }
         public string FileName { get; set; }
+        public Nullable<int> CategoryId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExampleCategory> ExampleCategory { get; set; }
+        public virtual Category Category { get; set; }
         public virtual Project Project { get; set; }
         public virtual Status Status { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

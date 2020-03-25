@@ -17,19 +17,18 @@ namespace MLE.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.ExampleCategory = new HashSet<ExampleCategory>();
-            this.Marked = new HashSet<Marked>();
+            this.Example = new HashSet<Example>();
+            this.Subcategory = new HashSet<Subcategory>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public Nullable<bool> isActive { get; set; }
-        public string Color { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExampleCategory> ExampleCategory { get; set; }
+        public virtual ICollection<Example> Example { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Marked> Marked { get; set; }
+        public virtual ICollection<Subcategory> Subcategory { get; set; }
     }
 }

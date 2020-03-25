@@ -19,10 +19,10 @@ namespace MLE.Client.ajax
         }
 
         [WebMethod]
-        public static bool Save(string ExampleId, string CategoryId, string Selected)
+        public static bool Save(string ExampleId, string SubcategoryId, string Selected)
         {
             var int_ExampleId = Convert.ToInt32(ExampleId);
-            var int_CategoryId = Convert.ToInt32(CategoryId);
+            var int_SubcategoryId = Convert.ToInt32(SubcategoryId);
 
             using (var db = new MLEEntities())
             {
@@ -31,7 +31,7 @@ namespace MLE.Client.ajax
                     var Marked = new Marked()
                     {
                         ExampleId = int_ExampleId,
-                        CategoryId = int_CategoryId,
+                        SubcategoryId = int_SubcategoryId,
                         Text = Selected
                     };
 
@@ -49,7 +49,7 @@ namespace MLE.Client.ajax
             var Int_ExampleId = Convert.ToInt32(ExampleId);
             using (var db = new MLEEntities())
             {
-                var e = db.Marked.Include(x => x.Category).Where(x => x.ExampleId == Int_ExampleId).Select(x => new { Text = x.Text, ExampleId = x.ExampleId, CategoryId = x.CategoryId, Color = x.Category.Color }).ToList();
+                var e = db.Marked.Include(x => x.Subcategory).Where(x => x.ExampleId == Int_ExampleId).Select(x => new { Text = x.Text, ExampleId = x.ExampleId, SubcategoryId = x.SubcategoryId, Color = x.Subcategory.Color }).ToList();
                 if (e.Count > 0)
                     return JsonConvert.SerializeObject(e);
                 else

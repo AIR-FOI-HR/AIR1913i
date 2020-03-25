@@ -27,7 +27,7 @@ namespace MLE.Client
                     //ADMIN
                     if(rID == 1)
                     {
-                        var examples = db.Example.Include(x => x.ExampleCategory).ToList();
+                        var examples = db.Example.Include(x => x.Category.Subcategory).ToList();
                         Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.DateCreated).ToList();
                         Examples_Finished = examples.Where(x => x.StatusId == 2).OrderBy(x => x.DateCreated).ToList();
                     }
@@ -42,11 +42,11 @@ namespace MLE.Client
             }
         }
 
-        protected string GetCategory(int id)
+        protected string GetSubcategory(int id)
         {
             using(var db = new MLEEntities())
             {
-                var c = db.Category.Where(x => x.Id == id).FirstOrDefault();
+                var c = db.Subcategory.Where(x => x.Id == id).FirstOrDefault();
                 if (c != null)
                     return c.Name;
                 else
@@ -58,7 +58,7 @@ namespace MLE.Client
         {
             using (var db = new MLEEntities())
             {
-                var c = db.Category.Where(x => x.Id == id).FirstOrDefault();
+                var c = db.Subcategory.Where(x => x.Id == id).FirstOrDefault();
                 if (c != null)
                     return c.Color;
                 else
