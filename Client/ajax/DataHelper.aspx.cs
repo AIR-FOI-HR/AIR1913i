@@ -63,10 +63,25 @@ namespace MLE.Client.ajax
             var Int_ExampleId = Convert.ToInt32(ExampleId);
             using (var db = new MLEEntities())
             {
-                var e = db.Example.Where(x => x.Id == Int_ExampleId).FirstOrDefault();
+                var e = db.Example.FirstOrDefault(x => x.Id == Int_ExampleId);
                 if(e != null)
                 {
                     e.StatusId = 2;
+                    db.SaveChanges();
+                }
+            }
+        }
+
+        [WebMethod]
+        public static void SaveEntity(string ExampleId, string Content)
+        {
+            var Int_ExampleId = Convert.ToInt32(ExampleId);
+            using(var db = new MLEEntities())
+            {
+                var e = db.Example.FirstOrDefault(x => x.Id == Int_ExampleId);
+                if(e != null)
+                {
+                    e.Content = Content;
                     db.SaveChanges();
                 }
             }

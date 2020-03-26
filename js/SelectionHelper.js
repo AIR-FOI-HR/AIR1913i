@@ -98,8 +98,10 @@ function NeutralSentiment() {
     alert("neutral '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
 }
 
+// handles word selection for saving and deleting entities
 function WordSelection(class_name) {
     $("." + class_name).click(function (e) {
+        var target = e.target;
         var s = window.getSelection();
         s.modify('extend', 'backward', 'word');
         var b = s.toString();
@@ -108,6 +110,53 @@ function WordSelection(class_name) {
         var a = s.toString();
         s.modify('move', 'forward', 'character');
 
-        alert(b + a);
+        // removing blank spaces
+        var word = b.replace(" ", "") + a.replace(" ", "");
+
+        var textId = e.currentTarget.id;
+
+        // g modifier global (all matches - don't return on first match)
+        // if the words are same in one sentence, it will mark both of them... NEEDS fixing
+        var reg = new RegExp(word, 'g');
+
+        if (target.classList.contains("entity")) {
+            if (confirm('Želite li obrisati "' + word + '" kao entitet?')) {
+                var sentenceId = target.parentElement.id;
+                
+                $("#" + textId + " #" + sentenceId).html($("#" + textId + " #" + sentenceId).html().replace('<span class="entity">' + word + '</span>', word));
+                SaveEntity(textId);
+            }
+            return;
+        }
+        else {
+            if (confirm('Spremite "' + word + '" kao entitet?')) {
+                var sentenceId = target.id;
+                var txt = $("#" + textId + " #" + sentenceId).html().replace(reg, function (str) {
+                    return "<span class='entity'>" + str + "</span>"
+                });
+
+                $("#" + textId + " #" + sentenceId).html(txt);
+                SaveEntity(textId);
+            }
+        }
+    });
+}
+
+// saves entity to the database
+function SaveEntity(textId) {
+    var obj = {};
+    obj.ExampleId = textId.match(/\d+/)[0];
+    obj.Content = $("#" + textId).html();
+
+    $.ajax({
+        type: "POST",
+        url: "/Client/ajax/DataHelper.aspx/SaveEntity",
+        data: JSON.stringify(obj),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            //alert(r.d);
+        }
     });
 }

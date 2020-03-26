@@ -35,6 +35,7 @@
                             <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
                             <div class="center">
 
+                                <% if(item.Category != null && item.Category.Subcategory != null){ %>
                                 <% foreach (var sub in item.Category.Subcategory)
                                     { %>
                                 <input class="catButtons" style="background-color: <%= GetColor(sub.Id) %>" type="submit" value="<%= GetSubcategory(sub.Id) %>" onclick="Save('E' + <%= item.Id %> + '_C' + <%= sub.Id %> + '_<%= GetColor(sub.Id) %>'); return false;" />
@@ -42,6 +43,7 @@
                                 <div class="center">
                                     <input class="finish" type="submit" value="Završi" onclick="return FinishExample(<%= item.Id %>);" />
                                 </div>
+                                <%} %>
                             </div>
                         </div>
                         <hr />
@@ -59,9 +61,11 @@
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
                             <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
                             <div class="center">
+                                <% if(item.Category != null && item.Category.Subcategory != null){ %>
                                 <% foreach (var sub in item.Category.Subcategory)
                                     { %>
                                 <input class="catButtons" style="background-color: <%= GetColor(sub.Id) %>" type="submit" value="<%= GetSubcategory(sub.Id) %>" onclick="Save('E' + <%= item.Id %> + '_C' + <%= sub.Id %> + '_<%= GetColor(sub.Id) %>'); return false;" />
+                                <%} %>
                                 <%} %>
                             </div>
                         </div>
