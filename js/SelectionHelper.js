@@ -58,10 +58,10 @@ function NextEntity() {
         var next_element = $(".entity").eq($(".entity").index($(".current")) + 1);
         $(".current").removeClass("current");
         $(next_element).addClass("current");
-        ScrollToElement($(next_element));
+        //ScrollToElement($(next_element));
     }
     else {
-        ScrollToElement($(".entity"));
+        //ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
     }
     entity = $(".current");
@@ -74,10 +74,10 @@ function PreviousEntity() {
         var prev_element = $(".entity").eq($(".entity").index($(".current")) - 1);
         $(".current").removeClass("current");
         $(prev_element).addClass("current");
-        ScrollToElement($(prev_element));
+        //ScrollToElement($(prev_element));
     }
     else {
-        ScrollToElement($(".entity"));
+        //ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
     }
     entity = $(".current");
@@ -85,23 +85,67 @@ function PreviousEntity() {
 
 // sets positive sentiment to the entity
 function PositiveSentiment() {
-    alert("positive '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
+    MarkHandle("+");
 }
 
 // sets negative sentiment to the entity
 function NegativeSentiment() {
-    alert("negative '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
+    MarkHandle("-");
 }
 
 // sets neutral sentiment to the entity
 function NeutralSentiment() {
-    alert("neutral '" + $(entity).text() + "' ID sentence:" + $(entity).parent()[0].id);
+    MarkHandle("0");
+}
+
+function MarkHandle(sentiment) {
+    var parent = $(entity).parent()[0];
+    $("#Category_E" + parent.parentElement.id.match(/\d+/)[0] + " .category").each(function (e) {
+        if ($(this).data("sentiment") == sentiment) {
+            var entityId = $(entity).attr('id');
+            var textId = $(entity).parent()[0].parentElement.id;
+            var sentenceId = $(entity).parent()[0].id;
+            var subcategoryId = $(this).attr('id');
+            ColorEntity(entityId, textId, sentenceId, subcategoryId);
+            MarkEntity(entityId, textId, sentenceId, subcategoryId);
+        }
+    });
+}
+
+function ColorEntity(entityId, textId, sentenceId, subcategoryId) {
+    var color = GetSubcategoryColor(subcategoryId);
+    $("#" + textId + " #" + sentenceId + " #" + entityId).css("background-color", color);
+}
+
+function GetSubcategoryColor(subcategoryId) {
+    var obj = {};
+    obj.SubcategoryId = subcategoryId.match(/\d+/)[0];
+
+    var color = "";
+    $.ajax({
+        type: "POST",
+        url: "/Client/ajax/DataHelper.aspx/GetSubcategoryColor",
+        data: JSON.stringify(obj),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            color = r.d;
+        }
+    });
+
+    return color;
 }
 
 // handles word selection for saving and deleting entities
 function WordSelection(class_name) {
     $("." + class_name).click(function (e) {
+        if (!$('#cbHandleEntities').is(":checked"))
+            return;
+
         var target = e.target;
+        var textId = e.currentTarget.id;
+
         var s = window.getSelection();
         s.modify('extend', 'backward', 'word');
         var b = s.toString();
@@ -110,10 +154,12 @@ function WordSelection(class_name) {
         var a = s.toString();
         s.modify('move', 'forward', 'character');
 
+        // restriction so that you can't mark more than one word.
+        if (b.split(' ').length > 1 && a.split(' ').length > 1)
+            return;
+
         // removing blank spaces
         var word = b.replace(" ", "") + a.replace(" ", "");
-
-        var textId = e.currentTarget.id;
 
         // g modifier global (all matches - don't return on first match)
         // if the words are same in one sentence, it will mark both of them... NEEDS fixing
@@ -122,8 +168,13 @@ function WordSelection(class_name) {
         if (target.classList.contains("entity")) {
             if (confirm('Želite li obrisati "' + word + '" kao entitet?')) {
                 var sentenceId = target.parentElement.id;
-                
-                $("#" + textId + " #" + sentenceId).html($("#" + textId + " #" + sentenceId).html().replace('<span class="entity">' + word + '</span>', word));
+                // add word after <span>
+                $("#" + textId + " #" + sentenceId + " #" + target.id).after(word);
+                // remove span
+                $("#" + textId + " #" + sentenceId + " #" + target.id).remove();
+                //var t = $("#" + textId + " #" + sentenceId).html().replace('<span id="' + target.id + '" class="entity">' + word + '</span>', word);
+                //$("#" + textId + " #" + sentenceId).html(t);
+                RemoveIfMarked(target.id, sentenceId, textId);
                 SaveEntity(textId);
             }
             return;
@@ -131,14 +182,45 @@ function WordSelection(class_name) {
         else {
             if (confirm('Spremite "' + word + '" kao entitet?')) {
                 var sentenceId = target.id;
-                var txt = $("#" + textId + " #" + sentenceId).html().replace(reg, function (str) {
-                    return "<span class='entity'>" + str + "</span>"
+
+                var textSentence = "";
+                $.each($("#" + textId + " #" + sentenceId).html().split(' '), function (i, text) {
+
+                    // start of sentence
+                    if (i == 0 && text == "")
+                        textSentence += " ";
+
+                    if (text.indexOf(word) >= 0) {
+                        if (word.indexOf("entity") < 0) {
+                            textSentence += text.replace(word, "<span id='e" + (i + 1) + "' class='entity'>" + word + "</span>");
+                            textSentence += " ";
+                        }
+                    }
+                    else
+                        if (text != "")
+                            textSentence += text + " ";
                 });
 
-                $("#" + textId + " #" + sentenceId).html(txt);
+                $("#" + textId + " #" + sentenceId).html(textSentence);
                 SaveEntity(textId);
             }
         }
+    });
+}
+
+function RemoveIfMarked(entityId, sentenceId, textId) {
+    var obj = {};
+    obj.EntityId = entityId.match(/\d+/)[0];
+    obj.SentenceId = sentenceId;
+    obj.TextId = textId.match(/\d+/)[0];
+
+    $.ajax({
+        type: "POST",
+        url: "/Client/ajax/DataHelper.aspx/RemoveMarked",
+        data: JSON.stringify(obj),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json"
     });
 }
 
@@ -151,6 +233,26 @@ function SaveEntity(textId) {
     $.ajax({
         type: "POST",
         url: "/Client/ajax/DataHelper.aspx/SaveEntity",
+        data: JSON.stringify(obj),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (r) {
+            //alert(r.d);
+        }
+    });
+}
+
+function MarkEntity(entityId, textId, sentenceId, subcategoryId) {
+    var obj = {};
+    obj.EntityId = entityId.match(/\d+/)[0];
+    obj.ExampleId = textId.match(/\d+/)[0];
+    obj.SentenceId = sentenceId.match(/\d+/)[0];
+    obj.SubcategoryId = subcategoryId.match(/\d+/)[0];
+
+    $.ajax({
+        type: "POST",
+        url: "/Client/ajax/DataHelper.aspx/MarkEntity",
         data: JSON.stringify(obj),
         async: false,
         contentType: "application/json; charset=utf-8",

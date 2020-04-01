@@ -44,7 +44,8 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ExampleId" Type="int" />
           <Property Name="SubcategoryId" Type="int" />
-          <Property Name="Text" Type="nvarchar(max)" />
+          <Property Name="SentenceId" Type="int" />
+          <Property Name="EntityId" Type="int" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -84,6 +85,7 @@
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="isActive" Type="bit" />
           <Property Name="Color" Type="nvarchar" MaxLength="70" />
+          <Property Name="Sentiment" Type="char" MaxLength="1" />
           <Property Name="CategoryId" Type="int" />
         </EntityType>
         <EntityType Name="User">
@@ -434,7 +436,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ExampleId" Type="Int32" />
           <Property Name="SubcategoryId" Type="Int32" />
-          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SentenceId" Type="Int32" />
+          <Property Name="EntityId" Type="Int32" />
           <NavigationProperty Name="Example" Relationship="MLEModel.FK_Marked_Example" FromRole="Marked" ToRole="Example" />
           <NavigationProperty Name="Subcategory" Relationship="MLEModel.FK_Marked_Subcategory" FromRole="Marked" ToRole="Subcategory" />
         </EntityType>
@@ -481,6 +484,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isActive" Type="Boolean" />
           <Property Name="Color" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+          <Property Name="Sentiment" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CategoryId" Type="Int32" />
           <NavigationProperty Name="Category" Relationship="MLEModel.FK_Subcategory_Category" FromRole="Subcategory" ToRole="Category" />
           <NavigationProperty Name="Marked" Relationship="MLEModel.FK_Marked_Subcategory" FromRole="Subcategory" ToRole="Marked" />
@@ -709,7 +713,8 @@
           <EntitySetMapping Name="Marked">
             <EntityTypeMapping TypeName="MLEModel.Marked">
               <MappingFragment StoreEntitySet="Marked">
-                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+                <ScalarProperty Name="SentenceId" ColumnName="SentenceId" />
                 <ScalarProperty Name="SubcategoryId" ColumnName="SubcategoryId" />
                 <ScalarProperty Name="ExampleId" ColumnName="ExampleId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
@@ -752,6 +757,7 @@
             <EntityTypeMapping TypeName="MLEModel.Subcategory">
               <MappingFragment StoreEntitySet="Subcategory">
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Sentiment" ColumnName="Sentiment" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="isActive" ColumnName="isActive" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

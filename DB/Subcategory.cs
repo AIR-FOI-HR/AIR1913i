@@ -25,6 +25,7 @@ namespace MLE.DB
         public string Description { get; set; }
         public Nullable<bool> isActive { get; set; }
         public string Color { get; set; }
+        public string Sentiment { get; set; }
         public Nullable<int> CategoryId { get; set; }
     
         public virtual Category Category { get; set; }

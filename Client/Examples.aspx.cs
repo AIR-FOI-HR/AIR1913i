@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.Entity;
+using MLE.Client.program;
 
 namespace MLE.Client
 {
@@ -13,38 +14,40 @@ namespace MLE.Client
     {
         protected List<Example> Examples_NotFinished = new List<Example>();
         protected List<Example> Examples_Finished = new List<Example>();
+        protected bool Admin = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             // provjeravati koje projekte ima korisnik i prema tome prikazati primjere!! 
-            using(var db = new MLEEntities())
+            var isAdmin = RestrictionHelper.CheckUser();
+
+            if(isAdmin == null)
+                Response.Redirect("/Client/Login.aspx");
+
+            Admin = isAdmin.Value;
+
+            if (Admin)
             {
-                var u = db.User.Where(x => x.Username == HttpContext.Current.User.Identity.Name.ToString()).FirstOrDefault();
-                if (u != null)
-                {
-                    var rID = u.UserRole.Where(x => x.UserId == u.Id).Select(x => x.RoleId).FirstOrDefault();
+                var examples = new List<Example>();
+                using (var db = new MLEEntities())
+                    examples = db.Example.Include(x => x.Category.Subcategory).ToList();
 
-                    //ADMIN
-                    if(rID == 1)
-                    {
-                        var examples = db.Example.Include(x => x.Category.Subcategory).ToList();
-                        Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.DateCreated).ToList();
-                        Examples_Finished = examples.Where(x => x.StatusId == 2).OrderBy(x => x.DateCreated).ToList();
-                    }
-                    //CLIENT
-                    else if(rID == 2)
-                    {
-
-                    }
-                }
-                else
-                    Response.Redirect("/Client/Login.aspx");
+                Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.DateCreated).ToList();
+                Examples_Finished = examples.Where(x => x.StatusId == 2).OrderBy(x => x.DateCreated).ToList();
+                cbHandleEntities.Checked = true;
+            }
+            else
+            {
+                // Client
+                // TODO:
+                // * Get all projects from user
+                // * Show examples inside project
             }
         }
 
         protected string GetSubcategory(int id)
         {
-            using(var db = new MLEEntities())
+            using (var db = new MLEEntities())
             {
                 var c = db.Subcategory.Where(x => x.Id == id).FirstOrDefault();
                 if (c != null)

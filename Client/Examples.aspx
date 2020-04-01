@@ -21,6 +21,13 @@
                 <option value="not_completed" selected="selected">Prikaži u tijeku</option>
                 <option value="completed">Prikaži završene</option>
             </select>
+            <% if (Admin)
+                { %>
+            <div class="center content_margins">
+                Uredi entitete
+                <asp:CheckBox ID="cbHandleEntities" ClientIDMode="Static" runat="server" />
+            </div>
+            <%} %>
             <hr class="line" />
             <div style="margin-top: 30px;">
                 <div class="notfinished_left">
@@ -33,12 +40,12 @@
                             <div><span class="bold">Naziv datoteke: </span><%= item.FileName %></div>
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
                             <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
-                            <div class="center">
+                            <div id="Category_E<%= item.Id %>" class="center">
 
                                 <% if(item.Category != null && item.Category.Subcategory != null){ %>
                                 <% foreach (var sub in item.Category.Subcategory)
                                     { %>
-                                <input class="catButtons" style="background-color: <%= GetColor(sub.Id) %>" type="submit" value="<%= GetSubcategory(sub.Id) %>" onclick="Save('E' + <%= item.Id %> + '_C' + <%= sub.Id %> + '_<%= GetColor(sub.Id) %>'); return false;" />
+                                <div id="cat_<%= sub.Id %>" class="category" data-sentiment="<%= sub.Sentiment %>" style="background-color: <%= GetColor(sub.Id) %>"><%= GetSubcategory(sub.Id) %></div>
                                 <%} %>
                                 <div class="center">
                                     <input class="finish" type="submit" value="Završi" onclick="return FinishExample(<%= item.Id %>);" />
@@ -64,6 +71,7 @@
                                 <% if(item.Category != null && item.Category.Subcategory != null){ %>
                                 <% foreach (var sub in item.Category.Subcategory)
                                     { %>
+                                <%-- nije isto kao i gore! -> provjeriti sve --%>
                                 <input class="catButtons" style="background-color: <%= GetColor(sub.Id) %>" type="submit" value="<%= GetSubcategory(sub.Id) %>" onclick="Save('E' + <%= item.Id %> + '_C' + <%= sub.Id %> + '_<%= GetColor(sub.Id) %>'); return false;" />
                                 <%} %>
                                 <%} %>
@@ -78,60 +86,6 @@
     </form>
 </body>
 </html>
-
-<style>
-    .custom_margins {
-        margin-top: 15px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .zavrseno {
-        color: green;
-    }
-
-    .u_tijeku {
-        color: red;
-    }
-
-    #choose_data {
-        width: 200px;
-        height: 30px;
-        margin-top: 15px;
-        border-radius: 10px;
-        padding-left: 10px;
-        border: 2px solid #2C83D6;
-        outline: 0;
-        /*background-color: #2C83D6;
-        color: white;*/
-    }
-
-    .catButtons {
-        border-radius: 10px;
-        width: 100px;
-        margin: 10px;
-        cursor: pointer;
-        outline: 0;
-        display: inline-block;
-    }
-
-    .finish {
-        border-radius: 10px;
-        margin-top: 30px;
-        width: 200px;
-        height: 40px;
-        cursor: pointer;
-        outline: 0;
-    }
-
-    .entity {
-        background-color: #9dc1fa;
-    }
-
-    .current {
-        background-color: #f7746f;
-    }
-</style>
 
 <script>
     // handle on keyup
@@ -155,10 +109,11 @@
                 if (r.d != "") {
                     var obj = jQuery.parseJSON(r.d);
                     for (i = 0; i < obj.length; i++) {
-                        $("#Content_E" + obj[i].ExampleId + ":contains('" + obj[i].Text.replace(/[\r\n]+/g, "") + "')").each(function () {
-                            var regex = new RegExp(obj[i].Text.replace(/[\r\n]+/g, "<br><br>"), 'gi');
-                            $(this).html($(this).html().replace(regex, "<span style='white-space: pre-line; background-color:" + obj[i].Color + "'>" + obj[i].Text + "</span>"));
-                        });
+                        $("#Content_E" + obj[i].ExampleId + " #" + obj[i].SentenceId + " #e" + obj[i].EntityId).css("background-color", obj[i].Color);
+                        //$("#Content_E" + obj[i].ExampleId + ":contains('" + obj[i].Text.replace(/[\r\n]+/g, "") + "')").each(function () {
+                        //    var regex = new RegExp(obj[i].Text.replace(/[\r\n]+/g, "<br><br>"), 'gi');
+                        //    $(this).html($(this).html().replace(regex, "<span style='white-space: pre-line; background-color:" + obj[i].Color + "'>" + obj[i].Text + "</span>"));
+                        //});
                     }
                 }
             }
@@ -170,7 +125,8 @@
 
     // save on category button click
     function Save(id) {
-        //alert(id);
+        // no need for this
+        return;
         var split = id.split('_');
         var obj = {};
         obj.ExampleId = split[0].match(/\d+/).toString();
@@ -261,3 +217,59 @@
         }
     });
 </script>
+
+<style>
+    .custom_margins {
+        margin-top: 15px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .zavrseno {
+        color: green;
+    }
+
+    .u_tijeku {
+        color: red;
+    }
+
+    #choose_data {
+        width: 200px;
+        height: 30px;
+        margin-top: 15px;
+        border-radius: 10px;
+        padding-left: 10px;
+        border: 2px solid #2C83D6;
+        outline: 0;
+        /*background-color: #2C83D6;
+        color: white;*/
+    }
+
+    .category {
+        border-radius: 10px;
+        width: 100px;
+        margin: 10px;
+        padding: 5px;
+        outline: 0;
+        font-size: 14px;
+        text-align:center !important;
+        display: inline-block;
+    }
+
+    .finish {
+        border-radius: 10px;
+        margin-top: 30px;
+        width: 200px;
+        height: 40px;
+        cursor: pointer;
+        outline: 0;
+    }
+
+    .entity {
+        background-color: #9dc1fa;
+    }
+
+    .current {
+        background-color: #f7746f !important;
+    }
+</style>

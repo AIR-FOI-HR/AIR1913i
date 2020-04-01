@@ -7,12 +7,12 @@
       <Diagram DiagramId="3222836f319e4bd7bc82d87370c775b9" Name="Diagram1">
         <EntityTypeShape EntityType="MLEModel.Category" Width="1.5" PointX="3" PointY="2.625" />
         <EntityTypeShape EntityType="MLEModel.Example" Width="1.5" PointX="5.25" PointY="5.75" />
-        <EntityTypeShape EntityType="MLEModel.ExampleType" Width="1.5" PointX="7.5" PointY="9.75" />
-        <EntityTypeShape EntityType="MLEModel.Marked" Width="1.5" PointX="7.5" PointY="6.625" />
+        <EntityTypeShape EntityType="MLEModel.ExampleType" Width="1.5" PointX="7.5" PointY="10" />
+        <EntityTypeShape EntityType="MLEModel.Marked" Width="1.5" PointX="7.5" PointY="6.5" />
         <EntityTypeShape EntityType="MLEModel.Project" Width="1.5" PointX="3" PointY="6.25" />
         <EntityTypeShape EntityType="MLEModel.Role" Width="1.5" PointX="5.25" PointY="15.25" />
         <EntityTypeShape EntityType="MLEModel.Status" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="MLEModel.Subcategory" Width="1.5" PointX="5.25" PointY="11.5" />
+        <EntityTypeShape EntityType="MLEModel.Subcategory" Width="1.5" PointX="5.25" PointY="11.375" />
         <EntityTypeShape EntityType="MLEModel.User" Width="1.5" PointX="5.25" PointY="1.125" />
         <EntityTypeShape EntityType="MLEModel.UserExample" Width="1.5" PointX="7.5" PointY="3.75" />
         <EntityTypeShape EntityType="MLEModel.UserRole" Width="1.5" PointX="7.5" PointY="0.75" />

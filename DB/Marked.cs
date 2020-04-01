@@ -17,7 +17,8 @@ namespace MLE.DB
         public int Id { get; set; }
         public Nullable<int> ExampleId { get; set; }
         public Nullable<int> SubcategoryId { get; set; }
-        public string Text { get; set; }
+        public Nullable<int> SentenceId { get; set; }
+        public Nullable<int> EntityId { get; set; }
     
         public virtual Example Example { get; set; }
         public virtual Subcategory Subcategory { get; set; }
