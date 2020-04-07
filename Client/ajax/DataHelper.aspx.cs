@@ -64,7 +64,7 @@ namespace MLE.Client.ajax
             using (var db = new MLEEntities())
             {
                 var e = db.Example.FirstOrDefault(x => x.Id == Int_ExampleId);
-                if(e != null)
+                if (e != null)
                 {
                     e.StatusId = 2;
                     db.SaveChanges();
@@ -82,7 +82,7 @@ namespace MLE.Client.ajax
             using (var db = new MLEEntities())
             {
                 var m = db.Marked.FirstOrDefault(x => x.EntityId == Int_EntityId && x.SentenceId == Int_SentenceId && x.ExampleId == Int_ExampleId);
-                if(m != null)
+                if (m != null)
                 {
                     db.Marked.Remove(m);
                     db.SaveChanges();
@@ -94,10 +94,10 @@ namespace MLE.Client.ajax
         public static void SaveEntity(string ExampleId, string Content)
         {
             var Int_ExampleId = Convert.ToInt32(ExampleId);
-            using(var db = new MLEEntities())
+            using (var db = new MLEEntities())
             {
                 var e = db.Example.FirstOrDefault(x => x.Id == Int_ExampleId);
-                if(e != null)
+                if (e != null)
                 {
                     e.Content = Content;
                     db.SaveChanges();
@@ -117,7 +117,7 @@ namespace MLE.Client.ajax
             {
                 var m = db.Marked.FirstOrDefault(x => x.EntityId == Int_EntityId && x.ExampleId == Int_ExampleId && x.SentenceId == Int_SentenceId);
 
-                if(m != null)
+                if (m != null)
                 {
                     m.SubcategoryId = Int_SubcategoryId;
                     db.SaveChanges();
@@ -141,7 +141,7 @@ namespace MLE.Client.ajax
         public static string GetSubcategoryColor(string SubcategoryId)
         {
             var Int_SubcategoryId = Convert.ToInt32(SubcategoryId);
-            using(var db = new MLEEntities())
+            using (var db = new MLEEntities())
             {
                 var s = db.Subcategory.FirstOrDefault(x => x.Id == Int_SubcategoryId);
                 if (s != null)

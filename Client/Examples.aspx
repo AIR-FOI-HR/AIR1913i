@@ -15,8 +15,8 @@
     <form id="form1" runat="server">
         <uc:Menu ID="Menu" runat="server" />
         <div class="center content_margins" style="width: 80%;">
-            <div class="bold center_text">Primjeri</div>
-            <select id="choose_data" class="center">
+            <%--<div class="bold center_text">Primjeri</div>--%>
+            <select style="display:none;" id="choose_data" class="center">
                 <option value="all">Prikaži sve</option>
                 <option value="not_completed" selected="selected">Prikaži u tijeku</option>
                 <option value="completed">Prikaži završene</option>
@@ -59,18 +59,17 @@
                     </div>
                 </div>
             </div>
-            <hr class="line" />
-            <div style="margin-top: 30px;">
+            <div>
                 <div class="notfinished_left">
                     <div class="custom_margins">
-                        <%= Examples_NotFinished.Count > 0 ? "<div class=\"bold u_tijeku\">U TIJEKU</div>" : "" %>
+                        <%--<%= Examples_NotFinished.Count > 0 ? "<div class=\"bold u_tijeku\">U TIJEKU</div>" : "" %>--%>
                         <% foreach (var item in Examples_NotFinished)
                             { %>
                         <div class="examples">
                             <%= item.Name != null ? "<span class=\"bold\">Naziv: </span>" + item.Name + "</div>" : "" %>
                             <div><span class="bold">Naziv datoteke: </span><%= item.FileName %></div>
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
-                            <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
+                            <div id="Content_E<%= item.Id %>" data-projectid="<%= item.ProjectId %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
                             <div id="Category_E<%= item.Id %>" class="center categories">
                                 <% if (item.Category != null && item.Category.Subcategory != null)
                                     { %>
@@ -85,7 +84,6 @@
                                 <%} %>
                             </div>
                         </div>
-                        <hr />
                         <%} %>
                     </div>
                 </div>
@@ -127,6 +125,18 @@
     });
 
     $(document).ready(function () {
+        $("#ddlProject").change(function () {
+            var projectId = $(this).val();
+            $("[id^=Content_E]").each(function () {
+                if ($(this).attr('data-projectid') == projectId) {
+                    $(this).parent().show();
+                }
+                else {
+                    $(this).parent().hide();
+                }
+            });
+        });
+
         $(".help").click(function () {
             $(".iamhelping").toggle();
         });
