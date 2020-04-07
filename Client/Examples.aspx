@@ -21,13 +21,44 @@
                 <option value="not_completed" selected="selected">Prikaži u tijeku</option>
                 <option value="completed">Prikaži završene</option>
             </select>
-            <% if (Admin)
-                { %>
-            <div class="center content_margins">
-                Uredi entitete
-                <asp:CheckBox ID="cbHandleEntities" ClientIDMode="Static" runat="server" />
+            <div class="sidebar">
+                <div class="c_sidebar">
+                    <div>Hello, <%= Username %>!</div>
+                    <div class="help noselect">
+                        <span>?</span>
+                    </div>
+                    <div class="iamhelping noselect">
+                        <p>
+                            Koristite ENTER / BACKSPACE za skakanje po primjerima!<br />
+                            <b>Označi entitete s:</b><br />
+                            PLUS +
+                            <br />
+                            ZERO 0
+                            <br />
+                            MINUS -
+                            <br />
+                            Možete koristiti NUMPAD!
+                        </p>
+                    </div>
+
+                    <div class="info">
+                        <div>
+                            <asp:DropDownList ID="ddlProject" runat="server"></asp:DropDownList>
+                        </div>
+                        <% if (Admin)
+                            { %>
+                        <div>
+                            Uredi entitete
+                            <asp:CheckBox ID="cbHandleEntities" ClientIDMode="Static" runat="server" />
+                        </div>
+                        <%} %>
+                        <div>Neoznačeni tekstovi: <%= Examples_NotFinished.Count %></div>
+                        <div>Označeni tekstovi: <%= Examples_Finished.Count %></div>
+                        <div id="current_example"></div>
+                        <div id="current_subcategory"></div>
+                    </div>
+                </div>
             </div>
-            <%} %>
             <hr class="line" />
             <div style="margin-top: 30px;">
                 <div class="notfinished_left">
@@ -40,12 +71,13 @@
                             <div><span class="bold">Naziv datoteke: </span><%= item.FileName %></div>
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
                             <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
-                            <div id="Category_E<%= item.Id %>" class="center">
-
-                                <% if(item.Category != null && item.Category.Subcategory != null){ %>
+                            <div id="Category_E<%= item.Id %>" class="center categories">
+                                <% if (item.Category != null && item.Category.Subcategory != null)
+                                    { %>
                                 <% foreach (var sub in item.Category.Subcategory)
                                     { %>
-                                <div id="cat_<%= sub.Id %>" class="category" data-sentiment="<%= sub.Sentiment %>" style="background-color: <%= GetColor(sub.Id) %>"><%= GetSubcategory(sub.Id) %></div>
+                                <div id="cat_<%= sub.Id %>" class="category" data-sentiment="<%= sub.Sentiment %>" style="background-color: <%= GetColor(sub.Id) %>"><%= GetSubcategory(sub.Id) %><span style="width: 15px; background-color: lightcyan; float: right;"><%= sub.Sentiment %></span></div>
+
                                 <%} %>
                                 <div class="center">
                                     <input class="finish" type="submit" value="Završi" onclick="return FinishExample(<%= item.Id %>);" />
@@ -68,7 +100,8 @@
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
                             <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
                             <div class="center">
-                                <% if(item.Category != null && item.Category.Subcategory != null){ %>
+                                <% if (item.Category != null && item.Category.Subcategory != null)
+                                    { %>
                                 <% foreach (var sub in item.Category.Subcategory)
                                     { %>
                                 <%-- nije isto kao i gore! -> provjeriti sve --%>
@@ -89,63 +122,93 @@
 
 <script>
     // handle on keyup
-    $(document).on('keyup', function (e) {
-        HandleKeyUP(e);
+    $(document).on('keydown', function (e) {
+        HandleKeyDOWN(e);
     });
 
-    // marks marked text from db
-    $("div[id^='Content_E'").each(function () {
-        var _ = {};
-        _.ExampleId = this.id.match(/\d+/).toString();
+    $(document).ready(function () {
+        $(".help").click(function () {
+            $(".iamhelping").toggle();
+        });
 
-        $.ajax({
-            type: "POST",
-            url: "/Client/ajax/DataHelper.aspx/Get",
-            data: JSON.stringify(_),
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (r) {
-                if (r.d != "") {
-                    var obj = jQuery.parseJSON(r.d);
-                    for (i = 0; i < obj.length; i++) {
-                        $("#Content_E" + obj[i].ExampleId + " #" + obj[i].SentenceId + " #e" + obj[i].EntityId).css("background-color", obj[i].Color);
-                        //$("#Content_E" + obj[i].ExampleId + ":contains('" + obj[i].Text.replace(/[\r\n]+/g, "") + "')").each(function () {
-                        //    var regex = new RegExp(obj[i].Text.replace(/[\r\n]+/g, "<br><br>"), 'gi');
-                        //    $(this).html($(this).html().replace(regex, "<span style='white-space: pre-line; background-color:" + obj[i].Color + "'>" + obj[i].Text + "</span>"));
-                        //});
+        $(".iamhelping").click(function () {
+            $(".iamhelping").toggle();
+        });
+
+        // marks marked text from db
+        $("div[id^='Content_E']").each(function () {
+            var _ = {};
+            _.ExampleId = this.id.match(/\d+/).toString();
+
+            $.ajax({
+                type: "POST",
+                url: "/Client/ajax/DataHelper.aspx/Get",
+                data: JSON.stringify(_),
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    if (r.d != "") {
+                        var obj = jQuery.parseJSON(r.d);
+                        for (i = 0; i < obj.length; i++) {
+                            $("#Content_E" + obj[i].ExampleId + " #" + obj[i].SentenceId + " #e" + obj[i].EntityId).attr("data-subcategory", obj[i].SubCategoryId);
+                            $("#Content_E" + obj[i].ExampleId + " #" + obj[i].SentenceId + " #e" + obj[i].EntityId).css("background-color", obj[i].Color);
+                            //$("#Content_E" + obj[i].ExampleId + ":contains('" + obj[i].Text.replace(/[\r\n]+/g, "") + "')").each(function () {
+                            //    var regex = new RegExp(obj[i].Text.replace(/[\r\n]+/g, "<br><br>"), 'gi');
+                            //    $(this).html($(this).html().replace(regex, "<span style='white-space: pre-line; background-color:" + obj[i].Color + "'>" + obj[i].Text + "</span>"));
+                            //});
+                        }
                     }
                 }
+            });
+        });
+
+        // marks the word
+        WordSelection("content_text");
+
+        $('#choose_data').on('change', function () {
+            if (this.value == "all") {
+                $(".finished_right").css("display", "table");
+                $(".notfinished_left").css("display", "table");
+                $(".finished_right").css("width", "50%");
+                $(".notfinished_left").css("width", "50%");
+            }
+            else if (this.value == "completed") {
+                $(".notfinished_left").css("display", "none");
+                $(".finished_right").css("display", "table");
+                $(".finished_right").css("width", "100%");
+            }
+            else {
+                $(".notfinished_left").css("display", "table");
+                $(".finished_right").css("display", "none");
+                $(".notfinished_left").css("width", "100%");
             }
         });
+
+        // save on category button click
+        function Save(id) {
+            // no need for this
+            return;
+            var split = id.split('_');
+            var obj = {};
+            obj.ExampleId = split[0].match(/\d+/).toString();
+            obj.SubcategoryId = split[1].match(/\d+/).toString();
+            var color = split[2].toString();
+            obj.Selected = getSelectionText(color).toString();
+
+            $.ajax({
+                type: "POST",
+                url: "/Client/ajax/DataHelper.aspx/Save",
+                data: JSON.stringify(obj),
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (r) {
+                    //alert(r.d);
+                }
+            });
+        }
     });
-
-    // marks the word
-    WordSelection("content_text");
-
-    // save on category button click
-    function Save(id) {
-        // no need for this
-        return;
-        var split = id.split('_');
-        var obj = {};
-        obj.ExampleId = split[0].match(/\d+/).toString();
-        obj.SubcategoryId = split[1].match(/\d+/).toString();
-        var color = split[2].toString();
-        obj.Selected = getSelectionText(color).toString();
-
-        $.ajax({
-            type: "POST",
-            url: "/Client/ajax/DataHelper.aspx/Save",
-            data: JSON.stringify(obj),
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (r) {
-                //alert(r.d);
-            }
-        });
-    }
 
     // finishes example
     function FinishExample(id) {
@@ -197,79 +260,4 @@
 
         return text;
     }
-
-    $('#choose_data').on('change', function () {
-        if (this.value == "all") {
-            $(".finished_right").css("display", "table");
-            $(".notfinished_left").css("display", "table");
-            $(".finished_right").css("width", "50%");
-            $(".notfinished_left").css("width", "50%");
-        }
-        else if (this.value == "completed") {
-            $(".notfinished_left").css("display", "none");
-            $(".finished_right").css("display", "table");
-            $(".finished_right").css("width", "100%");
-        }
-        else {
-            $(".notfinished_left").css("display", "table");
-            $(".finished_right").css("display", "none");
-            $(".notfinished_left").css("width", "100%");
-        }
-    });
 </script>
-
-<style>
-    .custom_margins {
-        margin-top: 15px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .zavrseno {
-        color: green;
-    }
-
-    .u_tijeku {
-        color: red;
-    }
-
-    #choose_data {
-        width: 200px;
-        height: 30px;
-        margin-top: 15px;
-        border-radius: 10px;
-        padding-left: 10px;
-        border: 2px solid #2C83D6;
-        outline: 0;
-        /*background-color: #2C83D6;
-        color: white;*/
-    }
-
-    .category {
-        border-radius: 10px;
-        width: 100px;
-        margin: 10px;
-        padding: 5px;
-        outline: 0;
-        font-size: 14px;
-        text-align:center !important;
-        display: inline-block;
-    }
-
-    .finish {
-        border-radius: 10px;
-        margin-top: 30px;
-        width: 200px;
-        height: 40px;
-        cursor: pointer;
-        outline: 0;
-    }
-
-    .entity {
-        background-color: #9dc1fa;
-    }
-
-    .current {
-        background-color: #f7746f !important;
-    }
-</style>

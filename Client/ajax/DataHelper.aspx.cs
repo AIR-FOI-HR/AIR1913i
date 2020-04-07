@@ -49,7 +49,7 @@ namespace MLE.Client.ajax
             var Int_ExampleId = Convert.ToInt32(ExampleId);
             using (var db = new MLEEntities())
             {
-                var e = db.Marked.Include(x => x.Subcategory).Where(x => x.ExampleId == Int_ExampleId).Select(x => new { EntityId = x.EntityId, ExampleId = x.ExampleId, SentenceId = x.SentenceId, Color = x.Subcategory.Color }).ToList();
+                var e = db.Marked.Include(x => x.Subcategory).Where(x => x.ExampleId == Int_ExampleId).Select(x => new { EntityId = x.EntityId, ExampleId = x.ExampleId, SentenceId = x.SentenceId, Color = x.Subcategory.Color, SubCategoryId = x.SubcategoryId }).ToList();
                 if (e.Count > 0)
                     return JsonConvert.SerializeObject(e);
                 else

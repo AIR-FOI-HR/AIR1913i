@@ -1,6 +1,6 @@
 ﻿var entity;
 
-function HandleKeyUP(e) {
+function HandleKeyDOWN(e) {
     switch (e.which) {
         case 13:
             // ENTER for next entity
@@ -27,11 +27,21 @@ function HandleKeyUP(e) {
             break;
         case 33:
             // PAGEUP
+            e.preventDefault();
             break;
         case 34:
             // PAGEDOWN
+            e.preventDefault();
             break;
     }
+}
+
+function JumpToExample(next_prev) {
+    var example_id = parseInt($(".current").parent().parent().attr('id').match(/\d+/)[0]) + next_prev;
+
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("#Content_E" + example_id).offset().top
+    }, 2000);
 }
 
 // Scrolls to selected (el) element
@@ -63,8 +73,11 @@ function NextEntity() {
     else {
         //ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
+        next_element = $(".entity").first();
     }
     entity = $(".current");
+
+    ShowContentBar(next_element);
 }
 
 // goes to previous span with class entity
@@ -79,23 +92,55 @@ function PreviousEntity() {
     else {
         //ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
+        prev_element = $(".entity").first();
     }
     entity = $(".current");
+
+    ShowContentBar(prev_element);
+}
+
+// show all relevant data for current example
+function ShowContentBar(next_element) {
+    if ($(next_element).length == 0)
+        return;
+
+    var id = $(next_element).parent().parent().attr("id").match(/\d+/)[0];
+    $("[id^=Category_E]").each(function () {
+        $(this).hide();
+    });
+
+    // prikaz info-a
+    $("#Category_E" + id).show();
+    $("#current_example").show();
+    $("#current_subcategory").show();
+    $("#current_example").html("<div>Primjer ID: " + id + "</div><div>Riječ: " + $(".current").text() + "</div>");
+    UpdateSubcategory();
 }
 
 // sets positive sentiment to the entity
 function PositiveSentiment() {
     MarkHandle("+");
+    UpdateSubcategory();
 }
 
 // sets negative sentiment to the entity
 function NegativeSentiment() {
     MarkHandle("-");
+    UpdateSubcategory();
 }
 
 // sets neutral sentiment to the entity
 function NeutralSentiment() {
     MarkHandle("0");
+    UpdateSubcategory();
+}
+
+// updates subcategory name on sidebar
+function UpdateSubcategory() {
+    var subcategory_id = $(".current").attr("data-subcategory");
+    var name = $("#cat_" + subcategory_id).clone().children().remove().end().text();
+    name = name == "" ? "/" : name;
+    $("#current_subcategory").html("<div>Subkategorija: " + name + "</div>");
 }
 
 function MarkHandle(sentiment) {
@@ -114,6 +159,7 @@ function MarkHandle(sentiment) {
 
 function ColorEntity(entityId, textId, sentenceId, subcategoryId) {
     var color = GetSubcategoryColor(subcategoryId);
+    $("#" + textId + " #" + sentenceId + " #" + entityId).attr("data-subcategory", subcategoryId.match(/\d+/)[0]);
     $("#" + textId + " #" + sentenceId + " #" + entityId).css("background-color", color);
 }
 
@@ -201,6 +247,7 @@ function WordSelection(class_name) {
                             textSentence += text + " ";
                 });
 
+                // remove current class
                 $("#" + textId + " #" + sentenceId).html(textSentence);
                 SaveEntity(textId);
             }

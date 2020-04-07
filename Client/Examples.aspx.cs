@@ -15,36 +15,47 @@ namespace MLE.Client
         protected List<Example> Examples_NotFinished = new List<Example>();
         protected List<Example> Examples_Finished = new List<Example>();
         protected bool Admin = false;
+        public static string Username = "";
+        public static int UserID = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // provjeravati koje projekte ima korisnik i prema tome prikazati primjere!! 
             var isAdmin = RestrictionHelper.CheckUser();
-
-            if(isAdmin == null)
+            if (isAdmin == null)
                 Response.Redirect("/Client/Login.aspx");
 
             Admin = isAdmin.Value;
 
-            if (Admin)
+            var examples = new List<Example>();
+            using (var db = new MLEEntities())
             {
-                var examples = new List<Example>();
-                using (var db = new MLEEntities())
-                    examples = db.Example.Include(x => x.Category.Subcategory).ToList();
+                var ue = db.UserExample.Where(x => x.UserId == UserID).Select(x => x.ExampleId).ToList();
+                examples = db.Example.Where(x => ue.Contains(x.Id)).Include(x => x.Category.Subcategory).ToList();
 
-                Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.DateCreated).ToList();
-                Examples_Finished = examples.Where(x => x.StatusId == 2).OrderBy(x => x.DateCreated).ToList();
-                cbHandleEntities.Checked = true;
+                BindDropDown(db, examples);
             }
-            else
-            {
-                // Client
-                // TODO:
-                // * Get all projects from user
-                // * Show examples inside project
-            }
+
+            Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.DateCreated).ToList();
+            Examples_Finished = examples.Where(x => x.StatusId == 2).OrderBy(x => x.DateCreated).ToList();
+            cbHandleEntities.Checked = false;
         }
 
+        /// <summary>
+        /// Binds dropdownlist for Projects.
+        /// </summary>
+        private void BindDropDown(MLEEntities db, List<Example> examples)
+        {
+            var project_ids = examples.Select(x => x.ProjectId).ToList();
+            var projects = db.Project.Where(x => project_ids.Contains(x.Id)).ToList();
+            ddlProject.DataSource = projects;
+            ddlProject.DataTextField = "Name";
+            ddlProject.DataValueField = "Id";
+            ddlProject.DataBind();
+        }
+
+        /// <summary>
+        /// Gets subcategory name.
+        /// </summary>
         protected string GetSubcategory(int id)
         {
             using (var db = new MLEEntities())
@@ -57,6 +68,9 @@ namespace MLE.Client
             }
         }
 
+        /// <summary>
+        /// Gets color of subcategory.
+        /// </summary>
         protected string GetColor(int id)
         {
             using (var db = new MLEEntities())

@@ -15,6 +15,8 @@ namespace MLE.Client.program
                 var u = db.User.Where(x => x.Username == HttpContext.Current.User.Identity.Name.ToString()).FirstOrDefault();
                 if (u != null)
                 {
+                    Examples.Username = u.FirstName;
+                    Examples.UserID = u.Id;
                     var rID = u.UserRole.Where(x => x.UserId == u.Id).Select(x => x.RoleId).FirstOrDefault();
 
                     //ADMIN
