@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MLE.Client.program;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,11 +12,15 @@ namespace MLE.Client
 {
     public partial class Menu : System.Web.UI.UserControl
     {
+        protected bool? Admin { get; set; }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             bool logged = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
             if (!logged)
                 Response.Redirect("/Client/Login.aspx");
+
+            Admin = RestrictionHelper.CheckUser();
         }
 
         protected void lbOdjava_Click(object sender, EventArgs e)

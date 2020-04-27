@@ -28,20 +28,46 @@ function HandleKeyDOWN(e) {
         case 33:
             // PAGEUP
             e.preventDefault();
+            JumpToExample(false);
             break;
         case 34:
             // PAGEDOWN
             e.preventDefault();
+            JumpToExample(true);
             break;
     }
 }
 
-function JumpToExample(next_prev) {
-    var example_id = parseInt($(".current").parent().parent().attr('id').match(/\d+/)[0]) + next_prev;
+function JumpToExample(next) {
+    var id;
+    if (next == true) {
+        var next_child = $(".current").parent().parent().parent().next().children("div");
+        if (next_child.length > 0) {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: next_child.offset().top
+            }, 2000);
+            id = $(".current").parent().parent().parent().next().children("div")[2].id;
+        }
+    }
+    else {
+        var prev_child = $(".current").parent().parent().parent().prev().children("div");
+        if (prev_child.length > 0) {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: prev_child.offset().top
+            }, 2000);
+            id = $(".current").parent().parent().parent().prev().children("div")[2].id;
+        }
+    }
 
-    $([document.documentElement, document.body]).animate({
-        scrollTop: $("#Content_E" + example_id).offset().top
-    }, 2000);
+    var _e = $("#" + id).find(".entity");
+    if (_e.length > 0) {
+        // remove current after finding next element
+        $(".current").removeClass("current");
+        // get new current element and assign it
+        var first_entity_id = _e[0].id;
+        var first_child = $("#" + id).children()[0].id;
+        $("#" + id + " #" + first_child + " #" + first_entity_id).addClass("current");
+    }
 }
 
 // Scrolls to selected (el) element

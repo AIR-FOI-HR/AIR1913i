@@ -29,7 +29,7 @@
                     </div>
                     <div class="iamhelping noselect">
                         <p>
-                            Koristite ENTER / BACKSPACE za skakanje po primjerima!<br />
+                            Koristite ENTER / BACKSPACE za skakanje po entitetima!<br />
                             <b>Označi entitete s:</b><br />
                             PLUS +
                             <br />
@@ -38,6 +38,8 @@
                             MINUS -
                             <br />
                             Možete koristiti NUMPAD!
+                            <br />
+                            <b>PageUP</b> i <b>PageDOWN</b> koristite za skakanje po primjerima!
                         </p>
                     </div>
 
@@ -65,7 +67,7 @@
                         <%--<%= Examples_NotFinished.Count > 0 ? "<div class=\"bold u_tijeku\">U TIJEKU</div>" : "" %>--%>
                         <% foreach (var item in Examples_NotFinished)
                             { %>
-                        <div class="examples">
+                        <div class="examples" style="<%= First_Project.Id == item.ProjectId ? "display:block;" : "display:none;" %>">
                             <%= item.Name != null ? "<span class=\"bold\">Naziv: </span>" + item.Name + "</div>" : "" %>
                             <div><span class="bold">Naziv datoteke: </span><%= item.FileName %></div>
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>

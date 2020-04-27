@@ -12,11 +12,13 @@ namespace MLE.Client
 {
     public partial class Examples : System.Web.UI.Page
     {
+        public static string Username = "";
+        public static int UserID = 0;
+
         protected List<Example> Examples_NotFinished = new List<Example>();
         protected List<Example> Examples_Finished = new List<Example>();
         protected bool Admin = false;
-        public static string Username = "";
-        public static int UserID = 0;
+        protected Project First_Project = new Project();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -47,6 +49,7 @@ namespace MLE.Client
         {
             var project_ids = examples.Select(x => x.ProjectId).ToList();
             var projects = db.Project.Where(x => project_ids.Contains(x.Id)).ToList();
+            First_Project = projects.FirstOrDefault();
             ddlProject.DataSource = projects;
             ddlProject.DataTextField = "Name";
             ddlProject.DataValueField = "Id";
