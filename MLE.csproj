@@ -120,6 +120,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\ExampleDetail.cs" />
     <Compile Include="Admin\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
