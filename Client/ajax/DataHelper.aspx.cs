@@ -26,20 +26,15 @@ namespace MLE.Client.ajax
 
             using (var db = new MLEEntities())
             {
-                //if (Selected != "")
+                var Marked = new Marked()
                 {
-                    var Marked = new Marked()
-                    {
-                        ExampleId = int_ExampleId,
-                        SubcategoryId = int_SubcategoryId,
-                        //Text = Selected
-                    };
+                    ExampleId = int_ExampleId,
+                    SubcategoryId = int_SubcategoryId,
+                };
 
-                    db.Marked.Add(Marked);
-                    db.SaveChanges();
-                    return true;
-                }
-                return false;
+                db.Marked.Add(Marked);
+                db.SaveChanges();
+                return true;
             }
         }
 
