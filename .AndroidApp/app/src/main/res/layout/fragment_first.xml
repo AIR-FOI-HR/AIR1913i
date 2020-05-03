@@ -9,37 +9,48 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp">
-
-        <Button
-            android:id="@+id/btnConnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/testconn"
-            android:layout_alignParentLeft="true"/>
+        android:layout_marginTop="50dp">
 
         <Button
             android:id="@+id/button_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/next"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/next" />
+        <TextView
+            android:id="@+id/indexes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"/>
 
         <ScrollView
             android:id="@+id/scrollView1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="60dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:textSize="22dp"/>
 
                 <TextView
                     android:id="@+id/tvText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1" />
+                    android:layout_marginTop="20dp"
+                    android:padding="20dp"
+                    android:textSize="18dp"/>
 
             </LinearLayout>
         </ScrollView>

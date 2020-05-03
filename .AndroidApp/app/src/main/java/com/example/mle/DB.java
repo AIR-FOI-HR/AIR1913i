@@ -68,5 +68,24 @@ public class DB {
             }
             return examples;
         }
+
+        public static Example GetExampleById(int id){
+            Example e = new Example();
+            String q = "select * from Example where Id = " + id;
+            Connection c = ConnectToDB();
+            if(c != null){
+                ResultSet rs = ExecuteQuery(c,q);
+                if(rs != null) {
+                    try {
+                        if (rs.next()) {
+                            e.Id = Integer.parseInt(rs.getString("Id"));
+                            e.Content = rs.getString("Content");
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return e;
+        }
     }
 }
