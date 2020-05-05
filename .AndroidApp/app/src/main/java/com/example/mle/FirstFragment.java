@@ -57,34 +57,47 @@ public class FirstFragment extends Fragment {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     int mOffset = tv.getOffsetForPosition(motionEvent.getX(), motionEvent.getY());
-                    String word = Html.fromHtml(ExampleHelper.findWord(tv.getText().toString(), mOffset)).toString();
-                    // TODO: Dohvati cijelu rečenicu i onda ju usporedi (X)
+                    String sentence = Html.fromHtml(ExampleHelper.findWord(tv.getText().toString(), mOffset, true)).toString();
+                    String word = Html.fromHtml(ExampleHelper.findWord(tv.getText().toString(), mOffset, false)).toString();
+                    // TODO:
+                    //  ako background color na kliknutu riječ bijela onda NIJE ENTITET
 
                     Elements entities = ed.document.getElementsByClass("entity");
                     List<ExampleHelper.Node> ls = new ArrayList<>();
 
-                    for(int i = 0; i < entities.size(); i++){
+                    for (int i = 0; i < entities.size(); i++) {
                         String tt = entities.get(i).text();
-                        // TODO: (X) Usporedi je li dobra rečenica  (entities.get(i).parent().text() == recenica?)
-                        if(word.equals(tt)) {
+                        String entitySentence = entities.get(i).parent().text();
+                        if (word.equals(tt)) {
+                            String[] splitted_sentence = sentence.split(" ");
+
+                            int occurrences = 0;
+                            for (int j = 0; j < splitted_sentence.length; j++) {
+                                if (entitySentence.indexOf(splitted_sentence[j]) >= 0) {
+                                    occurrences++;
+                                }
+                            }
+
                             ExampleHelper.Node node = new ExampleHelper.Node();
                             node.Entity = entities.get(i);
                             node.Index = ed.document.html().indexOf(entities.get(i).parent().html());
+                            node.Occurrences = occurrences;
                             ls.add(node);
                         }
                     }
 
                     List<Integer> indexes = new ArrayList<>();
-                    if(ls.size() > 0){
-                       ExampleHelper.Node closestEntity = ExampleHelper.GetClosestEntity(ExampleHelper.StartIndex, ls);
-                       String SentenceID = closestEntity.Entity.parent().id();
-                       String EntityID = closestEntity.Entity.id();
-                       String Word = closestEntity.Entity.text();
+                    List<ExampleHelper.Node> filtered_ls = ExampleHelper.FilterEntities(ls);
 
-                       tt.setText(Word + ";" + EntityID + ";" + SentenceID);
-                       // TODO: Save to DB
-                    }
-                    else{
+                    if (filtered_ls.size() > 0) {
+                        ExampleHelper.Node closestEntity = ExampleHelper.GetClosestEntity(ExampleHelper.StartIndex, filtered_ls);
+                        String SentenceID = closestEntity.Entity.parent().id();
+                        String EntityID = closestEntity.Entity.id();
+                        String Word = closestEntity.Entity.text();
+
+                        tt.setText(Word + ";" + EntityID + ";" + SentenceID);
+                        // TODO: Save to DB
+                    } else {
                         tt.setText("Niste odabrali entitet");
                     }
                 }
