@@ -101,6 +101,19 @@ input[type=submit]:hover {
     background-color: #c2160a;
 }
 
+#input_data .buttons input[type=button] {
+    width: 120px;
+    height: 30px;
+    cursor: pointer;
+    margin-right: 15px;
+    outline: 0;
+    transition: .2s;
+}
+
+#input_data .buttons input[type=button]:hover {
+    background-color: #c2160a;
+}
+
 .menu {
     width: 70%;
     height: 40px;
@@ -238,4 +251,72 @@ input[type=submit]:hover {
 
 .form-group label{
     display: block;
+}
+
+.input-content {
+    display: none;
+    background-color: white;
+    width: 49.8%;
+    float: right;
+    margin-top: 30px;
+    border-left: 1px solid black;
+}
+
+.input-content table {
+    margin: 0 auto;
+}
+
+.input-content table tr th {
+    text-align: left;
+    padding-right: 50px;
+}
+
+.input-content table tr td input[type=text], #example_content table tr td input[type=password] {
+    margin-bottom: 5px;
+    height: 30px;
+    width: 200px;
+    padding-left: 10px;
+}
+
+.input-content .buttons {
+    margin: 0 auto;
+    display: table;
+    margin-top: 20px;
+}
+
+.input-content .buttons input[type=submit] {
+    width: 120px;
+    height: 30px;
+    cursor: pointer;
+    margin-right: 15px;
+    outline: 0;
+    transition: .2s;
+}
+
+.input-content .buttons input[type=submit]:hover {
+    background-color: #c2160a;
+}
+
+input[type=button] {
+    border-radius: 10px;
+    outline: 0;
+    background-color: #f44336;
+    color: white;
+    border: 0;
+}
+
+input[type=button]:hover {
+    background-color: #c2160a;
+    cursor: pointer;
+}
+
+.selection .menu_add input[type=button] {
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.selection .menu_add input[type=button]:hover {
+    background-color: #c2160a;
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="MLE.Admin.Modules.Users" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Users.aspx.cs" Inherits="MLE.Admin.Modules.Users" UnobtrusiveValidationMode="None" %>
 <%@ Register Src="/Admin/Modules/Menu.ascx" TagPrefix="UC" TagName="Menu" %>
 
 <!DOCTYPE html>
@@ -32,13 +32,13 @@
                    <FooterTemplate>
                        <div class="menu_add">
                            <hr />
-                           <input type="submit" id="btnSubmit" value="Dodaj korisnika" onclick="AddUser(); return false;" />
+                           <input type="submit" id="btnSubmit" value="Dodaj korisnika" onclick="AddUser(); return false;" />                           
                        </div>
                    </FooterTemplate>
                </asp:Repeater>
             </div>
-
-            <div id="input_data">
+            <asp:HiddenField ID="uId" Value="" runat="server" />
+        <div id="input_data">
             <table>
                 <tr>
                     <th>Ime:</th>
@@ -81,7 +81,40 @@
             </table>
             <div class="buttons">  
                 <asp:Button ID="btnAdd" runat="server" Text="Spremi" OnClick="btnAdd_Click" />
+                <input type="button" id="btnAddExample" value="Dodaj primjer" onclick="AddExample()" />
                 <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClick="btnDelete_Click" />
+            </div>
+        </div>
+        <div class="input-content" id="add_example">
+            <table>
+                <tbody>
+                    <tr>
+                        <td style="text-align:center"><h3>Dodavanje primjera korisniku</h3></td>
+                    </tr>
+                    
+                    <tr style="padding-bottom:2em;">
+                        <th>Odaberite projekt:</th>
+                        <td><asp:DropDownList ID="projectList" runat="server"
+                            AutoPostBack="true"
+                            OnSelectedIndexChanged="projectList_SelectedIndexChanged">                            
+                            </asp:DropDownList>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Odaberite primjer</th>
+                        <td>
+                            <asp:CheckBoxList ID="exampleChckList" runat="server">
+
+                            </asp:CheckBoxList>
+
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <asp:HiddenField ID="show_content" runat="server" Value="" />
+            <div class="buttons">
+                <asp:Button ID="btnSave" runat="server" Text="Spremi primjere" OnClick="btnSave_Click" />
             </div>
         </div>
         </div>
@@ -94,10 +127,20 @@
         location.href = "?id=0";
     }
 
+    function AddExample() {
+        $("#input_data").hide();
+        $("#add_example").show();
+    }
+
     $(document).ready(function () {
         var id = getUrlParameter("id");
         if (id != null) {
             $("#input_data").show();
+        }
+
+        if ($("#show_content").val() === "yes") {
+            $("#input_data").hide();
+            $("#add_example").show();
         }
     });
 
