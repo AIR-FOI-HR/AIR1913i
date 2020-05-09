@@ -60,6 +60,15 @@ namespace MLE.Admin.Modules
         protected global::System.Web.UI.WebControls.TextBox txtName;
 
         /// <summary>
+        /// exampleContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox exampleContent;
+
+        /// <summary>
         /// txtDescription control.
         /// </summary>
         /// <remarks>
@@ -78,39 +87,48 @@ namespace MLE.Admin.Modules
         protected global::System.Web.UI.WebControls.TextBox txtDateCreated;
 
         /// <summary>
-        /// txtTimeSpent control.
+        /// projectList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTimeSpent;
+        protected global::System.Web.UI.WebControls.DropDownList projectList;
 
         /// <summary>
-        /// txtProjectTitle control.
+        /// statusList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProjectTitle;
+        protected global::System.Web.UI.WebControls.DropDownList statusList;
 
         /// <summary>
-        /// txtStatusType control.
+        /// categoryList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStatusType;
+        protected global::System.Web.UI.WebControls.DropDownList categoryList;
 
         /// <summary>
-        /// txtCategoryTitle control.
+        /// hiddenId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCategoryTitle;
+        protected global::System.Web.UI.WebControls.HiddenField hiddenId;
+
+        /// <summary>
+        /// btnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSave;
     }
 }

@@ -26,7 +26,9 @@ namespace MLE.Admin.Modules
 
                 if (categoryId == 0)
                     btnDelete.Visible = false;
-                GetCategoryById(categoryId);
+
+                if(categoryId != 0)
+                    GetCategoryById(categoryId);
             }
         }
 

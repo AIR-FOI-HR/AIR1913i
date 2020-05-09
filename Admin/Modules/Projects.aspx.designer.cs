@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MLE.Admin.Modules {
-    
-    
-    public partial class Projects {
-        
+namespace MLE.Admin.Modules
+{
+
+
+    public partial class Projects
+    {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
         /// menu control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::MLE.Admin.Modules.Menu menu;
-        
+
         /// <summary>
         /// rpt control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt;
-        
+
         /// <summary>
         /// txtName control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtName;
-        
+
         /// <summary>
         /// txtDescription control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
-        
+
         /// <summary>
         /// txtDateCreated control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDateCreated;
-        
+
         /// <summary>
         /// txtSpentTime control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSpentTime;
-        
+
         /// <summary>
         /// txtStartDate control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStartDate;
-        
+
         /// <summary>
         /// txtEndDate control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEndDate;
-        
+
         /// <summary>
         /// txtStatus control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStatus;
-        
+
         /// <summary>
         /// btnSave control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSave;
-        
+
         /// <summary>
         /// btnDelete control.
         /// </summary>

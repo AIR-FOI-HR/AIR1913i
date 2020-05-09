@@ -95,7 +95,7 @@
                 <asp:Button ID="btnSave" runat="server" Text="Spremi" OnClick="btnSave_Click" />
                 <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClick="btnDelete_Click" />
             </div>
-        </div>
+        </div>        
     </form>
 </body>
 </html>
@@ -117,7 +117,7 @@
     $(document).ready(function () {
         var id = getUrlParameter("id");
         if (id != null) {
-            $("#input_data").show();
+            $("#input_data").show();            
         }
     });
 
