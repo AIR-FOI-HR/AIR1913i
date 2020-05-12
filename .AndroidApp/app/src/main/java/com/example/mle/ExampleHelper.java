@@ -19,6 +19,7 @@ public class ExampleHelper {
 
     protected static int StartIndex;
     protected static int EndIndex;
+    protected static String EntityColor = "#9dc1fa";
 
     public static class ExampleDocument {
         public int Id;
@@ -58,6 +59,10 @@ public class ExampleHelper {
         } catch (StringIndexOutOfBoundsException e) {
             endIndex = str.length();
         }
+
+        // one letter is choosen, ignore it!
+        if(startIndex == endIndex)
+            return "";
 
         // removing unnecessary chars at the end of the word
         char last = str.charAt(endIndex - 1);

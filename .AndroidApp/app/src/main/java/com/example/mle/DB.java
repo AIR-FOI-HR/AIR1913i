@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DB {
     static String ip = "192.168.8.109", port = "1433", dbName = "MLE";
@@ -46,6 +47,7 @@ public class DB {
     public static class Example {
         public int Id;
         public String Content;
+        public int CategoryId;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public static List<Example> GetAllExamples() {
@@ -60,6 +62,7 @@ public class DB {
                             Example e = new Example();
                             e.Id = Integer.parseInt(rs.getString("Id"));
                             e.Content = rs.getString("Content");
+                            e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
                             examples.add(e);
                         }
                     } catch (Exception ex) {
@@ -80,12 +83,56 @@ public class DB {
                         if (rs.next()) {
                             e.Id = Integer.parseInt(rs.getString("Id"));
                             e.Content = rs.getString("Content");
+                            e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
                         }
                     } catch (Exception ex) {
                     }
                 }
             }
             return e;
+        }
+    }
+
+    public static class Category{
+        public int Id;
+        public String Name;
+        public String Description;
+        public boolean isActive;
+    }
+
+    public static class SubCategory{
+        public int Id;
+        public int CategoryId;
+        public String Name;
+        public boolean isActive;
+        public String Color;
+        public String Sentiment;
+
+        public static List<SubCategory> GetSubCategoriesByExampleId(int ExampleId){
+            int CategoryId = Example.GetExampleById(ExampleId).CategoryId;
+
+            List<SubCategory> subCategories = new ArrayList<>();
+            String q = "select * from Subcategory where CategoryId=" + CategoryId + " and isActive=1";
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if(rs != null) {
+                    try {
+                        while (rs.next()) {
+                            SubCategory e = new SubCategory();
+                            e.Id = Integer.parseInt(rs.getString("Id"));
+                            e.Color = rs.getString("Color");
+                            e.Name = rs.getString("Name");
+                            e.isActive = Boolean.parseBoolean(rs.getString("isActive"));
+                            e.Sentiment = rs.getString("Sentiment");
+                            e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
+                            subCategories.add(e);
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return subCategories;
         }
     }
 }
