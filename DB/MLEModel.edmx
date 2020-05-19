@@ -37,6 +37,14 @@
           <Property Name="ExampleId" Type="int" />
           <Property Name="Name" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="JsonData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" />
+        </EntityType>
         <EntityType Name="Marked">
           <Key>
             <PropertyRef Name="Id" />
@@ -266,6 +274,7 @@
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExampleType" EntityType="Self.ExampleType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JsonData" EntityType="Self.JsonData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Marked" EntityType="Self.Marked" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
@@ -387,6 +396,7 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserExample" EntitySet="UserExample" />
           </AssociationSet>
+          <EntitySet Name="JsonData" EntityType="MLEModel.JsonData" />
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -669,6 +679,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="JsonData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -795,6 +813,15 @@
               <MappingFragment StoreEntitySet="UserRole">
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JsonData">
+            <EntityTypeMapping TypeName="MLEModel.JsonData">
+              <MappingFragment StoreEntitySet="JsonData">
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

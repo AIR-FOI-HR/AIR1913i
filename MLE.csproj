@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\ExampleDetail.cs" />
+    <Compile Include="Admin\ExportData.cs" />
     <Compile Include="Admin\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -227,6 +228,9 @@
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\ExampleType.cs">
+      <DependentUpon>MLEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\JsonData.cs">
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\Marked.cs">

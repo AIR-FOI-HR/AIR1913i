@@ -28,6 +28,7 @@
                             <%# Eval("End_Date") %>
                             <%# Eval("StatusId") %> 
                         </a>
+                        <input type="button" value="Exportaj" id="btnExportToJson" onclick='<%#"ExportToJson("+ Eval("id") + " );" %>' />
                     </div>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -135,4 +136,18 @@
             }
         }
     };
+
+    function ExportToJson(id) {
+
+        $.ajax({
+            type: "POST",
+            url: "Projects.aspx/ExportToJson",
+            data: JSON.stringify({ projectId: id }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function () {
+                alert('uspješno je xportano');
+            }
+        });
+    }
 </script>

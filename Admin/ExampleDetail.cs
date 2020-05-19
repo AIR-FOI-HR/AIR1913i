@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MLE.DB;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,5 +16,7 @@ namespace MLE.Admin
         public string ProjectTitle { get; set; }
         public string StatusType { get; set; }
         public string CategoryTitle { get; set; }
+
+        public IList<Marked> MarkedExamples { get; set; }
     }
 }

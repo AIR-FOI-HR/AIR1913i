@@ -51,8 +51,15 @@ namespace MLE.Admin.Modules
             {
                 _dbExamples = db.Example.ToList();
 
+                Project _dbProject = null;
+                Category _dbCategory = null;
+
                 foreach (var item in _dbExamples)
                 {
+
+                    _dbProject = db.Project.Where(p => p.Id == item.ProjectId).FirstOrDefault();
+                    _dbCategory = db.Category.Where(c => c.Id == item.CategoryId).FirstOrDefault();
+
                     _exampleDetails.Add(new ExampleDetail()
                     {
                         Id = item.Id,
@@ -60,9 +67,9 @@ namespace MLE.Admin.Modules
                         Content = item.Content != null ? item.Content : "",
                         Description = item.Description != null ? item.Description : "",
                         DateCreated = item.DateCreated.Value,
-                        ProjectTitle = db.Project.Where(p => p.Id == item.ProjectId).FirstOrDefault().Name,
+                        ProjectTitle = _dbProject != null ? _dbProject.Name : "Primjer nije dodijeljen projektu. Dodajte primjer projektu!",
                         StatusType = db.Status.Where(s => s.Id == item.StatusId).FirstOrDefault().Name,
-                        CategoryTitle = db.Category.Where(c => c.Id == item.CategoryId).FirstOrDefault().Name     
+                        CategoryTitle = _dbCategory != null ? _dbCategory.Name : "Primjer nema kategoriju. Dodijelite ju!"     
                     });
                 }
 
