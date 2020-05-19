@@ -108,20 +108,27 @@ public class FirstFragment extends Fragment {
                     List<ExampleHelper.Node> filtered_ls = ExampleHelper.FilterEntities(ls);
                     if (filtered_ls.size() > 0) {
                         ExampleHelper.Node closestEntity = ExampleHelper.GetClosestEntity(ExampleHelper.StartIndex, filtered_ls);
-                        String SentenceID = closestEntity.Entity.parent().id();
-                        String EntityID = closestEntity.Entity.id();
-                        String Word = closestEntity.Entity.text();
+                        int SentenceID = 0, EntityID = 0;
+                        //String Word = "";
+                        DB.Marked marking = new DB.Marked();
 
-                        tt.setText(Word + ";" + EntityID + ";" + SentenceID);
+                        if(closestEntity.Entity.parent().id() != "" && closestEntity.Entity.id() != "" && closestEntity.Entity.text() != ""){
+                            SentenceID = Integer.parseInt(closestEntity.Entity.parent().id());
+                            EntityID = Integer.parseInt(closestEntity.Entity.id().replaceAll("\\D+", ""));
+                            //Word = closestEntity.Entity.text();
+
+                            marking.SentenceId = SentenceID;
+                            marking.EntityId = EntityID;
+                            marking.ExampleId = ExampleID;
+                        }
 
                         // TODO:
-                        //  Show categories -> Choose subcategory
+                        //  Show categories -> Choose subcategory DONE
                         //  Save to DB
                         //  Change color of entity
 
                         List<DB.SubCategory> subCategories = DB.SubCategory.GetSubCategoriesByExampleId(ExampleID);
-                        ShowDialog(linear, view, subCategories);
-
+                        ShowDialog(linear, view, subCategories, marking);
 
                     } else {
                         tt.setText("Niste odabrali entitet");
@@ -137,13 +144,13 @@ public class FirstFragment extends Fragment {
     private List<Integer> Buttons = new ArrayList<>();
 
     @SuppressLint("ResourceType")
-    private void ShowDialog(LinearLayout linear, View view, List<DB.SubCategory> subCategories) {
+    private void ShowDialog(final LinearLayout linear, final View view, List<DB.SubCategory> subCategories, final DB.Marked marking) {
 
-        if(Buttons.size() > 0){
-            for(int i = 0; i < Buttons.size(); i++){
+        if (Buttons.size() > 0) {
+            for (int i = 0; i < Buttons.size(); i++) {
                 Button btn = (Button) view.findViewById(Buttons.get(i));
                 ViewGroup layout = (ViewGroup) btn.getParent();
-                if(null!=layout) //for safety only  as you are doing onClick
+                if (layout != null)
                     layout.removeView(btn);
             }
             Buttons.clear();
@@ -152,23 +159,29 @@ public class FirstFragment extends Fragment {
         for (int i = 0; i < subCategories.size(); i++) {
             Button btn = new Button(getContext());
             btn.setId(subCategories.get(i).Id);
-            final int id_ = btn.getId();
+            final int subcategoryId = btn.getId();
             btn.setText(subCategories.get(i).Name);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(0, 20, 0, 0);
 
             linear.setVisibility(View.VISIBLE);
             linear.addView(btn, params);
-            btn = (Button) view.findViewById(id_);
+            btn = (Button) view.findViewById(subcategoryId);
             btn.setBackgroundColor(Color.parseColor(subCategories.get(i).Color));
 
-            Buttons.add(id_);
+            Buttons.add(subcategoryId);
 
             btn.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View view) {
-                    Toast.makeText(view.getContext(), "Button clicked index = " + id_, Toast.LENGTH_SHORT).show();
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                public void onClick(View view_) {
+                    linear.setVisibility(View.GONE);
+
+                    marking.SubcategoryId = subcategoryId;
+                    DB.Marked.SaveMarkedEntity(marking);
+                    PopulateExamples(view);
+
+                    //Toast.makeText(view.getContext(), "Button clicked index = " + subcategoryId, Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -192,6 +205,7 @@ public class FirstFragment extends Fragment {
 //        List<DB.Example> list = DB.Example.GetAllExamples();
 
         DB.Example e = DB.Example.GetExampleById(60);
+        ExampleID = e.Id;
 
         // jsoup parse
         Document doc = Jsoup.parse(e.Content);
@@ -204,8 +218,6 @@ public class FirstFragment extends Fragment {
         TextView title = (TextView) v.findViewById(R.id.tvTitle);
         title.setText("Primjer br." + e.Id);
 
-        ExampleID = e.Id;
-
         ExampleHelper.ExampleDocument ed = new ExampleHelper.ExampleDocument();
         ed.Id = e.Id;
         ed.document = doc;
@@ -215,10 +227,15 @@ public class FirstFragment extends Fragment {
 
     private void ChangeEntityColor(Elements entities) {
         for (int i = 0; i < entities.size(); i++) {
-            List<Attribute> attributes = entities.get(i).attributes().asList();
-            for (int j = 0; j < attributes.size(); j++)
-                if (attributes.get(j).getKey().equals("style"))
-                    attributes.get(j).setValue(ConvertRGBtoHEX(attributes.get(j).getValue()));
+            if (entities.get(i).id() == "")
+                continue;
+
+            DB.Marked mark = DB.Marked.GetMarkedEntity(ExampleID, Integer.parseInt(entities.get(i).parent().id()), Integer.parseInt(entities.get(i).id().replaceAll("\\D+", "")));
+            String color = DB.SubCategory.GetSubcategoryColor(mark.SubcategoryId);
+            if (color != "") {
+                entities.get(i).attributes().remove("style");
+                entities.get(i).attributes().add("style", "background-color: " + color);
+            }
         }
     }
 

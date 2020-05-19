@@ -134,5 +134,73 @@ public class DB {
             }
             return subCategories;
         }
+
+        public static String GetSubcategoryColor(int SubcategoryId){
+            String color = "";
+            String q = "select * from Subcategory where Id=" + SubcategoryId + " and isActive=1";
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if(rs != null) {
+                    try {
+                        if (rs.next()) {
+                            color = rs.getString("Color");
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return color;
+        }
+    }
+
+    public static class Marked{
+        public int Id;
+        public int ExampleId;
+        public int SubcategoryId;
+        public int SentenceId;
+        public int EntityId;
+
+        public static Marked GetMarkedEntity(int ExampleId, int SentenceId, int EntityId){
+            Marked e = new Marked();
+            String q = "select * from Marked where ExampleId=" + ExampleId + " and SentenceId=" + SentenceId + " and EntityId=" + EntityId;
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if(rs != null) {
+                    try {
+                        if (rs.next()) {
+                            e.Id = Integer.parseInt(rs.getString("Id"));
+                            e.ExampleId = Integer.parseInt(rs.getString("ExampleId"));
+                            e.SubcategoryId = Integer.parseInt(rs.getString("SubcategoryId"));
+                            e.SentenceId = Integer.parseInt(rs.getString("SentenceId"));
+                            e.EntityId = Integer.parseInt(rs.getString("EntityId"));
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return e;
+        }
+
+        public static void SaveMarkedEntity(Marked marking){
+            Marked m = GetMarkedEntity(marking.ExampleId, marking.SentenceId, marking.EntityId);
+            if(m.Id != 0){
+                // update current
+                String q = "update Marked set SubcategoryId=" + marking.SubcategoryId + " where Id=" + m.Id;
+                Connection c = ConnectToDB();
+                if(c != null){
+                    ResultSet rs = ExecuteQuery(c, q);
+                }
+            }
+            else{
+                // create new
+                String q = "insert into Marked (ExampleId, SubcategoryId, SentenceId, EntityId) values (" + marking.ExampleId + "," + marking.SubcategoryId + "," + marking.SentenceId + "," + marking.EntityId + ")";
+                Connection c = ConnectToDB();
+                if(c != null){
+                    ResultSet rs = ExecuteQuery(c, q);
+                }
+            }
+        }
     }
 }
