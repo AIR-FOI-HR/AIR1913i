@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Projects.aspx.cs" Inherits="MLE.Admin.Modules.Projects" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Projects.aspx.cs" Inherits="MLE.Admin.Modules.Projects" EnableEventValidation="true" %>
 <%@ Register Src="~/Admin/Modules/Menu.ascx" TagPrefix="UC" TagName="Menu" %>
 
 <!DOCTYPE html>
@@ -28,7 +28,9 @@
                             <%# Eval("End_Date") %>
                             <%# Eval("StatusId") %> 
                         </a>
-                        <input type="button" value="Exportaj" id="btnExportToJson" onclick='<%#"ExportToJson("+ Eval("id") + " );" %>' />
+
+                       
+                        
                     </div>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -95,6 +97,7 @@
             <div class="buttons">
                 <asp:Button ID="btnSave" runat="server" Text="Spremi" OnClick="btnSave_Click" />
                 <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClick="btnDelete_Click" />
+                <asp:Button Id="btnExport" runat="server" Text="Export" OnClick="btnExport_Click" />
             </div>
         </div>        
     </form>
@@ -137,7 +140,7 @@
         }
     };
 
-    function ExportToJson(id) {
+    /*function ExportToJson(id) {
 
         $.ajax({
             type: "POST",
@@ -149,5 +152,5 @@
                 alert('uspješno je xportano');
             }
         });
-    }
+    }*/
 </script>

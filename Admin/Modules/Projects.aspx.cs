@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -138,44 +140,25 @@ namespace MLE.Admin.Modules
         {
             Delete();
         }
-
-        [WebMethod]
-        public static void ExportToJson(int projectId)
+        
+        private void ExportToJson(int projectId)
         {
             IList<Example> _projectExampleList = null;
-            IList<ExampleDetail> exampleList = new List<ExampleDetail>();
-            ExampleDetail exampleDetail = null;
-
             IList<Marked> _dbMarkedData = new List<Marked>();
-
-
             List<ExportData> exportDataList = new List<ExportData>();
-
-
+            Project dbProject = null;
 
             using (var db = new MLEEntities())
             {
+                dbProject = db.Project.Where(p => p.Id == projectId).FirstOrDefault();
                 _projectExampleList = db.Example.Where(e => e.ProjectId == projectId).ToList();
 
                 foreach (var item in _projectExampleList)
                 {
-                    /* exampleDetail = new ExampleDetail();
-                     exampleDetail.MarkedExamples = new List<Marked>();
-
-                     exampleDetail.Id = item.Id;
-                     exampleDetail.Name = item.Name;
-                     _dbMarkedData = db.Marked.Where(m => m.ExampleId == item.Id).ToList();
-                     exampleDetail.MarkedExamples = _dbMarkedData;
-
-                     exampleList.Add(exampleDetail);*/
-
-                    var xz = db.Subcategory.Where(sc => sc.Id == 1).FirstOrDefault();
-
                     _dbMarkedData = db.Marked.Where(m => m.ExampleId == item.Id).ToList();
 
                     for(int i = 0; i < _dbMarkedData.Count; i++)
                     {
-
                         int subcategoryId = _dbMarkedData[i].SubcategoryId.HasValue ? _dbMarkedData[i].SubcategoryId.Value : 1;
 
                         ExportData exportData = new ExportData();
@@ -188,15 +171,10 @@ namespace MLE.Admin.Modules
 
                         exportDataList.Add(exportData);
                     }
-
-
                 }
-
             }
 
-
             var json = JsonConvert.SerializeObject(exportDataList);
-
 
             using (var db = new MLEEntities())
             {
@@ -210,24 +188,34 @@ namespace MLE.Admin.Modules
                 db.SaveChanges();
 
             }
+            //string jsonToTxt = JsonConvert.SerializeObject(exportDataList, Formatting.None);
 
+            string fileName = dbProject.Name + " - json - " + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+            string filePath = Path.Combine(HttpContext.Current.Server.MapPath("~/JsonData/"), fileName);
 
-           /* foreach (var item in exampleList)
-            {
-                for(int i = 0; i < item.MarkedExamples.Count; i++)
-                {
-                    ExportData exportData = new ExportData();
-                    exportData.ExampleId = item.Id;
-                    exportData.SentenceId = item.MarkedExamples[i].SentenceId.Value;
-                    exportData.EntityId = item.MarkedExamples[i].EntityId.Value;
-                    exportData.SubCategoryId = item.MarkedExamples[i].SubcategoryId.Value;
-                    exportData.Sentiment = item.MarkedExamples[i].s
+            File.WriteAllText(filePath, json); 
 
-                }
+            FileStream fs = null;
 
+            fs = File.Open(filePath, FileMode.Open);
 
-               
-            }*/
+            byte[] byteFile = new byte[fs.Length];
+            fs.Read(byteFile, 0, Convert.ToInt32(fs.Length));
+            fs.Close();
+            
+            HttpContext context = HttpContext.Current;
+            context.Response.Buffer = true;
+            context.Response.Clear();
+            context.Response.AddHeader("content-disposition", "attachment; filename=" + fileName);
+            context.Response.BinaryWrite(byteFile);
+            context.Response.End();  
+        }
+
+        protected void btnExport_Click(object sender, EventArgs e)
+        {
+            int projectID = int.Parse(Request.QueryString["id"].ToString());
+            
+            ExportToJson(projectID);          
         }
     }
 }
