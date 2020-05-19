@@ -176,12 +176,10 @@ public class FirstFragment extends Fragment {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 public void onClick(View view_) {
                     linear.setVisibility(View.GONE);
-
                     marking.SubcategoryId = subcategoryId;
+
                     DB.Marked.SaveMarkedEntity(marking);
                     PopulateExamples(view);
-
-                    //Toast.makeText(view.getContext(), "Button clicked index = " + subcategoryId, Toast.LENGTH_SHORT).show();
                 }
             });
         }
