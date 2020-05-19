@@ -1,0 +1,1 @@
+[{"ProjectId":3,"ExampleId":62,"SentenceId":2,"EntityId":4,"SubCategoryId":5,"Sentiment":"+"},{"ProjectId":3,"ExampleId":62,"SentenceId":7,"EntityId":2,"SubCategoryId":7,"Sentiment":"-"},{"ProjectId":3,"ExampleId":62,"SentenceId":13,"EntityId":2,"SubCategoryId":6,"Sentiment":"0"},{"ProjectId":3,"ExampleId":62,"SentenceId":27,"EntityId":3,"SubCategoryId":5,"Sentiment":"+"}]

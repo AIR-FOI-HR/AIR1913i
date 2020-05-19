@@ -21,13 +21,10 @@ namespace MLE.Client
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            using (var db = new MLEEntities())
+            if (LoginHelper.LoginChecker(txtUsername.Text, txtPassword.Text))
             {
-                if (LoginHelper.LoginChecker(txtUsername.Text, txtPassword.Text))
-                {
-                    FormsAuthentication.SetAuthCookie(txtUsername.Text, false);
-                    Response.Redirect("/Client/Home.aspx");
-                }
+                FormsAuthentication.SetAuthCookie(txtUsername.Text, false);
+                Response.Redirect("/Client/Home.aspx");
             }
         }
     }

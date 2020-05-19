@@ -14,6 +14,7 @@
         <uc:Menu ID="Menu" runat="server"/>
         <div class="main_content">
             <div class="content">Web aplikacija za označavanje jezičnih primjera</div>
+            <div class="byprogrammers">By Mihael Lukaš & Tomica Markulin</div>
             <div>
                 <a href="https://www.foi.hr" target="_blank"><img class="logo" src="/Files/Images/foi.jpg"/></a>
                 <a href="http://www.novena.hr" target="_blank"><img class="logo" src="/Files/Images/novena.png"/></a>
