@@ -9,15 +9,15 @@
     var errors = ValidateMailAndPassword(email, username, password, confirmed_pass)
 
     if (username.length <= 5) {
-        errors.push({ code: "000", message: "Insert username (more than 5 characters)" });
+        errors.push({ code: "000", message: "Unesite korisničko ime (više od 5 znakova)" });
     }
 
     if (name.length == 0) {
-        errors.push({ code: "030", message: "Insert name" });
+        errors.push({ code: "030", message: "Unesite ime" });
     }
 
     if (surname.length == 0) {
-        errors.push({ code: "040", message: "Insert surname" });
+        errors.push({ code: "040", message: "Unesite prezime" });
     }
 
     if (errors.length > 0) {
@@ -56,7 +56,7 @@ function ValidateEmailAndUsername(email, username, errors) {
         dataType: "json",
         success: function (r) {
             if (r.d == true)
-                errors.push({ code: "012", message: "Email or username already exists" });
+                errors.push({ code: "012", message: "E-mail ili korisničko ime već postoje" });
         }
     });
 }
@@ -64,36 +64,36 @@ function ValidateEmailAndUsername(email, username, errors) {
 function ValidateEmail(email, errors) {
     if (email.length > 0) {
         if (!validate_regex_mail(email)) {
-            errors.push({ code: "010", message: "Wrong email" });
+            errors.push({ code: "010", message: "Neispravan e-mail" });
         }
     }
     else {
-        errors.push({ code: "011", message: "Insert email" });
+        errors.push({ code: "011", message: "Unesite e-mail" });
     }
 }
 
 function ValidatePassword(pass, conf_pass, errors) {
     var lower = /[a-z]/g;
     if (!pass.match(lower)) {
-        errors.push({ code: "020", message: "Password - No lowercase letters" });
+        errors.push({ code: "020", message: "Lozinka - Nemate malih slova" });
     }
 
     var upper = /[A-Z]/g;
     if (!pass.match(upper)) {
-        errors.push({ code: "021", message: "Password - No uppercase letters" });
+        errors.push({ code: "021", message: "Lozinka - Nemate kapitaliziranih slova" });
     }
 
     var number = /[0-9]/g;
     if (!pass.match(number)) {
-        errors.push({ code: "022", message: "Password - No numbers" });
+        errors.push({ code: "022", message: "Lozinka - Nemate brojeva" });
     }
 
     if (pass.length < 8) {
-        errors.push({ code: "023", message: "Password - Too short" });
+        errors.push({ code: "023", message: "Lozinka - Prekratka" });
     }
 
     if (pass != conf_pass) {
-        errors.push({ code: "024", message: "Password and Confirmed password are not the same" });
+        errors.push({ code: "024", message: "Lozinka i potvrđena lozinka nisu identične" });
     }
 
     return errors;
