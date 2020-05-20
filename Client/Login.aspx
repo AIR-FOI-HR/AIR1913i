@@ -22,7 +22,7 @@
                 <div class="container_username">
                     <div class="center" style="margin-top: 50px;">
                         <asp:TextBox runat="server" CssClass="login_textbox" ClientIDMode="Static" placeholder="Korisničko ime" ID="txtUsername"></asp:TextBox>
-                        <div class="small margintop">Nemate račun? <a href="#">Stvorite ga!</a></div>
+                        <div class="small margintop">Nemate račun? <a href="/Client/Registration.aspx">Stvorite ga!</a></div>
                     </div>
                     <div class="right buttons">
                         <input type="submit" id="btnNext" value="Dalje" onclick="return false;" />

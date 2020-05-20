@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -35,6 +36,9 @@ namespace MLE.Global
             if(User == null)
                 return false;
 
+            if (User.IsActive == false)
+                return false;
+
             if (User.Username == user)
             {
                 string passCheck = SHA256(pass);
@@ -63,6 +67,37 @@ namespace MLE.Global
             var result = BitConverter.ToString(array).Replace("-", "").ToLower();
 
             return result;
+        }
+
+        public static bool CheckMailAndUsername(string username, string mail)
+        {
+            using (var db = new MLEEntities())
+            {
+                var user = db.User.FirstOrDefault(x => x.Username == username || x.E_mail == mail);
+                if (user != null)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
+        public static void SendMail(string mail, string subject, string body)
+        {
+            MailMessage mailMessage = new MailMessage("tm263327@gmail.com", mail);
+            mailMessage.Subject = subject;
+
+            mailMessage.Body = body;
+            mailMessage.IsBodyHtml = true;
+
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            // LESS SECURE APP ACCESS omogućiti na googleu
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "tm263327@gmail.com",
+                Password = "mailTest321789"
+            };
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
         }
     }
 }

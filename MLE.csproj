@@ -90,8 +90,10 @@
     <Content Include="Client\DataImport.aspx" />
     <Content Include="Client\Examples.aspx" />
     <Content Include="Client\Home.aspx" />
+    <Content Include="Client\js\RegistrationHelper.js" />
     <Content Include="Client\Login.aspx" />
     <Content Include="Client\Menu.ascx" />
+    <Content Include="Client\Registration.aspx" />
     <Content Include="DB\MLEModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MLEModel.Context.cs</LastGenOutput>
@@ -221,6 +223,13 @@
       <DependentUpon>Menu.ascx</DependentUpon>
     </Compile>
     <Compile Include="Client\program\RestrictionHelper.cs" />
+    <Compile Include="Client\Registration.aspx.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Client\Registration.aspx.designer.cs">
+      <DependentUpon>Registration.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DB\Category.cs">
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>

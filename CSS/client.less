@@ -67,6 +67,17 @@ select:-webkit-autofill:focus {
     color: #f7f7f7;
 }
 
+.reg_container {
+    position: relative;
+    margin: 0 auto;
+    margin-top: 170px;
+    border: 3px solid #f7f7f7;
+    width: 400px;
+    height: 540px;
+    border-radius: 30px;
+    color: #f7f7f7;
+}
+
 a {
     color: #badaff;
 }
@@ -405,4 +416,16 @@ a {
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Opera and Firefox */
+}
+
+.error_container {
+    display: none;
+    position: absolute;
+    left: 430px;
+    top: 155px;
+    background-color: #db0e0b;
+    padding: 20px;
+    border-radius: 15px;
+    width: fit-content; /* Chrome */
+    width: -moz-max-content; /* Firefox */
 }
