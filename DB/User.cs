@@ -19,6 +19,7 @@ namespace MLE.DB
         {
             this.UserRole = new HashSet<UserRole>();
             this.UserExample = new HashSet<UserExample>();
+            this.ForgotPassword = new HashSet<ForgotPassword>();
         }
     
         public int Id { get; set; }
@@ -35,5 +36,7 @@ namespace MLE.DB
         public virtual ICollection<UserRole> UserRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserExample> UserExample { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ForgotPassword> ForgotPassword { get; set; }
     }
 }

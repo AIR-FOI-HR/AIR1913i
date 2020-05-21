@@ -29,6 +29,8 @@
         <AssociationConnector Association="MLEModel.FK_User_UserRole" />
         <AssociationConnector Association="MLEModel.FK_UserExample_User" />
         <EntityTypeShape EntityType="MLEModel.JsonData" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MLEModel.ForgotPassword" Width="1.5" PointX="7.5" PointY="13.25" />
+        <AssociationConnector Association="MLEModel.FK_ForgotPassword_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

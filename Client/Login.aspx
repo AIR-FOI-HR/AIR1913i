@@ -31,7 +31,7 @@
                 <div class="container_password">
                     <div class="center" style="margin-top: 50px;">
                         <asp:TextBox runat="server" CssClass="login_textbox" ClientIDMode="Static" placeholder="Lozinka" TextMode="Password" ID="txtPassword"></asp:TextBox>
-                        <div class="small margintop"><a href="#">Jeste li zaboravili lozinku?</a></div>
+                        <div class="small margintop"><a href="/Client/ForgotPassword.aspx">Jeste li zaboravili lozinku?</a></div>
                         <div class="error_circle"></div>
                     </div>
                     <div class="right buttons">

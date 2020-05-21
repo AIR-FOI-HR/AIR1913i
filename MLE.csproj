@@ -87,8 +87,10 @@
     <Content Include="Admin\Modules\Users.aspx" />
     <Content Include="Client\ajax\DataHelper.aspx" />
     <Content Include="Client\ajax\ValidateLogin.aspx" />
+    <Content Include="Client\ChangePassword.aspx" />
     <Content Include="Client\DataImport.aspx" />
     <Content Include="Client\Examples.aspx" />
+    <Content Include="Client\ForgotPassword.aspx" />
     <Content Include="Client\Home.aspx" />
     <Content Include="Client\js\RegistrationHelper.js" />
     <Content Include="Client\Login.aspx" />
@@ -187,6 +189,13 @@
     <Compile Include="Client\ajax\ValidateLogin.aspx.designer.cs">
       <DependentUpon>ValidateLogin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Client\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Client\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Client\DataImport.aspx.cs">
       <DependentUpon>DataImport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -200,6 +209,13 @@
     </Compile>
     <Compile Include="Client\Examples.aspx.designer.cs">
       <DependentUpon>Examples.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Client\ForgotPassword.aspx.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Client\ForgotPassword.aspx.designer.cs">
+      <DependentUpon>ForgotPassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Client\Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
@@ -237,6 +253,9 @@
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\ExampleType.cs">
+      <DependentUpon>MLEModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ForgotPassword.cs">
       <DependentUpon>MLEModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\JsonData.cs">

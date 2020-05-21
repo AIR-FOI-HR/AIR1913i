@@ -21,7 +21,7 @@
     }
 
     if (errors.length > 0) {
-        ShowErrors(errors);
+        ShowErrors(errors, $("#ListOfErrors"), $(".error_container"));
         return false;
     }
     else
@@ -99,11 +99,41 @@ function ValidatePassword(pass, conf_pass, errors) {
     return errors;
 }
 
-function ShowErrors(errors) {
+function ShowErrors(errors, container, display_container) {
     var e = "";
     for (i = 0; i < errors.length; i++) 
         e += errors[i].code + " - " + errors[i].message + "<br>";
     
-    $("#ListOfErrors").html(e);
-    $(".error_container").show();
+    $(container).html(e);
+    $(display_container).show();
+}
+
+function MailValidation() {
+    var mail_errors = []
+    ValidateEmail($("#txtForgotMail").val(), mail_errors);
+    
+    if (mail_errors.length > 0) {
+        ShowErrors(mail_errors, $("#ListOfMailErrors"), $(".error_fp_container"));
+        return false;
+    }
+    else
+        return true;
+}
+
+function RestartValidation() {
+    var errors = [];
+
+    var password = $("#txtChangePassword").val();
+    var conf_pass = $("#txtChangePasswordConf").val();
+
+    ValidatePassword(password, conf_pass, errors);
+
+    if (errors.length > 0) {
+        ShowErrors(errors, $("#ListOfPasswordErrors"), $(".error_fp_container"));
+        $("#txtChangePassword").val("");
+        $("#txtChangePasswordConf").val("");
+        return false;
+    }
+    else
+        return true;
 }
