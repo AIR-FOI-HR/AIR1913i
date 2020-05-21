@@ -89,31 +89,6 @@
                         <%} %>
                     </div>
                 </div>
-                <div class="finished_right">
-                    <div class="custom_margins">
-                        <%= Examples_Finished.Count > 0 ? "<div class=\"bold zavrseno\">ZAVRŠENI</div>" : "" %>
-                        <% foreach (var item in Examples_Finished)
-                            { %>
-                        <div class="examples">
-                            <%= item.Name != null ? "<span class=\"bold\">Naziv: </span>" + item.Name + "</div>" : "" %>
-                            <div><span class="bold">Naziv datoteke: </span><%= item.FileName %></div>
-                            <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
-                            <div id="Content_E<%= item.Id %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
-                            <div class="center">
-                                <% if (item.Category != null && item.Category.Subcategory != null)
-                                    { %>
-                                <% foreach (var sub in item.Category.Subcategory)
-                                    { %>
-                                <%-- nije isto kao i gore! -> provjeriti sve --%>
-                                <input class="catButtons" style="background-color: <%= GetColor(sub.Id) %>" type="submit" value="<%= GetSubcategory(sub.Id) %>" onclick="Save('E' + <%= item.Id %> + '_C' + <%= sub.Id %> + '_<%= GetColor(sub.Id) %>'); return false;" />
-                                <%} %>
-                                <%} %>
-                            </div>
-                        </div>
-                        <hr />
-                        <%} %>
-                    </div>
-                </div>
             </div>
         </div>
     </form>

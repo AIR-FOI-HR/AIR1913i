@@ -84,7 +84,8 @@ function ScrollToElement(el) {
     else {
         offset = elOffset;
     }
-    $('html, body').animate({ scrollTop: offset }, 700);
+    //$('html, body').animate({ scrollTop: offset }, 700);
+    $('html, body').scrollTop(offset);
 }
 
 // goes to next span with class entity
@@ -92,12 +93,17 @@ function ScrollToElement(el) {
 function NextEntity() {
     if ($(".current").length) {
         var next_element = $(".entity").eq($(".entity").index($(".current")) + 1);
+        var wi = 1;
+        while(next_element.parent().parent().parent().css("display") == "none") {
+            next_element = $(".entity").eq($(".entity").index($(".current")) + wi);
+            wi++;
+        }
         $(".current").removeClass("current");
         $(next_element).addClass("current");
-        //ScrollToElement($(next_element));
+        ScrollToElement($(next_element));
     }
     else {
-        //ScrollToElement($(".entity"));
+        ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
         next_element = $(".entity").first();
     }
@@ -111,12 +117,14 @@ function NextEntity() {
 function PreviousEntity() {
     if ($(".current").length) {
         var prev_element = $(".entity").eq($(".entity").index($(".current")) - 1);
+        if (prev_element.parent().parent().parent().css("display") == "none")
+            return;
         $(".current").removeClass("current");
         $(prev_element).addClass("current");
-        //ScrollToElement($(prev_element));
+        ScrollToElement($(prev_element));
     }
     else {
-        //ScrollToElement($(".entity"));
+        ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
         prev_element = $(".entity").first();
     }
