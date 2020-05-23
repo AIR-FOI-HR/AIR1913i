@@ -3,7 +3,9 @@ package com.example.mle;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.StrictMode;
+
 import androidx.annotation.RequiresApi;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class DB {
-    static String ip = "192.168.8.109", port = "1433", dbName = "MLE";
+    static String ip = "192.168.18.31", port = "1433", dbName = "MLE";
 
     @SuppressLint("NewApi")
     public static Connection ConnectToDB() {
@@ -26,28 +28,29 @@ public class DB {
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             ConnectionURL = "jdbc:jtds:sqlserver://" + ip + ":" + port + ";databaseName=" + dbName;
-            connection = DriverManager.getConnection(ConnectionURL, "zv", "zv");
+            connection = DriverManager.getConnection(ConnectionURL, "androjd", "androjd");
         } catch (Exception ex) {
             String e = ex.getMessage();
         }
         return connection;
     }
 
-    public static ResultSet ExecuteQuery(Connection c, String q){
+    public static ResultSet ExecuteQuery(Connection c, String q) {
         try {
             Statement st = c.createStatement();
             ResultSet rs = st.executeQuery(q);
             return rs;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }
 
     public static class Example {
         public int Id;
+        public  String Name;
         public String Content;
         public int CategoryId;
+        public  int ProjectId;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public static List<Example> GetAllExamples() {
@@ -56,13 +59,15 @@ public class DB {
             Connection c = ConnectToDB();
             if (c != null) {
                 ResultSet rs = ExecuteQuery(c, q);
-                if(rs != null) {
+                if (rs != null) {
                     try {
                         while (rs.next()) {
                             Example e = new Example();
                             e.Id = Integer.parseInt(rs.getString("Id"));
+                            e.Name = rs.getString("Name");
                             e.Content = rs.getString("Content");
                             e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
+                            e.ProjectId = Integer.parseInt(rs.getString("ProjectId"));
                             examples.add(e);
                         }
                     } catch (Exception ex) {
@@ -72,13 +77,13 @@ public class DB {
             return examples;
         }
 
-        public static Example GetExampleById(int id){
+        public static Example GetExampleById(int id) {
             Example e = new Example();
             String q = "select * from Example where Id = " + id;
             Connection c = ConnectToDB();
-            if(c != null){
-                ResultSet rs = ExecuteQuery(c,q);
-                if(rs != null) {
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if (rs != null) {
                     try {
                         if (rs.next()) {
                             e.Id = Integer.parseInt(rs.getString("Id"));
@@ -91,16 +96,20 @@ public class DB {
             }
             return e;
         }
+
+        public  int getExampleProjectId(){
+            return ProjectId;
+        }
     }
 
-    public static class Category{
+    public static class Category {
         public int Id;
         public String Name;
         public String Description;
         public boolean isActive;
     }
 
-    public static class SubCategory{
+    public static class SubCategory {
         public int Id;
         public int CategoryId;
         public String Name;
@@ -108,7 +117,7 @@ public class DB {
         public String Color;
         public String Sentiment;
 
-        public static List<SubCategory> GetSubCategoriesByExampleId(int ExampleId){
+        public static List<SubCategory> GetSubCategoriesByExampleId(int ExampleId) {
             int CategoryId = Example.GetExampleById(ExampleId).CategoryId;
 
             List<SubCategory> subCategories = new ArrayList<>();
@@ -116,7 +125,7 @@ public class DB {
             Connection c = ConnectToDB();
             if (c != null) {
                 ResultSet rs = ExecuteQuery(c, q);
-                if(rs != null) {
+                if (rs != null) {
                     try {
                         while (rs.next()) {
                             SubCategory e = new SubCategory();
@@ -135,13 +144,13 @@ public class DB {
             return subCategories;
         }
 
-        public static String GetSubcategoryColor(int SubcategoryId){
+        public static String GetSubcategoryColor(int SubcategoryId) {
             String color = "";
             String q = "select * from Subcategory where Id=" + SubcategoryId + " and isActive=1";
             Connection c = ConnectToDB();
             if (c != null) {
                 ResultSet rs = ExecuteQuery(c, q);
-                if(rs != null) {
+                if (rs != null) {
                     try {
                         if (rs.next()) {
                             color = rs.getString("Color");
@@ -154,20 +163,20 @@ public class DB {
         }
     }
 
-    public static class Marked{
+    public static class Marked {
         public int Id;
         public int ExampleId;
         public int SubcategoryId;
         public int SentenceId;
         public int EntityId;
 
-        public static Marked GetMarkedEntity(int ExampleId, int SentenceId, int EntityId){
+        public static Marked GetMarkedEntity(int ExampleId, int SentenceId, int EntityId) {
             Marked e = new Marked();
             String q = "select * from Marked where ExampleId=" + ExampleId + " and SentenceId=" + SentenceId + " and EntityId=" + EntityId;
             Connection c = ConnectToDB();
             if (c != null) {
                 ResultSet rs = ExecuteQuery(c, q);
-                if(rs != null) {
+                if (rs != null) {
                     try {
                         if (rs.next()) {
                             e.Id = Integer.parseInt(rs.getString("Id"));
@@ -183,24 +192,81 @@ public class DB {
             return e;
         }
 
-        public static void SaveMarkedEntity(Marked marking){
+        public static void SaveMarkedEntity(Marked marking) {
             Marked m = GetMarkedEntity(marking.ExampleId, marking.SentenceId, marking.EntityId);
-            if(m.Id != 0){
+            if (m.Id != 0) {
                 // update current
                 String q = "update Marked set SubcategoryId=" + marking.SubcategoryId + " where Id=" + m.Id;
                 Connection c = ConnectToDB();
-                if(c != null){
+                if (c != null) {
                     ResultSet rs = ExecuteQuery(c, q);
                 }
-            }
-            else{
+            } else {
                 // create new
                 String q = "insert into Marked (ExampleId, SubcategoryId, SentenceId, EntityId) values (" + marking.ExampleId + "," + marking.SubcategoryId + "," + marking.SentenceId + "," + marking.EntityId + ")";
                 Connection c = ConnectToDB();
-                if(c != null){
+                if (c != null) {
                     ResultSet rs = ExecuteQuery(c, q);
                 }
             }
+        }
+    }
+
+    public static class Project {
+        public int Id;
+        public String Name;
+
+        public static List<Project> GetAllProjects() {
+
+
+            List<Project> projects = new ArrayList<>();
+            String q = "select * from Project";
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if (rs != null) {
+                    try {
+                        while (rs.next()) {
+                            Project p = new Project();
+                            p.Id = Integer.parseInt(rs.getString("Id"));
+                            p.Name = rs.getString("Name");
+
+                            projects.add(p);
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return projects;
+        }
+    }
+
+    public static class UserExample {
+        public int UserId;
+        public int ExampleId;
+
+        public static List<UserExample> GetUserExamplesByUserId() {
+
+
+            List<UserExample> userExamples = new ArrayList<>();
+            String q = "select * from UserExample where UserId=1";
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if (rs != null) {
+                    try {
+                        while (rs.next()) {
+                            UserExample ue = new UserExample();
+                            ue.UserId = Integer.parseInt(rs.getString("UserId"));
+                            ue.ExampleId = Integer.parseInt(rs.getString("ExampleId"));
+
+                            userExamples.add(ue);
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return userExamples;
         }
     }
 }

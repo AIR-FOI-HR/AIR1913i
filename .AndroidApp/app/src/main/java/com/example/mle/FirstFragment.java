@@ -50,6 +50,20 @@ public class FirstFragment extends Fragment {
 
     public int ExampleID = 0;
 
+    private static final  String KEY_TITLE="Example";
+
+    public  FirstFragment(){
+
+    }
+
+    public static FirstFragment newInstance(String title){
+        FirstFragment firstFragment = new FirstFragment();
+        Bundle args = new Bundle();
+        args.putString(KEY_TITLE,title);
+
+        return  firstFragment;
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -202,7 +216,15 @@ public class FirstFragment extends Fragment {
         TextView tv = (TextView) v.findViewById(R.id.tvText);
 //        List<DB.Example> list = DB.Example.GetAllExamples();
 
-        DB.Example e = DB.Example.GetExampleById(60);
+        Bundle bundle = this.getArguments();
+        int myInt = 0;
+        if(bundle != null){
+           myInt = bundle.getInt("Example");
+        }
+        else
+            myInt = 60;
+
+        DB.Example e = DB.Example.GetExampleById(myInt);
         ExampleID = e.Id;
 
         // jsoup parse
