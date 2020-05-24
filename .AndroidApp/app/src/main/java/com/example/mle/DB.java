@@ -6,17 +6,25 @@ import android.os.StrictMode;
 
 import androidx.annotation.RequiresApi;
 
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 public class DB {
-    static String ip = "192.168.18.31", port = "1433", dbName = "MLE";
+    static String ip = "192.168.8.109", port = "1433", dbName = "MLE", user = "zv", password = "zv";
 
     @SuppressLint("NewApi")
     public static Connection ConnectToDB() {
@@ -28,7 +36,7 @@ public class DB {
         try {
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
             ConnectionURL = "jdbc:jtds:sqlserver://" + ip + ":" + port + ";databaseName=" + dbName;
-            connection = DriverManager.getConnection(ConnectionURL, "androjd", "androjd");
+            connection = DriverManager.getConnection(ConnectionURL, user, password);
         } catch (Exception ex) {
             String e = ex.getMessage();
         }
@@ -47,10 +55,10 @@ public class DB {
 
     public static class Example {
         public int Id;
-        public  String Name;
+        public String Name;
         public String Content;
         public int CategoryId;
-        public  int ProjectId;
+        public int ProjectId;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public static List<Example> GetAllExamples() {
@@ -89,6 +97,7 @@ public class DB {
                             e.Id = Integer.parseInt(rs.getString("Id"));
                             e.Content = rs.getString("Content");
                             e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
+                            e.Name = rs.getString("Name");
                         }
                     } catch (Exception ex) {
                     }
@@ -97,7 +106,7 @@ public class DB {
             return e;
         }
 
-        public  int getExampleProjectId(){
+        public int getExampleProjectId() {
             return ProjectId;
         }
     }
@@ -246,8 +255,6 @@ public class DB {
         public int ExampleId;
 
         public static List<UserExample> GetUserExamplesByUserId() {
-
-
             List<UserExample> userExamples = new ArrayList<>();
             String q = "select * from UserExample where UserId=1";
             Connection c = ConnectToDB();
@@ -267,6 +274,60 @@ public class DB {
                 }
             }
             return userExamples;
+        }
+    }
+
+    public static class User {
+        public int Id;
+        public boolean IsValid;
+
+        public static User CheckLogin(String username, String password) throws SignatureException {
+            User u = new User();
+
+            String q = "select * from [User] where Username='" + username + "' and [Password]='" + hashMac(password) + "' and IsActive=1";
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if (rs != null) {
+                    try {
+                        if (rs.next()) {
+                            u.Id = Integer.parseInt(rs.getString("Id"));
+                            u.IsValid = true;
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+
+            return u;
+        }
+
+        public static String hashMac(String text) throws SignatureException {
+            try {
+                String key = "vmadfklMF45r423dsadbgfs15s";
+                Key sk = new SecretKeySpec(key.getBytes(), HASH_ALGORITHM);
+                Mac mac = Mac.getInstance(sk.getAlgorithm());
+                mac.init(sk);
+                final byte[] hmac = mac.doFinal(text.getBytes());
+                return toHexString(hmac);
+            } catch (NoSuchAlgorithmException e1) {
+                throw new SignatureException("Error building signature; No algorithm in device " + HASH_ALGORITHM);
+            } catch (InvalidKeyException e) {
+                throw new SignatureException("Error building signature; Invalid key " + HASH_ALGORITHM);
+            }
+        }
+
+        private static final String HASH_ALGORITHM = "HmacSHA256";
+
+        public static String toHexString(byte[] bytes) {
+            StringBuilder sb = new StringBuilder(bytes.length * 2);
+
+            Formatter formatter = new Formatter(sb);
+            for (byte b : bytes) {
+                formatter.format("%02x", b);
+            }
+
+            return sb.toString();
         }
     }
 }

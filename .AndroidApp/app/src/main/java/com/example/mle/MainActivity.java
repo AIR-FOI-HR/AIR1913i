@@ -1,6 +1,7 @@
 package com.example.mle;
 
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -24,12 +25,15 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-
+    private int UserId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent i = getIntent();
+        UserId = Integer.parseInt(i.getExtras().get("UserId").toString());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,9 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProjectListFragment()).commit(); // bio new FirstFragment
-
             navigationView.setCheckedItem(R.id.nav_projects);
         }
 //        Toast.makeText(MainActivity.this, "meow", Toast.LENGTH_SHORT).show();
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_projects:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProjectListFragment()).commit();
-
                 break;
             case R.id.nav_statistics:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FirstFragment()).commit();
