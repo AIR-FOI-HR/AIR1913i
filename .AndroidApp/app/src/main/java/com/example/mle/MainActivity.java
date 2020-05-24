@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
 import android.view.Menu;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProjectListFragment()).commit(); // bio new FirstFragment
             navigationView.setCheckedItem(R.id.nav_projects);
         }
+
 //        Toast.makeText(MainActivity.this, "meow", Toast.LENGTH_SHORT).show();
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
