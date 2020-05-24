@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Examples.aspx.cs" Inherits="MLE.Admin.Modules.Examples" ValidateRequest="false" %>
+
 <%@ Register Src="~/Admin/Modules/Menu.ascx" TagPrefix="UC" TagName="Menu" %>
 
 <!DOCTYPE html>
@@ -20,9 +21,9 @@
                     <div id="examples">
                         <a href="?id=<%#Eval("id") %>">
                             <div class="id"><%# Eval("id") %></div>
-                            <%# Eval("Name") %>                           
+                            <%# Eval("Name") %>
                             <%# Eval("Description") %>
-                            <%# Eval("DateCreated") %>                            
+                            <%# Eval("DateCreated") %>
                             <%# Eval("ProjectTitle") %>
                             <%# Eval("StatusType") %>
                             <%# Eval("CategoryTitle") %>
@@ -31,90 +32,83 @@
                 </ItemTemplate>
                 <FooterTemplate>
                     <div class="menu_add">
-                        <hr />           
+                        <hr />
                         <input type="submit" id="btnAddExample" value="Novi primjer" onclick="AddExample(); return false;" />
                     </div>
-                </FooterTemplate>                
+                </FooterTemplate>
             </asp:Repeater>
         </div>
 
         <div id="input_data">
             <table>
-                 <tr>
+                <tr>
+                    <th>Naziv:</th>
+                    <td>
+                        <asp:TextBox ID="txtName" placeholder="Naziv primjera" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <%--<tr>
                     <th>Sadržaj:</th>
                     <td>
-                        <asp:Literal ID="txtContent" Mode="PassThrough" runat="server"></asp:Literal>                        
+                        <asp:TextBox ID="exampleContent" placeholder="Ovdje unosite HTML" runat="server" TextMode="MultiLine"></asp:TextBox>
+                    </td>
+                </tr>--%>
+                <tr>
+                    <th>Opis:</th>
+                    <td>
+                        <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Datum kreiranja</th>
+                    <td>
+                        <asp:TextBox ID="txtDateCreated" runat="server" TextMode="Date"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Projekt</th>
+                    <td>
+                        <asp:DropDownList ID="projectList" runat="server"
+                            AutoPostBack="true"
+                            OnSelectedIndexChanged="projectList_SelectedIndexChanged"
+                            Height="30px" Width="200px"
+                            Style="position: static; margin-bottom: 5px; padding-left: 10px;">
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>
+                        <asp:DropDownList ID="statusList" runat="server"
+                            AutoPostBack="true"
+                            OnSelectedIndexChanged="statusList_SelectedIndexChanged"
+                            Height="30px" Width="200px"
+                            Style="position: static; margin-bottom: 5px; padding-left: 10px;">
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Kategorija</th>
+                    <td>
+                        <asp:DropDownList ID="categoryList" runat="server"
+                            AutoPostBack="true"
+                            OnSelectedIndexChanged="categoryList_SelectedIndexChanged"
+                            Height="30px" Width="200px"
+                            Style="position: static; margin-bottom: 5px; padding-left: 10px;">
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sadržaj:</th>
+                    <td>
+                        <asp:Literal ID="txtContent" Mode="PassThrough" runat="server"></asp:Literal>
                     </td>
                 </tr>
             </table>
-        </div>
-       <div id="example_content">
-            <table>
-                <tbody>
-                    <tr>
-                        <th>Naziv:</th>
-                        <td>                                                           
-                            <asp:TextBox ID="txtName" placeholder="Naziv primjera" runat="server"></asp:TextBox>                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Sadržaj:</th>
-                        <td>                     
-                            <asp:TextBox ID="exampleContent" placeholder="Ovdje unosite HTML" runat="server" TextMode="MultiLine"></asp:TextBox>
-                        </td>
-                    </tr>
-                        <tr>
-                        <th>Opis:</th>
-                        <td>
-                            <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine"></asp:TextBox>
-                        </td>
-                    </tr>              
-                    <tr>
-                        <th>Datum kreiranja</th>
-                        <td>
-                            <asp:TextBox ID="txtDateCreated" runat="server" TextMode="Date"></asp:TextBox>
-                        </td>
-                    </tr>                   
-                    <tr>
-                        <th>Projekt</th>
-                        <td>
-                            <asp:DropDownList ID="projectList" runat="server" 
-                                AutoPostBack="true" 
-                                OnSelectedIndexChanged="projectList_SelectedIndexChanged"
-                                Height="30px" Width="200px"
-                                Style="position:static;margin-bottom:5px;padding-left:10px;"
-                                >
-                            </asp:DropDownList>                       
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            <asp:DropDownList ID="statusList" runat="server" 
-                                AutoPostBack ="true"
-                                OnSelectedIndexChanged="statusList_SelectedIndexChanged"
-                                Height="30px" Width="200px"
-                                Style="position:static;margin-bottom:5px;padding-left:10px;">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Kategorija</th>
-                        <td>
-                            <asp:DropDownList ID="categoryList" runat="server"
-                                AutoPostBack="true"
-                                OnSelectedIndexChanged="categoryList_SelectedIndexChanged"
-                                Height="30px" Width="200px"
-                                Style="position:static;margin-bottom:5px;padding-left:10px;">
-                            </asp:DropDownList>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-           <asp:HiddenField ID="hiddenId" runat="server" Value="" />
-           <div class="buttons">
-               <asp:Button ID="btnSave" runat="server" Text="Spremi" OnClick="btnSave_Click" />
-           </div>
+            <asp:HiddenField ID="hiddenId" runat="server" Value="" />
+            <div class="buttons">
+                <asp:Button ID="btnSave" runat="server" Text="Spremi" OnClick="btnSave_Click" />
+            </div>
         </div>
     </form>
 </body>
@@ -130,11 +124,11 @@
 
         if (id != null && id != 0) {
             $("#input_data").show();
-        }       
+        }
 
         if (id === "0")
             $("#example_content").show();
-    });   
+    });
 
     var getUrlParameter = function getUrlParameter(sParam) {
         var sPageURL = window.location.search.substring(1),

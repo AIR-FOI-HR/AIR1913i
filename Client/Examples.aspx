@@ -68,10 +68,11 @@
                         <% foreach (var item in Examples_NotFinished)
                             { %>
                         <div class="examples" style="<%= First_Project.Id == item.ProjectId ? "display:block;" : "display:none;" %>">
-                            <%= item.Name != null ? "<span class=\"bold\">Naziv: </span>" + item.Name + "</div>" : "" %>
+                            <%= item.Name != null ? "<span class=\"bold\">Naziv: </span>" + item.Name : "" %>
                             <div><span class="bold">Naziv datoteke: </span><%= item.FileName %></div>
                             <div><span class="bold">Kreirano: </span><%= item.DateCreated %></div>
                             <div id="Content_E<%= item.Id %>" data-projectid="<%= item.ProjectId %>" class="content_text"><%= item.Content.Replace(Environment.NewLine, "<br/>") %></div>
+
                             <div id="Category_E<%= item.Id %>" class="center categories">
                                 <% if (item.Category != null && item.Category.Subcategory != null)
                                     { %>

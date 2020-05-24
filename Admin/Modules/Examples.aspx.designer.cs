@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MLE.Admin.Modules
-{
-
-
-    public partial class Examples
-    {
-
+namespace MLE.Admin.Modules {
+    
+    
+    public partial class Examples {
+        
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
+        
         /// <summary>
         /// menu control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::MLE.Admin.Modules.Menu menu;
-
+        
         /// <summary>
         /// rpt control.
         /// </summary>
@@ -40,16 +38,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt;
-
-        /// <summary>
-        /// txtContent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal txtContent;
-
+        
         /// <summary>
         /// txtName control.
         /// </summary>
@@ -58,16 +47,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtName;
-
-        /// <summary>
-        /// exampleContent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox exampleContent;
-
+        
         /// <summary>
         /// txtDescription control.
         /// </summary>
@@ -76,7 +56,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
-
+        
         /// <summary>
         /// txtDateCreated control.
         /// </summary>
@@ -85,7 +65,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDateCreated;
-
+        
         /// <summary>
         /// projectList control.
         /// </summary>
@@ -94,7 +74,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList projectList;
-
+        
         /// <summary>
         /// statusList control.
         /// </summary>
@@ -103,7 +83,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList statusList;
-
+        
         /// <summary>
         /// categoryList control.
         /// </summary>
@@ -112,7 +92,16 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList categoryList;
-
+        
+        /// <summary>
+        /// txtContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal txtContent;
+        
         /// <summary>
         /// hiddenId control.
         /// </summary>
@@ -121,7 +110,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hiddenId;
-
+        
         /// <summary>
         /// btnSave control.
         /// </summary>

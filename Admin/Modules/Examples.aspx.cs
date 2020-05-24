@@ -28,8 +28,7 @@ namespace MLE.Admin.Modules
         }
 
         protected void Page_PreRender(object sender, EventArgs e)
-        {    
-
+        {
             if (Request.QueryString["id"] != null)
             {
                 var str = Request.QueryString["id"].ToString();
@@ -37,7 +36,7 @@ namespace MLE.Admin.Modules
 
                 /*if (exampleId == 0)
                     btnDelete.Visible = false;*/
-                if(exampleId != 0)
+                if (exampleId != 0)
                     GetExampleById(exampleId);
             }
         }
@@ -69,7 +68,7 @@ namespace MLE.Admin.Modules
                         DateCreated = item.DateCreated.Value,
                         ProjectTitle = _dbProject != null ? _dbProject.Name : "Primjer nije dodijeljen projektu. Dodajte primjer projektu!",
                         StatusType = db.Status.Where(s => s.Id == item.StatusId).FirstOrDefault().Name,
-                        CategoryTitle = _dbCategory != null ? _dbCategory.Name : "Primjer nema kategoriju. Dodijelite ju!"     
+                        CategoryTitle = _dbCategory != null ? _dbCategory.Name : "Primjer nema kategoriju. Dodijelite ju!"
                     });
                 }
 
@@ -89,11 +88,13 @@ namespace MLE.Admin.Modules
                     txtContent.Text = _dbExample.Content != null ? _dbExample.Content : "";
                     txtDescription.Text = _dbExample.Description != null ? _dbExample.Description : "";
                     txtDateCreated.Text = _dbExample.DateCreated != null ? _dbExample.DateCreated.Value.ToString("dd.MM.yyyy") : "";
+                    projectList.SelectedValue = _dbExample.ProjectId != null ? _dbExample.ProjectId.Value.ToString() : "0";
+                    categoryList.SelectedValue = _dbExample.CategoryId != null ? _dbExample.CategoryId.Value.ToString() : "0";
+                    statusList.SelectedValue = _dbExample.StatusId != null ? _dbExample.StatusId.Value.ToString() : "0";
                     //txtTimeSpent.Text = _dbExample.TimeSpent != null ? _dbExample.TimeSpent.ToString() : "";
                     //txtProjectTitle.Text = db.Project.Where(p => p.Id == _dbExample.ProjectId).FirstOrDefault().Name;
                     //txtStatusType.Text = db.Status.Where(p => p.Id == _dbExample.StatusId).FirstOrDefault().Name;
                     //txtCategoryTitle.Text = db.Category.Where(p => p.Id == _dbExample.CategoryId).FirstOrDefault().Name;
-
                 }
             }
         }
@@ -104,15 +105,15 @@ namespace MLE.Admin.Modules
             rpt.DataBind();
 
             return GetAllExamples();
-        }      
-        
+        }
+
         private IList<Project> PopulateDropdownList()
         {
             IList<Project> _dbProjects = null;
 
             using (var db = new MLEEntities())
             {
-                _dbProjects =  db.Project.ToList();
+                _dbProjects = db.Project.ToList();
             }
 
             projectList.DataSource = _dbProjects;
@@ -180,28 +181,51 @@ namespace MLE.Admin.Modules
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            using (var db = new MLEEntities())
+            if (Request.QueryString["id"] != null)
             {
-                Example _example = new Example()
+                exampleId = int.Parse(Request.QueryString["id"].ToString());
+
+                using (var db = new MLEEntities())
                 {
-                    Name = txtName.Text,
-                    Content = exampleContent.Text,
-                    Description = txtDescription.Text,
-                    DateCreated = DateTime.Now,
-                    TimeSpent = TimeSpan.Zero,
-                    ProjectId = int.Parse(projectList.SelectedValue),
-                    StatusId = int.Parse(statusList.SelectedValue),
-                    CategoryId = int.Parse(categoryList.SelectedValue),
-                    FileName = ""
-                };
+                    if (exampleId != 0)
+                    {
+                        var _ = db.Example.FirstOrDefault(x => x.Id == exampleId);
+                        if (_ != null)
+                        {
+                            _.Name = txtName.Text;
+                            _.Description = txtDescription.Text;
+                            _.ProjectId = int.Parse(projectList.SelectedValue);
+                            _.StatusId = int.Parse(statusList.SelectedValue);
+                            _.CategoryId = int.Parse(categoryList.SelectedValue);
 
-                db.Example.Attach(_example);
-                db.Example.Add(_example);
+                            db.SaveChanges();
+                        }
+                    }
+                    else
+                    {
 
-                db.SaveChanges();
+                        Example _example = new Example()
+                        {
+                            Name = txtName.Text,
+                            //Content = exampleContent.Text,
+                            Description = txtDescription.Text,
+                            DateCreated = DateTime.Now,
+                            TimeSpent = TimeSpan.Zero,
+                            ProjectId = int.Parse(projectList.SelectedValue),
+                            StatusId = int.Parse(statusList.SelectedValue),
+                            CategoryId = int.Parse(categoryList.SelectedValue),
+                            FileName = ""
+                        };
+
+                        db.Example.Attach(_example);
+                        db.Example.Add(_example);
+
+                        db.SaveChanges();
+                    }
+
+                    Response.Redirect("Examples.aspx");
+                }
             }
-
-            Response.Redirect("Examples.aspx");
         }
-    }    
+    }
 }
