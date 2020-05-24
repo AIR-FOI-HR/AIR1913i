@@ -33,12 +33,7 @@ public class ProjectListFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState
-    ) {
-
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_project_list, container, false);
     }
 
@@ -61,7 +56,7 @@ public class ProjectListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                String selectedItem = ((List)(lstChild.get(lstTitle.get(groupPosition))))
+                String selectedItem = ((List) (lstChild.get(lstTitle.get(groupPosition))))
                         .get(childPosition).toString();
 
                 Integer exampleId = 0;
@@ -73,27 +68,15 @@ public class ProjectListFragment extends Fragment {
 
                 FirstFragment firstFragment = new FirstFragment();
                 Bundle args = new Bundle();
-                args.putInt("Example",exampleId);
+                args.putInt("Example", exampleId);
 
                 firstFragment.setArguments(args);
 
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,firstFragment).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, firstFragment).commit();
 
-
-
-
-
-
-
-
-
-
-                return  true;
-
+                return true;
             }
         });
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -105,18 +88,18 @@ public class ProjectListFragment extends Fragment {
 
         List<Integer> exampleIds = new ArrayList<>();
 
-        for (int i = 0; i < userExampleList.size(); i++){
+        for (int i = 0; i < userExampleList.size(); i++) {
 
             exampleIds.add(userExampleList.get(i).ExampleId);
         }
 
-        userExamples= (List<DB.Example>) exampleList.stream().filter(e -> exampleIds.contains(e.Id)).collect(Collectors.toList());
+        userExamples = (List<DB.Example>) exampleList.stream().filter(e -> exampleIds.contains(e.Id)).collect(Collectors.toList());
 
         List<Integer> projectIds = new ArrayList<>();
 
-        for(int i = 0; i < userExamples.size(); i++){
+        for (int i = 0; i < userExamples.size(); i++) {
 
-            if(!projectIds.contains(userExamples.get(i).ProjectId)){
+            if (!projectIds.contains(userExamples.get(i).ProjectId)) {
                 projectIds.add(userExamples.get(i).ProjectId);
             }
         }
@@ -131,16 +114,16 @@ public class ProjectListFragment extends Fragment {
 
         lstChild = new HashMap<>();
 
-       for(int i= 0; i < projects.size();i++){
-           List<String> exampleNames = new ArrayList<>();
-           for(int j = 0; j < userExamples.size(); j++){
-               if(userExamples.get(j).ProjectId == projects.get(i).Id){
-                   exampleNames.add(userExamples.get(j).Name);
-               }
-           }
+        for (int i = 0; i < projects.size(); i++) {
+            List<String> exampleNames = new ArrayList<>();
+            for (int j = 0; j < userExamples.size(); j++) {
+                if (userExamples.get(j).ProjectId == projects.get(i).Id) {
+                    exampleNames.add(userExamples.get(j).Name);
+                }
+            }
 
-           lstChild.put(projects.get(i).Name,exampleNames);
-       }
+            lstChild.put(projects.get(i).Name, exampleNames);
+        }
 
         /*lstChild.put(title.get(0), childItem);
         lstChild.put(title.get(1), childItem);

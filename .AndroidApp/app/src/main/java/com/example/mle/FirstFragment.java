@@ -238,6 +238,9 @@ public class FirstFragment extends Fragment {
         TextView title = (TextView) v.findViewById(R.id.tvTitle);
         title.setText("Primjer br." + e.Id);
 
+        TextView name = (TextView) v.findViewById(R.id.tvName);
+        name.setText(e.Name);
+
         ExampleHelper.ExampleDocument ed = new ExampleHelper.ExampleDocument();
         ed.Id = e.Id;
         ed.document = doc;
