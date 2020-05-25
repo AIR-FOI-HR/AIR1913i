@@ -102,6 +102,7 @@
         HandleKeyDOWN(e);
     });
 
+    // document load
     $(document).ready(function () {
         $("#ddlProject").change(function () {
             var projectId = $(this).val();

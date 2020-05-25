@@ -1,4 +1,5 @@
-﻿function Validation() {
+﻿// Validation on client button click (btnRegister)
+function Validation() {
     var username = $("#txtUsername").val();
     var password = $("#txtPassword").val();
     var confirmed_pass = $("#txtConfirmedPassword").val();
@@ -35,11 +36,7 @@ function ValidateMailAndPassword(mail, username, pass, conf_pass) {
     return errors;
 }
 
-function validate_regex_mail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
-
+// Ajax for validating mail and username in database
 function ValidateEmailAndUsername(email, username, errors) {
     ValidateEmail(email, errors);
 
@@ -61,6 +58,7 @@ function ValidateEmailAndUsername(email, username, errors) {
     });
 }
 
+// Checks if mail is inserted & runs regex
 function ValidateEmail(email, errors) {
     if (email.length > 0) {
         if (!validate_regex_mail(email)) {
@@ -72,6 +70,13 @@ function ValidateEmail(email, errors) {
     }
 }
 
+// regex for mail validation
+function validate_regex_mail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
+// handles errors for password
 function ValidatePassword(pass, conf_pass, errors) {
     var lower = /[a-z]/g;
     if (!pass.match(lower)) {
@@ -99,6 +104,7 @@ function ValidatePassword(pass, conf_pass, errors) {
     return errors;
 }
 
+// shows errors in HTML
 function ShowErrors(errors, container, display_container) {
     var e = "";
     for (i = 0; i < errors.length; i++) 
@@ -108,6 +114,7 @@ function ShowErrors(errors, container, display_container) {
     $(display_container).show();
 }
 
+// Validation for forgot password
 function MailValidation() {
     var mail_errors = []
     ValidateEmail($("#txtForgotMail").val(), mail_errors);
@@ -120,6 +127,7 @@ function MailValidation() {
         return true;
 }
 
+// Validation for password reset
 function RestartValidation() {
     var errors = [];
 
