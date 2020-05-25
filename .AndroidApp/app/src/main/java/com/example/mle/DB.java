@@ -1,6 +1,7 @@
 package com.example.mle;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
 
@@ -24,7 +25,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DB {
-    static String ip = "192.168.8.109", port = "1433", dbName = "MLE", user = "zv", password = "zv";
+    static String ip = "192.168.18.31", port = "1433", dbName = "MLE", user = "androjd", password = "androjd";
 
     @SuppressLint("NewApi")
     public static Connection ConnectToDB() {
@@ -219,6 +220,30 @@ public class DB {
                 }
             }
         }
+
+        public  static  List<Marked> GetMarkedByExampleIds(String exampleIds){
+            List<Marked> markeds = new ArrayList<>();
+            String q = "select * from Marked where ExampleId in (" + exampleIds + ")" ;
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
+                if (rs != null) {
+                    try {
+                        while (rs.next()) {
+                            Marked m = new Marked();
+                            m.Id = Integer.parseInt(rs.getString("Id"));
+                            m.ExampleId = Integer.parseInt(rs.getString("ExampleId"));
+                            m.SubcategoryId = Integer.parseInt(rs.getString("SubcategoryId"));
+
+                            markeds.add(m);
+                        }
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+
+            return  markeds;
+        }
     }
 
     public static class Project {
@@ -254,9 +279,9 @@ public class DB {
         public int UserId;
         public int ExampleId;
 
-        public static List<UserExample> GetUserExamplesByUserId() {
+        public static List<UserExample> GetUserExamplesByUserId(int userId) {
             List<UserExample> userExamples = new ArrayList<>();
-            String q = "select * from UserExample where UserId=1";
+            String q = "select * from UserExample where UserId=" + userId;
             Connection c = ConnectToDB();
             if (c != null) {
                 ResultSet rs = ExecuteQuery(c, q);

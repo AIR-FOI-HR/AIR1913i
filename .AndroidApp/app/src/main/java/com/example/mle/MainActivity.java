@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.View;
 import android.view.Menu;
@@ -47,9 +49,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProjectListFragment()).commit(); // bio new FirstFragment
+
+            Bundle b = new Bundle();
+            b.putInt("UserId",UserId);
+
+            ProjectListFragment  projectListFragment = new ProjectListFragment();
+            projectListFragment.setArguments(b);
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, projectListFragment).commit(); // bio new FirstFragment
             navigationView.setCheckedItem(R.id.nav_projects);
         }
+
+
+
 //        Toast.makeText(MainActivity.this, "meow", Toast.LENGTH_SHORT).show();
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
@@ -66,10 +78,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_projects:
+               setFragmentArguments();;
+
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProjectListFragment()).commit();
                 break;
             case R.id.nav_statistics:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FirstFragment()).commit();
+
+                Intent statisticIntent = new Intent(MainActivity.this,StatisticActivity.class);
+                statisticIntent.putExtra("UserId",UserId);
+
+               // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new StatisticFragment()).commit();
+                startActivity(statisticIntent); //new Intent(MainActivity.this,StatisticActivity.class)
                 break;
         }
 
@@ -86,5 +106,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
         super.onBackPressed();
+    }
+
+    private  void  setFragmentArguments(){
+        Bundle b = new Bundle();
+        b.putInt("UserId",UserId);
+
+        ProjectListFragment  projectListFragment = new ProjectListFragment();
+        projectListFragment.setArguments(b);
     }
 }

@@ -43,6 +43,8 @@ public class ProjectListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         expandableListView = (ExpandableListView) view.findViewById(R.id.expListView);
+
+
         initData();
 
         addDrawersItem();
@@ -82,7 +84,15 @@ public class ProjectListFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initData() {
 
-        final List<DB.UserExample> userExampleList = DB.UserExample.GetUserExamplesByUserId();
+
+
+        Bundle bundle = this.getArguments();
+
+        int myInt = 0;
+        myInt = bundle.getInt("UserId");
+
+
+        final List<DB.UserExample> userExampleList = DB.UserExample.GetUserExamplesByUserId(myInt);
         List<DB.Project> projects = DB.Project.GetAllProjects();
         List<DB.Example> exampleList = DB.Example.GetAllExamples();
 
@@ -104,14 +114,11 @@ public class ProjectListFragment extends Fragment {
             }
         }
 
-
-        /*Set<Integer> uniqueProjectIds = new HashSet<>();
-        projectExamples.removeIf(ue-> !uniqueProjectIds.add(ue.getExampleProjectId()));*/
         projects = projects.stream().filter(p -> projectIds.contains(p.Id)).collect(Collectors.toList());
 
-        List<String> title = Arrays.asList("projekt 1", "projekt 2", "projekt 3");
+       /* List<String> title = Arrays.asList("projekt 1", "projekt 2", "projekt 3");
         List<String> childItem = Arrays.asList("primjer 1", "primjer 2", "primjer 3");
-
+*/
         lstChild = new HashMap<>();
 
         for (int i = 0; i < projects.size(); i++) {
@@ -125,31 +132,6 @@ public class ProjectListFragment extends Fragment {
             lstChild.put(projects.get(i).Name, exampleNames);
         }
 
-        /*lstChild.put(title.get(0), childItem);
-        lstChild.put(title.get(1), childItem);
-        lstChild.put(title.get(2), childItem);*/
-
         lstTitle = new ArrayList<>(lstChild.keySet());
-       /* listDataHeader = new ArrayList<>();
-        listHash = new HashMap<>();
-
-        listDataHeader.add("Projekt 1");
-        listDataHeader.add("Projekt 2");
-        listDataHeader.add("Projekt 3");
-
-        List<String> mleDev = new ArrayList<>();
-        mleDev.add("This is expandable list view");
-
-        List<String> projectOne = new ArrayList<>();
-        projectOne.add("primjer 1");
-        projectOne.add("Primjer 2");
-
-        List<String> projectTwo = new ArrayList<>();
-        projectTwo.add("primjer 1");
-        projectTwo.add("Primjer 2");
-
-        listHash.put(listDataHeader.get(0),mleDev);
-        listHash.put(listDataHeader.get(1),projectOne);
-        listHash.put(listDataHeader.get(2),projectTwo);*/
     }
 }
