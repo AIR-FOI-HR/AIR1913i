@@ -93,7 +93,7 @@ public class ProjectListFragment extends Fragment {
         myInt = bundle.getInt("UserId");
 
 
-        final List<DB.UserExample> userExampleList = DB.UserExample.GetUserExamplesByUserId(myInt);
+        final List<DB.UserExample> userExampleList = DB.UserExample.GetUserExamplesByUserId(1);
         List<DB.Project> projects = DB.Project.GetAllProjects();
         List<DB.Example> exampleList = DB.Example.GetAllExamples();
 
