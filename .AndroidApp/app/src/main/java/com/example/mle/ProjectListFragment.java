@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,10 +32,11 @@ public class ProjectListFragment extends Fragment {
     private HashMap<String, List<String>> lstChild;
     private List<DB.Example> userExamples;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_project_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_project_list, container, false);
+
+        return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -66,7 +68,6 @@ public class ProjectListFragment extends Fragment {
                 Optional<DB.Example> currentExample = userExamples.stream().filter(ue -> ue.Name == selectedItem).findFirst();
 
                 exampleId = currentExample.get().Id;
-
 
                 FirstFragment firstFragment = new FirstFragment();
                 Bundle args = new Bundle();

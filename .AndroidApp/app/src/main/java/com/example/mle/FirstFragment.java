@@ -33,7 +33,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
@@ -67,10 +73,7 @@ public class FirstFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_first, container, false);
 
         final ExampleHelper.ExampleDocument ed = PopulateExamples(view);
@@ -136,11 +139,6 @@ public class FirstFragment extends Fragment {
                             marking.ExampleId = ExampleID;
                         }
 
-                        // TODO:
-                        //  Show categories -> Choose subcategory DONE
-                        //  Save to DB
-                        //  Change color of entity
-
                         List<DB.SubCategory> subCategories = DB.SubCategory.GetSubCategoriesByExampleId(ExampleID);
                         ShowDialog(linear, view, subCategories, marking);
 
@@ -183,6 +181,8 @@ public class FirstFragment extends Fragment {
             linear.addView(btn, params);
             btn = (Button) view.findViewById(subcategoryId);
             btn.setBackgroundColor(Color.parseColor(subCategories.get(i).Color));
+            btn.setPadding(10,10,10,10);
+            btn.setWidth(200);
 
             Buttons.add(subcategoryId);
 
@@ -201,13 +201,6 @@ public class FirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                NavHostFragment.findNavController(FirstFragment.this)
-//                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
-//            }
-//        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -221,7 +214,8 @@ public class FirstFragment extends Fragment {
         if(bundle != null){
            myInt = bundle.getInt("Example");
         }
-        else
+
+        if(myInt == 0)
             myInt = 60;
 
         DB.Example e = DB.Example.GetExampleById(myInt);
