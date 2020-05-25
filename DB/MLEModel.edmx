@@ -37,6 +37,21 @@
           <Property Name="ExampleId" Type="int" />
           <Property Name="Name" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="ForgotPassword">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="DateTime" Type="datetime" />
+          <Property Name="ValidUntil" Type="datetime" />
+          <Property Name="IsValid" Type="bit" />
+          <Property Name="IsUsed" Type="bit" />
+          <Property Name="WrongEmail" Type="bit" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="InsertedEmail" Type="nvarchar(max)" />
+          <Property Name="GeneratedKey" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="JsonData">
           <Key>
             <PropertyRef Name="Id" />
@@ -174,6 +189,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ForgotPassword_Users">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ForgotPassword" Type="Self.ForgotPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ForgotPassword">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Marked_Example">
           <End Role="Example" Type="Self.Example" Multiplicity="0..1" />
           <End Role="Marked" Type="Self.Marked" Multiplicity="*" />
@@ -274,6 +301,7 @@
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExampleType" EntityType="Self.ExampleType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ForgotPassword" EntityType="Self.ForgotPassword" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JsonData" EntityType="Self.JsonData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Marked" EntityType="Self.Marked" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
@@ -298,6 +326,10 @@
           <AssociationSet Name="FK_ExampleType_Example" Association="Self.FK_ExampleType_Example">
             <End Role="Example" EntitySet="Example" />
             <End Role="ExampleType" EntitySet="ExampleType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ForgotPassword_Users" Association="Self.FK_ForgotPassword_Users">
+            <End Role="User" EntitySet="User" />
+            <End Role="ForgotPassword" EntitySet="ForgotPassword" />
           </AssociationSet>
           <AssociationSet Name="FK_Marked_Example" Association="Self.FK_Marked_Example">
             <End Role="Example" EntitySet="Example" />
@@ -397,6 +429,11 @@
             <End Role="UserExample" EntitySet="UserExample" />
           </AssociationSet>
           <EntitySet Name="JsonData" EntityType="MLEModel.JsonData" />
+          <EntitySet Name="ForgotPassword" EntityType="MLEModel.ForgotPassword" />
+          <AssociationSet Name="FK_ForgotPassword_Users" Association="MLEModel.FK_ForgotPassword_Users">
+            <End Role="User" EntitySet="User" />
+            <End Role="ForgotPassword" EntitySet="ForgotPassword" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -514,6 +551,7 @@
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="UserRole" Relationship="MLEModel.FK_User_UserRole" FromRole="User" ToRole="UserRole" />
           <NavigationProperty Name="UserExample" Relationship="MLEModel.FK_UserExample_User" FromRole="User" ToRole="UserExample" />
+          <NavigationProperty Name="ForgotPassword" Relationship="MLEModel.FK_ForgotPassword_Users" FromRole="User" ToRole="ForgotPassword" />
         </EntityType>
         <EntityType Name="UserExample">
           <Key>
@@ -687,6 +725,34 @@
           <Property Name="Value" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="ForgotPassword">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="DateTime" Type="DateTime" Precision="3" />
+          <Property Name="ValidUntil" Type="DateTime" Precision="3" />
+          <Property Name="IsValid" Type="Boolean" />
+          <Property Name="IsUsed" Type="Boolean" />
+          <Property Name="WrongEmail" Type="Boolean" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="InsertedEmail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GeneratedKey" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="MLEModel.FK_ForgotPassword_Users" FromRole="ForgotPassword" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_ForgotPassword_Users">
+          <End Type="MLEModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="MLEModel.ForgotPassword" Role="ForgotPassword" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ForgotPassword">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -822,6 +888,22 @@
               <MappingFragment StoreEntitySet="JsonData">
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ForgotPassword">
+            <EntityTypeMapping TypeName="MLEModel.ForgotPassword">
+              <MappingFragment StoreEntitySet="ForgotPassword">
+                <ScalarProperty Name="GeneratedKey" ColumnName="GeneratedKey" />
+                <ScalarProperty Name="InsertedEmail" ColumnName="InsertedEmail" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="WrongEmail" ColumnName="WrongEmail" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="ValidUntil" ColumnName="ValidUntil" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

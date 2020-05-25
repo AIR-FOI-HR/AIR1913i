@@ -37,8 +37,7 @@ namespace MLE.Client
                 BindDropDown(db, examples);
             }
 
-            Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.DateCreated).ToList();
-            Examples_Finished = examples.Where(x => x.StatusId == 2).OrderBy(x => x.DateCreated).ToList();
+            Examples_NotFinished = examples.Where(x => x.StatusId == 3).OrderBy(x => x.ProjectId).ThenBy(x => x.DateCreated).ToList();
             cbHandleEntities.Checked = false;
         }
 

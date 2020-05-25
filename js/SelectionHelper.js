@@ -1,5 +1,6 @@
 ﻿var entity;
 
+// Handles all keyboard controls on web
 function HandleKeyDOWN(e) {
     switch (e.which) {
         case 13:
@@ -38,6 +39,7 @@ function HandleKeyDOWN(e) {
     }
 }
 
+// Jumps from one to another example using PAGE DOWN and PAGE UP
 function JumpToExample(next) {
     var id;
     if (next == true) {
@@ -84,7 +86,8 @@ function ScrollToElement(el) {
     else {
         offset = elOffset;
     }
-    $('html, body').animate({ scrollTop: offset }, 700);
+    //$('html, body').animate({ scrollTop: offset }, 700);
+    $('html, body').scrollTop(offset);
 }
 
 // goes to next span with class entity
@@ -92,12 +95,17 @@ function ScrollToElement(el) {
 function NextEntity() {
     if ($(".current").length) {
         var next_element = $(".entity").eq($(".entity").index($(".current")) + 1);
+        var wi = 1;
+        while(next_element.parent().parent().parent().css("display") == "none") {
+            next_element = $(".entity").eq($(".entity").index($(".current")) + wi);
+            wi++;
+        }
         $(".current").removeClass("current");
         $(next_element).addClass("current");
-        //ScrollToElement($(next_element));
+        ScrollToElement($(next_element));
     }
     else {
-        //ScrollToElement($(".entity"));
+        ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
         next_element = $(".entity").first();
     }
@@ -111,12 +119,14 @@ function NextEntity() {
 function PreviousEntity() {
     if ($(".current").length) {
         var prev_element = $(".entity").eq($(".entity").index($(".current")) - 1);
+        if (prev_element.parent().parent().parent().css("display") == "none")
+            return;
         $(".current").removeClass("current");
         $(prev_element).addClass("current");
-        //ScrollToElement($(prev_element));
+        ScrollToElement($(prev_element));
     }
     else {
-        //ScrollToElement($(".entity"));
+        ScrollToElement($(".entity"));
         $(".entity").first().addClass("current");
         prev_element = $(".entity").first();
     }
@@ -169,6 +179,10 @@ function UpdateSubcategory() {
     $("#current_subcategory").html("<div>Subkategorija: " + name + "</div>");
 }
 
+// marks entity
+// 1. Take parameters for Database
+// 2. Get color of subcategory and mark it in HTML
+// 3. Saves entity to Database (Ajax)
 function MarkHandle(sentiment) {
     var parent = $(entity).parent()[0];
     $("#Category_E" + parent.parentElement.id.match(/\d+/)[0] + " .category").each(function (e) {
@@ -183,12 +197,14 @@ function MarkHandle(sentiment) {
     });
 }
 
+// Colors entity in HTML
 function ColorEntity(entityId, textId, sentenceId, subcategoryId) {
     var color = GetSubcategoryColor(subcategoryId);
     $("#" + textId + " #" + sentenceId + " #" + entityId).attr("data-subcategory", subcategoryId.match(/\d+/)[0]);
     $("#" + textId + " #" + sentenceId + " #" + entityId).css("background-color", color);
 }
 
+// Outputs color from Database
 function GetSubcategoryColor(subcategoryId) {
     var obj = {};
     obj.SubcategoryId = subcategoryId.match(/\d+/)[0];
@@ -244,8 +260,6 @@ function WordSelection(class_name) {
                 $("#" + textId + " #" + sentenceId + " #" + target.id).after(word);
                 // remove span
                 $("#" + textId + " #" + sentenceId + " #" + target.id).remove();
-                //var t = $("#" + textId + " #" + sentenceId).html().replace('<span id="' + target.id + '" class="entity">' + word + '</span>', word);
-                //$("#" + textId + " #" + sentenceId).html(t);
                 RemoveIfMarked(target.id, sentenceId, textId);
                 SaveEntity(textId);
             }
@@ -281,6 +295,7 @@ function WordSelection(class_name) {
     });
 }
 
+// deletes marked entity
 function RemoveIfMarked(entityId, sentenceId, textId) {
     var obj = {};
     obj.EntityId = entityId.match(/\d+/)[0];
@@ -316,6 +331,7 @@ function SaveEntity(textId) {
     });
 }
 
+// Ajax for marking entity
 function MarkEntity(entityId, textId, sentenceId, subcategoryId) {
     var obj = {};
     obj.EntityId = entityId.match(/\d+/)[0];

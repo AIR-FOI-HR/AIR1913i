@@ -20,11 +20,16 @@ namespace MLE.Client.ajax
         [WebMethod]
         public static bool ValidatePassword(string user, string pass)
         {
-            using (var db = new MLEEntities())
-                if (LoginHelper.LoginChecker(user, pass))
-                    return true;
+            if (LoginHelper.LoginChecker(user, pass))
+                return true;
 
             return false;
+        }
+
+        [WebMethod]
+        public static bool CheckParameters(string username, string mail)
+        {
+            return LoginHelper.CheckMailAndUsername(username, mail);
         }
     }
 }

@@ -37,5 +37,6 @@ namespace MLE.DB
         public virtual DbSet<UserExample> UserExample { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<JsonData> JsonData { get; set; }
+        public virtual DbSet<ForgotPassword> ForgotPassword { get; set; }
     }
 }
