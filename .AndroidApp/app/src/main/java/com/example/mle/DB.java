@@ -105,20 +105,20 @@ public class DB {
                     } catch (Exception ex) {
                     }
                 }
-            }
+    }
             return e;
-        }
+}
 
-        public static void FinishExample(int id){
-            Example e = GetExampleById(id);
-            if (e.Id != 0) {
-                String q = "update Example set StatusId=2 where Id=" + e.Id;
-                Connection c = ConnectToDB();
-                if (c != null) {
-                    ResultSet rs = ExecuteQuery(c, q);
-                }
+    public static void FinishExample(int id){
+        Example e = GetExampleById(id);
+        if (e.Id != 0) {
+            String q = "update Example set StatusId=2 where Id=" + e.Id;
+            Connection c = ConnectToDB();
+            if (c != null) {
+                ResultSet rs = ExecuteQuery(c, q);
             }
         }
+    }
 
         public int getExampleProjectId() {
             return ProjectId;
