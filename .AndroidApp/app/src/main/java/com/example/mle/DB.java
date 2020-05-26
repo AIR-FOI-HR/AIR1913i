@@ -98,9 +98,11 @@ public class DB {
                     try {
                         if (rs.next()) {
                             e.Id = Integer.parseInt(rs.getString("Id"));
+                            e.Name = rs.getString("Name");
                             e.Content = rs.getString("Content");
                             e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
-                            e.Name = rs.getString("Name");
+                            e.ProjectId = Integer.parseInt(rs.getString("ProjectId"));
+                            e.StatusId = Integer.parseInt(rs.getString("StatusId"));
                         }
                     } catch (Exception ex) {
                     }
