@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -16,6 +17,7 @@ namespace MLE.Admin.Modules
         protected void Page_Load(object sender, EventArgs e)
         {
             PopulateRepeater();
+
 
             if (!IsPostBack)
             {
@@ -34,6 +36,7 @@ namespace MLE.Admin.Modules
 
                 if (userId == 0)
                     btnDelete.Visible = false;
+
                 GetUserById(userId);
             }
         }
@@ -72,8 +75,7 @@ namespace MLE.Admin.Modules
 
                 if (_dbUser != null)
                 {
-
-                    userRole = db.UserRole.Where(u => u.Id == userId).FirstOrDefault();
+                    userRole = db.UserRole.Where(u => u.UserId == userId).FirstOrDefault();
                     if(userRole != null)
                         role= db.Role.Where(r => r.Id == userRole.RoleId).FirstOrDefault();
 
@@ -84,7 +86,9 @@ namespace MLE.Admin.Modules
                     txtPassword.Text = _dbUser.Password;
                     txtDescription.Text = _dbUser.Description;
                     cbIsActive.Checked = _dbUser.IsActive.Value;
-                    roleList.SelectedValue = role != null ? role.Id.ToString() : "1";
+
+                    if(!IsPostBack)
+                        roleList.SelectedValue = role != null ? role.Id.ToString() : "1";
                 }
             }
         }
@@ -139,7 +143,7 @@ namespace MLE.Admin.Modules
                     _dbUser.LastName = txtSurname.Text;            
                     _dbUser.E_mail = txtEmail.Text;
                     _dbUser.Username = txtUsername.Text;                   
-                    _dbUser.Password = txtPassword.Text;
+                    _dbUser.Password = LoginHelper.SHA256(txtPassword.Text);
                     _dbUser.Description = txtDescription.Text;
                     _dbUser.IsActive = cbIsActive.Checked;
 
@@ -165,6 +169,15 @@ namespace MLE.Admin.Modules
             using (var db = new MLEEntities())
             {
                 User _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
+
+
+                List<UserExample> userExamples = db.UserExample.Where(ue => ue.UserId == _dbUser.Id).ToList();
+
+                if(userExamples.Count != 0)
+                {
+                    db.UserExample.RemoveRange(userExamples);
+                    db.SaveChanges();
+                }
 
 
                 UserRole _userRole = db.UserRole.Where(ur => ur.UserId == _dbUser.Id).FirstOrDefault();

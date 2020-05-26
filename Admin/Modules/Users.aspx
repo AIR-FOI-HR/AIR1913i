@@ -106,7 +106,7 @@
                     <tr style="padding-bottom:2em;">
                         <th>Odaberite projekt:</th>
                         <td><asp:DropDownList ID="projectList" runat="server"
-                            AutoPostBack="true"
+                            AutoPostBack="True"
                             OnSelectedIndexChanged="projectList_SelectedIndexChanged">                            
                             </asp:DropDownList>                            
                         </td>
