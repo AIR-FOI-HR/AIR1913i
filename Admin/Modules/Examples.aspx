@@ -100,8 +100,11 @@
                 </tr>
                 <tr>
                     <th>Sadržaj:</th>
+                    <%--<td>--%>
+                        <%--<asp:Literal ID="txtContent" Mode="PassThrough" runat="server"></asp:Literal>--%>
+                    <%--</td>--%>
                     <td>
-                        <asp:Literal ID="txtContent" Mode="PassThrough" runat="server"></asp:Literal>
+                        <asp:TextBox ID="txtContent" TextMode="MultiLine" style="height: 500px; width: 500px" runat="server"></asp:TextBox>
                     </td>
                 </tr>
             </table>
@@ -127,7 +130,7 @@
         }
 
         if (id === "0")
-            $("#example_content").show();
+            $("#input_data").show();
     });
 
     var getUrlParameter = function getUrlParameter(sParam) {

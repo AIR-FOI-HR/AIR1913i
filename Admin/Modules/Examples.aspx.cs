@@ -194,6 +194,7 @@ namespace MLE.Admin.Modules
                         {
                             _.Name = txtName.Text;
                             _.Description = txtDescription.Text;
+                            _.Content = txtContent.Text;
                             _.ProjectId = int.Parse(projectList.SelectedValue);
                             _.StatusId = int.Parse(statusList.SelectedValue);
                             _.CategoryId = int.Parse(categoryList.SelectedValue);
@@ -207,7 +208,7 @@ namespace MLE.Admin.Modules
                         Example _example = new Example()
                         {
                             Name = txtName.Text,
-                            //Content = exampleContent.Text,
+                            Content = txtContent.Text,
                             Description = txtDescription.Text,
                             DateCreated = DateTime.Now,
                             TimeSpent = TimeSpan.Zero,
