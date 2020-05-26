@@ -88,9 +88,13 @@ namespace MLE.Admin.Modules
                     txtContent.Text = _dbExample.Content != null ? _dbExample.Content : "";
                     txtDescription.Text = _dbExample.Description != null ? _dbExample.Description : "";
                     //txtDateCreated.Text = _dbExample.DateCreated != null ? _dbExample.DateCreated.Value.ToString("dd.MM.yyyy") : "";
-                    projectList.SelectedValue = _dbExample.ProjectId != null ? _dbExample.ProjectId.Value.ToString() : "0";
-                    categoryList.SelectedValue = _dbExample.CategoryId != null ? _dbExample.CategoryId.Value.ToString() : "0";
-                    statusList.SelectedValue = _dbExample.StatusId != null ? _dbExample.StatusId.Value.ToString() : "0";
+
+                    if (!IsPostBack)
+                    {
+                        projectList.SelectedValue = _dbExample.ProjectId != null ? _dbExample.ProjectId.Value.ToString() : "0";
+                        categoryList.SelectedValue = _dbExample.CategoryId != null ? _dbExample.CategoryId.Value.ToString() : "0";
+                        statusList.SelectedValue = _dbExample.StatusId != null ? _dbExample.StatusId.Value.ToString() : "0";
+                    }
                     //txtTimeSpent.Text = _dbExample.TimeSpent != null ? _dbExample.TimeSpent.ToString() : "";
                     //txtProjectTitle.Text = db.Project.Where(p => p.Id == _dbExample.ProjectId).FirstOrDefault().Name;
                     //txtStatusType.Text = db.Status.Where(p => p.Id == _dbExample.StatusId).FirstOrDefault().Name;
