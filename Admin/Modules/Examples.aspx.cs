@@ -23,7 +23,7 @@ namespace MLE.Admin.Modules
                 PopulateCategoryDropdownList();
                 PopulateStatusDropdownList();
 
-                txtDateCreated.Text = DateTime.Now.ToString("yyyy-MM-dd");
+                lbDate.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
             }
         }
 
@@ -87,7 +87,7 @@ namespace MLE.Admin.Modules
                     txtName.Text = _dbExample.Name != null ? _dbExample.Name : "";
                     txtContent.Text = _dbExample.Content != null ? _dbExample.Content : "";
                     txtDescription.Text = _dbExample.Description != null ? _dbExample.Description : "";
-                    txtDateCreated.Text = _dbExample.DateCreated != null ? _dbExample.DateCreated.Value.ToString("dd.MM.yyyy") : "";
+                    //txtDateCreated.Text = _dbExample.DateCreated != null ? _dbExample.DateCreated.Value.ToString("dd.MM.yyyy") : "";
                     projectList.SelectedValue = _dbExample.ProjectId != null ? _dbExample.ProjectId.Value.ToString() : "0";
                     categoryList.SelectedValue = _dbExample.CategoryId != null ? _dbExample.CategoryId.Value.ToString() : "0";
                     statusList.SelectedValue = _dbExample.StatusId != null ? _dbExample.StatusId.Value.ToString() : "0";

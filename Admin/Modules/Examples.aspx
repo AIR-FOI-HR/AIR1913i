@@ -62,7 +62,7 @@
                 <tr>
                     <th>Datum kreiranja</th>
                     <td>
-                        <asp:TextBox ID="txtDateCreated" runat="server" TextMode="Date"></asp:TextBox>
+                        <asp:Label ID="lbDate" runat="server"></asp:Label>
                     </td>
                 </tr>
                 <tr>
