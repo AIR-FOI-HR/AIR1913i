@@ -61,7 +61,7 @@
                         <asp:TextBox ID="txtColor" runat="server"></asp:TextBox>
                     </td>
                 </tr>
-            </table>
+            </table>           
             <div class="buttons">
                 <asp:Button ID="btnAdd" runat="server" Text="Spremi" OnClick="btnAdd_Click" />
                 <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClick="btnDelete_Click" />
@@ -99,5 +99,4 @@
             }
         }
     };
-
 </script>

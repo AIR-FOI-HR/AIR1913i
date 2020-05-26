@@ -103,11 +103,28 @@ namespace MLE.Admin.Modules
 
         private void Delete()
         {
+            categoryId = int.Parse(Request.QueryString["id"]);
+
+
             using (var db = new MLEEntities())
             {
                 Category _dbCategory = db.Category.Where(u => u.Id == categoryId).FirstOrDefault();
-                db.Category.Attach(_dbCategory);
-                db.Category.Remove(_dbCategory);
+
+                List<Subcategory> subcategories = db.Subcategory.Where(c => c.CategoryId == categoryId).ToList();
+
+                if(subcategories.Count != 0)
+                {
+
+                    db.Subcategory.RemoveRange(subcategories);
+                    db.SaveChanges();
+                }
+
+
+                if(!db.Example.Any(e => e.CategoryId == categoryId))
+                {
+                    db.Category.Attach(_dbCategory);
+                    db.Category.Remove(_dbCategory);
+                }
 
                 db.SaveChanges();
             }
@@ -121,6 +138,9 @@ namespace MLE.Admin.Modules
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             Delete();
+            Response.Redirect("Categories.aspx");
+
+            btnDelete.
         }
     }
 }
