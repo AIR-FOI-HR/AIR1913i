@@ -18,6 +18,7 @@ import java.security.SignatureException;
 
 public class Login extends AppCompatActivity {
     private DrawerLayout drawer;
+    public static int UserId = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +47,8 @@ public class Login extends AppCompatActivity {
                 if(u.IsValid)
                 {
                     Intent i = new Intent(Login.this, MainActivity.class);
-                    i.putExtra("UserId", u.Id);
+                    UserId = u.Id;
+                    i.putExtra("UserId", UserId);
                     startActivity(i);
                 }
                 else

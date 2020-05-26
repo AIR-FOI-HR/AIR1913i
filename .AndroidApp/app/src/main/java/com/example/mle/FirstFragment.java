@@ -245,6 +245,7 @@ public class FirstFragment extends Fragment {
                 DB.Example.FinishExample(ExampleID);
                 ProjectListFragment projectListFragment = new ProjectListFragment();
                 Bundle args = new Bundle();
+                args.putInt("UserId", Login.UserId);
                 projectListFragment.setArguments(args);
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, projectListFragment).commit();
             }
