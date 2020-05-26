@@ -115,7 +115,7 @@ public class ChartFragment extends Fragment {
                 .format("{%Value}{groupsSeparator: }");
 
         cartesianChart.animation(true);
-        cartesianChart.title("Broj podkategorija svakog primjera");
+        cartesianChart.title("Broj potkategorija svakog primjera");
 
         cartesianChart.yScale().minimum(0d);
 
