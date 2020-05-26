@@ -46,7 +46,6 @@ public class ProjectListFragment extends Fragment {
 
         expandableListView = (ExpandableListView) view.findViewById(R.id.expListView);
 
-
         initData();
 
         addDrawersItem();
@@ -85,15 +84,11 @@ public class ProjectListFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initData() {
 
-
-
         Bundle bundle = this.getArguments();
+        int userId = 0;
+        userId = bundle.getInt("UserId");
 
-        int myInt = 0;
-        myInt = bundle.getInt("UserId");
-
-
-        final List<DB.UserExample> userExampleList = DB.UserExample.GetUserExamplesByUserId(1);
+        final List<DB.UserExample> userExampleList = DB.UserExample.GetUserExamplesByUserId(userId);
         List<DB.Project> projects = DB.Project.GetAllProjects();
         List<DB.Example> exampleList = DB.Example.GetAllExamples();
 
@@ -117,15 +112,12 @@ public class ProjectListFragment extends Fragment {
 
         projects = projects.stream().filter(p -> projectIds.contains(p.Id)).collect(Collectors.toList());
 
-       /* List<String> title = Arrays.asList("projekt 1", "projekt 2", "projekt 3");
-        List<String> childItem = Arrays.asList("primjer 1", "primjer 2", "primjer 3");
-*/
         lstChild = new HashMap<>();
 
         for (int i = 0; i < projects.size(); i++) {
             List<String> exampleNames = new ArrayList<>();
             for (int j = 0; j < userExamples.size(); j++) {
-                if (userExamples.get(j).ProjectId == projects.get(i).Id) {
+                if (userExamples.get(j).ProjectId == projects.get(i).Id && userExamples.get(j).StatusId == 3) {
                     exampleNames.add(userExamples.get(j).Name);
                 }
             }
