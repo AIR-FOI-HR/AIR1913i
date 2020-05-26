@@ -60,6 +60,7 @@ public class DB {
         public String Content;
         public int CategoryId;
         public int ProjectId;
+        public int StatusId;
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public static List<Example> GetAllExamples() {
@@ -77,6 +78,7 @@ public class DB {
                             e.Content = rs.getString("Content");
                             e.CategoryId = Integer.parseInt(rs.getString("CategoryId"));
                             e.ProjectId = Integer.parseInt(rs.getString("ProjectId"));
+                            e.StatusId = Integer.parseInt(rs.getString("StatusId"));
                             examples.add(e);
                         }
                     } catch (Exception ex) {
