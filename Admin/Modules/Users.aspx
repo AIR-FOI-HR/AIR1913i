@@ -26,6 +26,7 @@
                             <%# Eval("Description") %>                            
                             <%# Eval("IsActive").Equals(true) ? "+" : "-" %>   
                             <%# DateTime.Parse(Eval("DateCreated").ToString()).ToShortDateString() %>
+                            
                         </a>
                        </div>
                    </ItemTemplate>
@@ -77,7 +78,17 @@
                     <td>
                         <asp:CheckBox ID="cbIsActive" runat="server" />
                     </td>
-                </tr>                       
+                </tr> 
+                <tr>
+                    <th>Rola korisnika:</th>
+                    <td>
+                        <asp:DropDownList ID="roleList" runat="server" AutoPostBack="true"
+                            Height="30px" Width="215px"
+                            Style="position: static; margin-bottom: 5px; padding-left: 10px;">
+
+                        </asp:DropDownList>
+                    </td>
+                </tr>
             </table>
             <div class="buttons">  
                 <asp:Button ID="btnAdd" runat="server" Text="Spremi" OnClick="btnAdd_Click" />

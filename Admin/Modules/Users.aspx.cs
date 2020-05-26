@@ -21,6 +21,7 @@ namespace MLE.Admin.Modules
             {
                 PopulateDropdownList();
                 PopulateExampleList(int.Parse(projectList.SelectedValue));
+                PopulateRoleDropdownList();
             }
         }
 
@@ -66,15 +67,24 @@ namespace MLE.Admin.Modules
             using (var db = new MLEEntities())
             {
                 User _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
+                UserRole userRole = null;
+                Role role = null;
+
                 if (_dbUser != null)
                 {
+
+                    userRole = db.UserRole.Where(u => u.Id == userId).FirstOrDefault();
+                    if(userRole != null)
+                        role= db.Role.Where(r => r.Id == userRole.RoleId).FirstOrDefault();
+
                     txtName.Text = _dbUser.FirstName;
                     txtSurname.Text = _dbUser.LastName;
                     txtEmail.Text = _dbUser.E_mail;
                     txtUsername.Text = _dbUser.Username;
                     txtPassword.Text = _dbUser.Password;
                     txtDescription.Text = _dbUser.Description;
-                    cbIsActive.Checked = _dbUser.IsActive.Value;                   
+                    cbIsActive.Checked = _dbUser.IsActive.Value;
+                    roleList.SelectedValue = role != null ? role.Id.ToString() : "1";
                 }
             }
         }
@@ -99,6 +109,19 @@ namespace MLE.Admin.Modules
                 db.User.Add(_user);
 
                 db.SaveChanges();
+
+                List<User> users = db.User.OrderByDescending(u => u.Id).Take(1).ToList();
+
+                UserRole _userRole = new UserRole()
+                {
+                    UserId = users[0].Id,
+                    RoleId = int.Parse(roleList.SelectedValue)
+                };
+
+                db.UserRole.Attach(_userRole);
+                db.UserRole.Add(_userRole);
+
+                db.SaveChanges();               
             }
         }
 
@@ -122,6 +145,18 @@ namespace MLE.Admin.Modules
 
                     db.SaveChanges();
                 }
+
+                UserRole _userRole = db.UserRole.Where(u => u.UserId == _dbUser.Id).FirstOrDefault();
+
+                if(_userRole != null)
+                {
+                    db.UserRole.Attach(_userRole);
+
+                    _userRole.RoleId = int.Parse(roleList.SelectedValue);
+                    _userRole.UserId = _dbUser.Id;
+
+                    db.SaveChanges();
+                }
             }
         }
 
@@ -130,6 +165,13 @@ namespace MLE.Admin.Modules
             using (var db = new MLEEntities())
             {
                 User _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
+
+
+                UserRole _userRole = db.UserRole.Where(ur => ur.UserId == _dbUser.Id).FirstOrDefault();
+
+                db.UserRole.Attach(_userRole);
+                db.UserRole.Remove(_userRole);
+
                 db.User.Attach(_dbUser);
                 db.User.Remove(_dbUser);
 
@@ -139,6 +181,8 @@ namespace MLE.Admin.Modules
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
+            userId = int.Parse(Request.QueryString["id"]);
+            
             if(userId != 0)
                 Update();
             else
@@ -147,8 +191,12 @@ namespace MLE.Admin.Modules
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
+            userId = int.Parse(Request.QueryString["id"]);
+
             if (userId != 0)
                 Delete();
+
+            Response.Redirect("Users.aspx");
         }
 
         private IList<Project> PopulateDropdownList()
@@ -190,6 +238,25 @@ namespace MLE.Admin.Modules
             return _dbExamples;
         }
 
+        private IList<Role> PopulateRoleDropdownList()
+        {
+            IList<Role> _dbRoles = null;
+
+            using (var db = new MLEEntities())
+            {
+                _dbRoles = db.Role.ToList();
+            }
+
+            roleList.DataSource = _dbRoles;
+            roleList.DataTextField = "Name";
+            roleList.DataValueField = "Id";
+            roleList.DataBind();
+
+            roleList.SelectedIndex = 0;
+
+            return _dbRoles;
+        }
+
         protected void projectList_SelectedIndexChanged(object sender, EventArgs e)
         {
             PopulateExampleList(int.Parse(projectList.SelectedValue));
@@ -213,9 +280,6 @@ namespace MLE.Admin.Modules
                             ExampleId = int.Parse(example.Value)
                         });
                 }
-
-                //db.UserExample.Attach(_userExample);
-                //db.UserExample.Add(_userExample);
 
                 db.UserExample.AddRange(userExampleList);
                 db.SaveChanges();

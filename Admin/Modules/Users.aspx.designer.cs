@@ -114,6 +114,15 @@ namespace MLE.Admin.Modules
         protected global::System.Web.UI.WebControls.CheckBox cbIsActive;
 
         /// <summary>
+        /// roleList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList roleList;
+
+        /// <summary>
         /// btnAdd control.
         /// </summary>
         /// <remarks>

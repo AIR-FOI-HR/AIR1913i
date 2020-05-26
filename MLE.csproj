@@ -175,6 +175,7 @@
     <Compile Include="Admin\Modules\Users.aspx.designer.cs">
       <DependentUpon>Users.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin\UserDetail.cs" />
     <Compile Include="Client\ajax\DataHelper.aspx.cs">
       <DependentUpon>DataHelper.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
