@@ -25,7 +25,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DB {
-    static String ip = "192.168.18.31", port = "1433", dbName = "MLE", user = "androjd", password = "androjd";
+    static String ip = "192.168.8.109", port = "1433", dbName = "MLE", user = "zv", password = "zv";
 
     @SuppressLint("NewApi")
     public static Connection ConnectToDB() {
@@ -105,6 +105,17 @@ public class DB {
                 }
             }
             return e;
+        }
+
+        public static void FinishExample(int id){
+            Example e = GetExampleById(id);
+            if (e.Id != 0) {
+                String q = "update Example set StatusId=2 where Id=" + e.Id;
+                Connection c = ConnectToDB();
+                if (c != null) {
+                    ResultSet rs = ExecuteQuery(c, q);
+                }
+            }
         }
 
         public int getExampleProjectId() {

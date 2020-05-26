@@ -2,7 +2,9 @@ package com.example.mle;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -35,6 +37,7 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -234,6 +237,18 @@ public class FirstFragment extends Fragment {
 
         TextView name = (TextView) v.findViewById(R.id.tvName);
         name.setText(e.Name);
+
+        Button zavrsi = (Button) v.findViewById(R.id.btnFinish);
+        zavrsi.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            public void onClick(View view_) {
+                DB.Example.FinishExample(ExampleID);
+                ProjectListFragment projectListFragment = new ProjectListFragment();
+                Bundle args = new Bundle();
+                projectListFragment.setArguments(args);
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, projectListFragment).commit();
+            }
+        });
 
         ExampleHelper.ExampleDocument ed = new ExampleHelper.ExampleDocument();
         ed.Id = e.Id;
