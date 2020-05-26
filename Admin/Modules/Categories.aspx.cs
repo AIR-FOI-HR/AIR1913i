@@ -138,9 +138,7 @@ namespace MLE.Admin.Modules
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             Delete();
-            Response.Redirect("Categories.aspx");
-
-            btnDelete.
+            Response.Redirect("Categories.aspx");          
         }
     }
 }
