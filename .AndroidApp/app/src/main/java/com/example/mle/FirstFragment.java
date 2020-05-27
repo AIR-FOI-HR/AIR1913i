@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -42,6 +43,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.core.DataInterface;
 import com.google.android.material.tabs.TabLayout;
 
 import org.jsoup.Jsoup;
@@ -55,7 +57,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import  com.example.database.DB;
+import com.example.database.DB;
 
 public class FirstFragment extends Fragment {
 
@@ -145,7 +147,12 @@ public class FirstFragment extends Fragment {
                         }
 
                         List<DB.SubCategory> subCategories = DB.SubCategory.GetSubCategoriesByExampleId(ExampleID);
-                        ShowDialog(linear, view, subCategories, marking);
+
+                        DataInterfaceManager dim = DataInterfaceManager.getInstance();
+//                        dim.setActivity(linear);
+                        dim.startModule(linear, subCategories, marking);
+
+                        //ShowDialog(linear, view, subCategories, marking);
 
                     } else {
                         tt.setText("Niste odabrali entitet");
