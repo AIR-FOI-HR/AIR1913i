@@ -25,7 +25,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 public class DB {
-    static String ip = "192.168.8.109", port = "1433", dbName = "MLE", user = "zv", password = "zv";
+    static String ip = "192.168.42.251", port = "1433", dbName = "MLE", user = "zv", password = "zv";
 
     @SuppressLint("NewApi")
     public static Connection ConnectToDB() {

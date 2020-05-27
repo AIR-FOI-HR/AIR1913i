@@ -41,7 +41,8 @@ public class Login extends AppCompatActivity {
                 try {
                     u = DB.User.CheckLogin(username, password);
                 }
-                catch (SignatureException e) {
+                catch (Exception ex) {
+                    String emkd = ex.getMessage();
                 }
 
                 if(u.IsValid)
