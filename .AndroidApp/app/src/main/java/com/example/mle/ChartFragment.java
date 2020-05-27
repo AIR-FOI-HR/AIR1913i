@@ -22,10 +22,13 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
+import com.example.database.DB;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
 
 public class ChartFragment extends Fragment {
 

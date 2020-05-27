@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.database.DB;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

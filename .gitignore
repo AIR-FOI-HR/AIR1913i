@@ -330,3 +330,4 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+.AndroidApp/database/src/main/java/com/example/database/ConnectionString.java

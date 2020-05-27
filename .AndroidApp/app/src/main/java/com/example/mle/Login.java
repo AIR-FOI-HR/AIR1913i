@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.database.DB;
+
 import java.security.SignatureException;
 
 public class Login extends AppCompatActivity {

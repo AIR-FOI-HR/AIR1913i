@@ -55,6 +55,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import  com.example.database.DB;
+
 public class FirstFragment extends Fragment {
 
     public int ExampleID = 0;
