@@ -65,18 +65,18 @@ public class FirstFragment extends Fragment {
 
     public int ExampleID = 0;
 
-    private static final  String KEY_TITLE="Example";
+    private static final String KEY_TITLE = "Example";
 
-    public  FirstFragment(){
+    public FirstFragment() {
 
     }
 
-    public static FirstFragment newInstance(String title){
+    public static FirstFragment newInstance(String title) {
         FirstFragment firstFragment = new FirstFragment();
         Bundle args = new Bundle();
-        args.putString(KEY_TITLE,title);
+        args.putString(KEY_TITLE, title);
 
-        return  firstFragment;
+        return firstFragment;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -142,7 +142,7 @@ public class FirstFragment extends Fragment {
                         //String Word = "";
                         DB.Marked marking = new DB.Marked();
 
-                        if(closestEntity.Entity.parent().id() != "" && closestEntity.Entity.id() != "" && closestEntity.Entity.text() != ""){
+                        if (closestEntity.Entity.parent().id() != "" && closestEntity.Entity.id() != "" && closestEntity.Entity.text() != "") {
                             SentenceID = Integer.parseInt(closestEntity.Entity.parent().id());
                             EntityID = Integer.parseInt(closestEntity.Entity.id().replaceAll("\\D+", ""));
                             //Word = closestEntity.Entity.text();
@@ -154,12 +154,10 @@ public class FirstFragment extends Fragment {
 
                         List<DB.SubCategory> subCategories = DB.SubCategory.GetSubCategoriesByExampleId(ExampleID);
 
-                        int x = (int)motionEvent.getX();
-                        int y = (int)motionEvent.getY();
+                        int x = (int) motionEvent.getRawX();
+                        int y = (int) motionEvent.getRawY();
 
-                        dim.startModule(rl, getContext(), subCategories, marking, x, y);
-
-//                        PopulateExamples(view);
+                        dim.startModule(ExampleID, tv, rl, getContext(), subCategories, marking, x, y);
 
                         //ShowDialog(linear, view, subCategories, marking);
                     } else {
@@ -201,7 +199,7 @@ public class FirstFragment extends Fragment {
             linear.addView(btn, params);
             btn = (Button) view.findViewById(subcategoryId);
             btn.setBackgroundColor(Color.parseColor(subCategories.get(i).Color));
-            btn.setPadding(10,10,10,10);
+            btn.setPadding(10, 10, 10, 10);
             btn.setWidth(200);
 
             Buttons.add(subcategoryId);
@@ -231,11 +229,11 @@ public class FirstFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         int myInt = 0;
-        if(bundle != null){
-           myInt = bundle.getInt("Example");
+        if (bundle != null) {
+            myInt = bundle.getInt("Example");
         }
 
-        if(myInt == 0)
+        if (myInt == 0)
             myInt = 60;
 
         DB.Example e = DB.Example.GetExampleById(myInt);

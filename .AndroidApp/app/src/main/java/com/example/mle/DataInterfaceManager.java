@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,10 +31,10 @@ public class DataInterfaceManager {
         return ourInstance;
     }
 
-    public void startModule(RelativeLayout rl, Context context, List<DB.SubCategory> subCategories, final DB.Marked marking, int X, int Y) {
+    public void startModule(int ExampleId, TextView name, RelativeLayout rl, Context context, List<DB.SubCategory> subCategories, final DB.Marked marking, int X, int Y) {
         module = new ExampleMarkingModule();
         module.setContext(context, rl);
-        module.setData(subCategories, marking, X, Y);
+        module.setData(ExampleId, name, subCategories, marking, X, Y);
     }
 
     public void checkVisibility(RelativeLayout rl){
