@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Layout;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -28,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,7 +89,7 @@ public class FirstFragment extends Fragment {
 
         final TextView tv = (TextView) view.findViewById(R.id.tvText);
         final TextView tt = (TextView) view.findViewById(R.id.indexes);
-        final LinearLayout linear = (LinearLayout) view.findViewById(R.id.dialog);
+//        final LinearLayout linear = (LinearLayout) view.findViewById(R.id.dialog);
 
         tv.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ResourceType")
@@ -98,10 +100,14 @@ public class FirstFragment extends Fragment {
                     String sentence = Html.fromHtml(ExampleHelper.findWord(tv.getText().toString(), mOffset, true)).toString();
                     String word = Html.fromHtml(ExampleHelper.findWord(tv.getText().toString(), mOffset, false)).toString();
 
-                    if (linear.getVisibility() == View.VISIBLE) {
-                        linear.setVisibility(View.GONE);
-                        return false;
-                    }
+                    DataInterfaceManager dim = DataInterfaceManager.getInstance();
+                    RelativeLayout rl = (RelativeLayout) view.findViewById(R.id.relativeLayout3);
+                    dim.checkVisibility(rl);
+
+//                    if (linear.getVisibility() == View.VISIBLE) {
+//                        linear.setVisibility(View.GONE);
+//                        return false;
+//                    }
 
                     if (word == "")
                         return false;
@@ -148,12 +154,14 @@ public class FirstFragment extends Fragment {
 
                         List<DB.SubCategory> subCategories = DB.SubCategory.GetSubCategoriesByExampleId(ExampleID);
 
-                        DataInterfaceManager dim = DataInterfaceManager.getInstance();
-//                        dim.setActivity(linear);
-                        dim.startModule(linear, subCategories, marking);
+                        int x = (int)motionEvent.getX();
+                        int y = (int)motionEvent.getY();
+
+                        dim.startModule(rl, getContext(), subCategories, marking, x, y);
+
+//                        PopulateExamples(view);
 
                         //ShowDialog(linear, view, subCategories, marking);
-
                     } else {
                         tt.setText("Niste odabrali entitet");
                     }

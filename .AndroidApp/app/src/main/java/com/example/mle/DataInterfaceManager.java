@@ -1,8 +1,10 @@
 package com.example.mle;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -23,16 +25,19 @@ public class DataInterfaceManager {
     private static final DataInterfaceManager ourInstance = new DataInterfaceManager();
 
     DataInterface module;
-    private LinearLayout linear;
-
 
     public static DataInterfaceManager getInstance() {
         return ourInstance;
     }
 
-
-    public void startModule(LinearLayout layout, List<DB.SubCategory> subCategories, final DB.Marked marking) {
+    public void startModule(RelativeLayout rl, Context context, List<DB.SubCategory> subCategories, final DB.Marked marking, int X, int Y) {
         module = new ExampleMarkingModule();
-        module.setData(layout, subCategories, marking);
+        module.setContext(context, rl);
+        module.setData(subCategories, marking, X, Y);
+    }
+
+    public void checkVisibility(RelativeLayout rl){
+        module = new ExampleMarkingModule();
+        module.checkVisibility(rl);
     }
 }
