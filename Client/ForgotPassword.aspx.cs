@@ -18,16 +18,15 @@ namespace MLE.Client
             using (var db = new MLEEntities())
             {
                 var u = db.User.FirstOrDefault(x => x.E_mail == txtForgotMail.Text);
-
-                var f = db.ForgotPassword.FirstOrDefault(x => x.UserId == u.Id);
-                if(f != null)
-                {
-                    f.IsValid = false;
-                    db.SaveChanges();
-                }
-
                 if (u != null)
                 {
+                    var f = db.ForgotPassword.FirstOrDefault(x => x.UserId == u.Id);
+                    if (f != null)
+                    {
+                        f.IsValid = false;
+                        db.SaveChanges();
+                    }
+
                     var fp = new DB.ForgotPassword()
                     {
                         UserId = u.Id,
