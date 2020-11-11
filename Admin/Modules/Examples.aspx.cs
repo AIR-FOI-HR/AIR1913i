@@ -6,34 +6,47 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Serialization;
 using MLE.DB;
+using System.Data.Entity;
+using MLE.Admin.program;
 
 namespace MLE.Admin.Modules
 {
     public partial class Examples : System.Web.UI.Page
     {
+        protected List<DB.Type> Types = new List<DB.Type>();
         private int exampleId = 0;
+        private static int PId = 0;
+        public int Pages = 0;
+        private int Skip = 0;
+        public int current_page = 1;
+        private bool check_page = true;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            PopulateRepeater();
-
             if (!IsPostBack)
             {
                 PopulateDropdownList();
                 PopulateCategoryDropdownList();
                 PopulateStatusDropdownList();
 
+                var projectId = "";
+                if (Request.QueryString["pId"] != null)
+                {
+                    projectId = Request.QueryString["pId"].ToString();
+                    ddlProjects.SelectedValue = projectId;
+                    PId = int.Parse(projectId);
+                }
                 lbDate.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss");
             }
+
+            PopulateRepeater(PId);
         }
 
         protected void Page_PreRender(object sender, EventArgs e)
         {
             if (Request.QueryString["id"] != null)
             {
-                var str = Request.QueryString["id"].ToString();
-                exampleId = int.Parse(str);
-
+                exampleId = int.Parse(Request.QueryString["id"].ToString());
                 /*if (exampleId == 0)
                     btnDelete.Visible = false;*/
                 if (exampleId != 0)
@@ -41,38 +54,35 @@ namespace MLE.Admin.Modules
             }
         }
 
-        private IList<ExampleDetail> GetAllExamples()
+        private List<Example> GetAllExamples(int projectId)
         {
-            List<Example> _dbExamples = null;
-            IList<ExampleDetail> _exampleDetails = new List<ExampleDetail>();
-
+            var _dbExamples = new List<Example>();
             using (var db = new MLEEntities())
             {
-                _dbExamples = db.Example.ToList();
-
-                Project _dbProject = null;
-                Category _dbCategory = null;
-
-                foreach (var item in _dbExamples)
+                if (projectId == 0)
                 {
-
-                    _dbProject = db.Project.Where(p => p.Id == item.ProjectId).FirstOrDefault();
-                    _dbCategory = db.Category.Where(c => c.Id == item.CategoryId).FirstOrDefault();
-
-                    _exampleDetails.Add(new ExampleDetail()
-                    {
-                        Id = item.Id,
-                        Name = item.Name != null ? item.Name : "",
-                        Content = item.Content != null ? item.Content : "",
-                        Description = item.Description != null ? item.Description : "",
-                        DateCreated = item.DateCreated.Value,
-                        ProjectTitle = _dbProject != null ? _dbProject.Name : "Primjer nije dodijeljen projektu. Dodajte primjer projektu!",
-                        StatusType = db.Status.Where(s => s.Id == item.StatusId).FirstOrDefault().Name,
-                        CategoryTitle = _dbCategory != null ? _dbCategory.Name : "Primjer nema kategoriju. Dodijelite ju!"
-                    });
+                    var pId = db.Project.First().Id;
+                    _dbExamples = db.Example.Where(x => x.ProjectId == pId).Include(x => x.Project).Include(x => x.Category).ToList();
+                    check_page = false;
                 }
+                else
+                    _dbExamples = db.Example.Where(x => x.ProjectId == projectId).Include(x => x.Project).Include(x => x.Category).ToList();
 
-                return _exampleDetails;
+                var number_of_examples = _dbExamples.Count;
+                var default_by_page = 20;
+                current_page = 1;
+                if (check_page)
+                    if (Request.QueryString["page"] != null)
+                        int.TryParse(Request.QueryString["page"].ToString(), out current_page);
+
+                Pages = (int)Math.Ceiling((double)number_of_examples / (double)default_by_page);
+                current_page = current_page > Pages ? Pages : current_page;
+                Skip = (current_page - 1) * default_by_page;
+                Pager.CreatePager(Pages, current_page, phPager, "Examples", PId);
+
+                _dbExamples = _dbExamples.Skip(Skip).Take(default_by_page).ToList();
+
+                return _dbExamples;
             }
         }
 
@@ -80,12 +90,11 @@ namespace MLE.Admin.Modules
         {
             using (var db = new MLEEntities())
             {
-                Example _dbExample = db.Example.Where(e => e.Id == id).FirstOrDefault();
-
+                var _dbExample = db.Example.Where(e => e.Id == id).FirstOrDefault();
                 if (_dbExample != null)
                 {
-                    txtName.Text = _dbExample.Name != null ? _dbExample.Name : "";
                     txtContent.Text = _dbExample.Content != null ? _dbExample.Content : "";
+                    lbText.Text = _dbExample.Content != null ? _dbExample.Content : "";
                     txtDescription.Text = _dbExample.Description != null ? _dbExample.Description : "";
                     //txtDateCreated.Text = _dbExample.DateCreated != null ? _dbExample.DateCreated.Value.ToString("dd.MM.yyyy") : "";
 
@@ -94,6 +103,7 @@ namespace MLE.Admin.Modules
                         projectList.SelectedValue = _dbExample.ProjectId != null ? _dbExample.ProjectId.Value.ToString() : "0";
                         categoryList.SelectedValue = _dbExample.CategoryId != null ? _dbExample.CategoryId.Value.ToString() : "0";
                         statusList.SelectedValue = _dbExample.StatusId != null ? _dbExample.StatusId.Value.ToString() : "0";
+                        ddlType.SelectedValue = _dbExample.TypeId != null ? _dbExample.TypeId.Value.ToString() : "0";
                     }
                     //txtTimeSpent.Text = _dbExample.TimeSpent != null ? _dbExample.TimeSpent.ToString() : "";
                     //txtProjectTitle.Text = db.Project.Where(p => p.Id == _dbExample.ProjectId).FirstOrDefault().Name;
@@ -103,29 +113,39 @@ namespace MLE.Admin.Modules
             }
         }
 
-        private IList<ExampleDetail> PopulateRepeater()
+        private void PopulateRepeater(int projectId)
         {
-            rpt.DataSource = GetAllExamples();
+            rpt.DataSource = GetAllExamples(projectId);
             rpt.DataBind();
-
-            return GetAllExamples();
         }
 
         private IList<Project> PopulateDropdownList()
         {
             IList<Project> _dbProjects = null;
+            List<DB.Type> types = new List<DB.Type>();
 
             using (var db = new MLEEntities())
             {
                 _dbProjects = db.Project.ToList();
+                types = db.Type.Where(x => x.Active == true).ToList();
             }
 
             projectList.DataSource = _dbProjects;
             projectList.DataTextField = "Name";
             projectList.DataValueField = "Id";
             projectList.DataBind();
-
             projectList.SelectedIndex = 0;
+
+            ddlProjects.DataSource = _dbProjects;
+            ddlProjects.DataTextField = "Name";
+            ddlProjects.DataValueField = "Id";
+            ddlProjects.DataBind();
+            ddlProjects.SelectedValue = PId.ToString();
+
+            ddlType.DataSource = types;
+            ddlType.DataTextField = "Name";
+            ddlType.DataValueField = "Id";
+            ddlType.DataBind();
 
             return _dbProjects;
         }
@@ -183,6 +203,11 @@ namespace MLE.Admin.Modules
 
         }
 
+        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             if (Request.QueryString["id"] != null)
@@ -196,12 +221,12 @@ namespace MLE.Admin.Modules
                         var _ = db.Example.FirstOrDefault(x => x.Id == exampleId);
                         if (_ != null)
                         {
-                            _.Name = txtName.Text;
                             _.Description = txtDescription.Text;
                             _.Content = txtContent.Text;
                             _.ProjectId = int.Parse(projectList.SelectedValue);
                             _.StatusId = int.Parse(statusList.SelectedValue);
                             _.CategoryId = int.Parse(categoryList.SelectedValue);
+                            _.TypeId = int.Parse(ddlType.SelectedValue);
 
                             db.SaveChanges();
                         }
@@ -211,7 +236,6 @@ namespace MLE.Admin.Modules
 
                         Example _example = new Example()
                         {
-                            Name = txtName.Text,
                             Content = txtContent.Text,
                             Description = txtDescription.Text,
                             DateCreated = DateTime.Now,
@@ -219,6 +243,7 @@ namespace MLE.Admin.Modules
                             ProjectId = int.Parse(projectList.SelectedValue),
                             StatusId = int.Parse(statusList.SelectedValue),
                             CategoryId = int.Parse(categoryList.SelectedValue),
+                            TypeId = int.Parse(ddlType.SelectedValue),
                             FileName = ""
                         };
 
@@ -231,6 +256,14 @@ namespace MLE.Admin.Modules
                     Response.Redirect("Examples.aspx");
                 }
             }
+        }
+
+        protected void ddlProjects_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PId = int.Parse(ddlProjects.SelectedValue);
+            Response.Redirect("Examples.aspx?pId=" + PId);
+            //ddlProjects.SelectedValue = PId.ToString();
+            //PopulateRepeater(PId);
         }
     }
 }

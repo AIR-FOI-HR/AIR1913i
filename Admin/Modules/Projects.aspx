@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Projects.aspx.cs" Inherits="MLE.Admin.Modules.Projects" EnableEventValidation="true" %>
+
 <%@ Register Src="~/Admin/Modules/Menu.ascx" TagPrefix="UC" TagName="Menu" %>
 
 <!DOCTYPE html>
@@ -17,20 +18,13 @@
         <div class="selection">
             <asp:Repeater ID="rpt" runat="server">
                 <ItemTemplate>
-                    <div id="projects">
-                        <a href="?id=<%#Eval("id") %>">
-                            <div class="id"><%# Eval("id") %></div>
-                            <%# Eval("Name") %>
-                            <%# Eval("Description") %>
-                            <%# Eval("DateCreated") %>
-                            <%# Eval("TimeSpent") %>
-                            <%# Eval("Start_Date") %>
-                            <%# Eval("End_Date") %>
-                            <%# Eval("StatusId") %> 
+                    <div>
+                        <a id="link_<%# Eval("id") %>" href="?id=<%#Eval("id") %><%= current_page > 1 ? ("&page=" + current_page) : ("")%>">
+                            <%--<div class="id"><%# Eval("id") %></div>--%>
+                            <%# Eval("Name") %>, 
+                            <%# Eval("Example.Count") %>, 
+                            <%# DateTime.Parse(Eval("DateCreated").ToString()).ToString("d.M.yyyy.") %>
                         </a>
-
-                       
-                        
                     </div>
                 </ItemTemplate>
                 <FooterTemplate>
@@ -40,6 +34,13 @@
                     </div>
                 </FooterTemplate>
             </asp:Repeater>
+            <%if (Pages > 1)
+                { %>
+            <div class="pager">
+                <asp:PlaceHolder ID="phPager" runat="server"></asp:PlaceHolder>
+                <div style="clear: both;"></div>
+            </div>
+            <%} %>
         </div>
 
         <div id="input_data">
@@ -90,16 +91,65 @@
                 <tr>
                     <th>Status:</th>
                     <td>
-                        <asp:TextBox ID="txtStatus" runat="server"></asp:TextBox>
+                        <asp:DropDownList ID="ddlStatus" runat="server"></asp:DropDownList>
                     </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td style="padding: 15px 0 10px 0;"><a class="linkbutton" href="/Admin/Modules/Examples.aspx?pId=<%= projectId %>">Prikaži primjere</a></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><hr /></td>
+                </tr>
+                <tr>
+                    <th>Dodaj tip na sve primjere:</th>
+                    <td>
+                        <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>
+                        <asp:Button ID="btnAddType" runat="server" OnClick="btnAddType_Click" Text="Dodaj" />
+                        <asp:Button ID="btnRemoveType" runat="server" OnClick="btnRemoveType_Click" Text="Obriši" />
+                    </td>
+                </tr>
+                <tr>
+                    <th style="vertical-align:top;">Tipovi trenutno na projektu:</th>
+                    <td>
+                        <%foreach (var item in Types)
+                            { %>
+                        <%= item.Name %>
+                        <br />
+                        <%} %>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><hr /></td>
+                </tr>
+                <tr>
+                    <th>Dodaj korisnika na projekt:</th>
+                    <td>
+                        <asp:DropDownList ID="ddlUser" runat="server"></asp:DropDownList>
+                        <asp:Button ID="btnAddUser" runat="server" OnClick="btnAddUser_Click" Text="Dodaj" />
+                        <asp:Button ID="btnRemoveUser" runat="server" OnClick="btnRemoveUser_Click" Text="Obriši" />
+                    </td>
+                </tr>
+                <tr>
+                    <th style="vertical-align:top;">Korisnici trenutno na projektu:</th>
+                    <td>
+                        <%foreach (var item in Users)
+                            { %>
+                        <%= item.Username %>
+                        <br />
+                        <%} %>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><hr /></td>
                 </tr>
             </table>
             <div class="buttons">
                 <asp:Button ID="btnSave" runat="server" Text="Spremi" OnClick="btnSave_Click" />
-                <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClick="btnDelete_Click" />
-                <asp:Button Id="btnExport" runat="server" Text="Export" OnClick="btnExport_Click" />
+                <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClientClick="return DeleteAlert();" OnClick="btnDelete_Click" />
+                <asp:Button ID="btnExport" runat="server" Text="Export" OnClick="btnExport_Click" />
             </div>
-        </div>        
+        </div>
     </form>
 </body>
 </html>
@@ -118,11 +168,20 @@
         location.href = "?id=0";
     }
 
+    function DeleteAlert() {
+        if (confirm("Brisanjem ovog projekta ćete obrisati sljedeće stavke vezane za projekt: Primjere, Označene riječi, Kategorije vezane uz primjere (desni sidebar)!"))
+            return true;
+        else
+            return false;
+    }
+
     $(document).ready(function () {
         var id = getUrlParameter("id");
         if (id != null) {
-            $("#input_data").show();            
+            $("#input_data").show();
+            $("#link_" + id).css("text-decoration", "underline");
         }
+        $("#lbProjects").addClass("curr");
     });
 
     var getUrlParameter = function getUrlParameter(sParam) {
@@ -139,18 +198,4 @@
             }
         }
     };
-
-    /*function ExportToJson(id) {
-
-        $.ajax({
-            type: "POST",
-            url: "Projects.aspx/ExportToJson",
-            data: JSON.stringify({ projectId: id }),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function () {
-                alert('uspješno je xportano');
-            }
-        });
-    }*/
 </script>

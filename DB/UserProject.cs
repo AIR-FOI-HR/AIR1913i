@@ -12,13 +12,13 @@ namespace MLE.DB
     using System;
     using System.Collections.Generic;
     
-    public partial class UserExample
+    public partial class UserProject
     {
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
-        public Nullable<int> ExampleId { get; set; }
+        public Nullable<int> ProjectId { get; set; }
     
-        public virtual Example Example { get; set; }
+        public virtual Project Project { get; set; }
         public virtual User User { get; set; }
     }
 }

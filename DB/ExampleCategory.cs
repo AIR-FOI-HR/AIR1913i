@@ -12,12 +12,15 @@ namespace MLE.DB
     using System;
     using System.Collections.Generic;
     
-    public partial class ExampleType
+    public partial class ExampleCategory
     {
         public int Id { get; set; }
         public Nullable<int> ExampleId { get; set; }
-        public string Name { get; set; }
+        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> TypeId { get; set; }
     
+        public virtual Category Category { get; set; }
+        public virtual Type Type { get; set; }
         public virtual Example Example { get; set; }
     }
 }

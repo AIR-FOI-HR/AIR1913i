@@ -1,10 +1,12 @@
 ﻿body {
     width: 100%;
     margin: 0;
+    overflow-y: scroll;
 }
 
 * {
     font-family: 'PT Sans';
+    font-size: 14px;
 }
 
 /* cyrillic-ext */
@@ -67,12 +69,15 @@ input[type=submit]:hover {
 }
 
 #input_data table {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 #input_data table tr th {
     text-align: left;
-    padding-right: 50px;
+    /*padding-right: 50px;*/
+    width:120px;
 }
 
 #input_data table tr td input[type=text], #input_data table tr td input[type=password] {
@@ -83,9 +88,9 @@ input[type=submit]:hover {
 }
 
 #input_data .buttons {
-    margin: 0 auto;
+    /*margin: 0 auto;*/
+    margin: 20px 20px 0 20px;
     display: table;
-    margin-top: 20px;
 }
 
 #input_data .buttons input[type=submit] {
@@ -132,15 +137,17 @@ input[type=submit]:hover {
 .menu_buttons a {
     display: block;
     text-decoration: none;
-    float:left;
+    float: left;
     margin: 0 auto;
     color: white;
+    width: 80px;
+    text-align:center;
     padding: 20px;
     transition: .2s;
 }
 
 .menu_buttons a:hover {
-    background-color:#c2160a; 
+    background-color: #c2160a;
 }
 
 .menu_buttons .odjava {
@@ -158,8 +165,8 @@ input[type=submit]:hover {
     display: block;
     width: 100%;
     text-decoration: none;
-    padding: 10px;
-    line-height: 37px;
+    padding: 5px;
+    line-height: 25px;
     color: black;
     outline: 0;
 }
@@ -169,8 +176,8 @@ input[type=submit]:hover {
 }
 
 .selection .menu_add input[type=submit] {
-    width: 120px;
-    height: 40px;
+    min-width: 110px;
+    height: 30px;
     cursor: pointer;
     transition: .2s;
 }
@@ -184,18 +191,19 @@ input[type=submit]:hover {
     right: 0;
     left: 0;
     text-align: center;
-    width: 50px;
+    /*width: 30px;*/
+    min-width: 40px;
     background-color: #c2160a;
     margin-right: 10px;
     color: white;
 }
 
-.link{
-    text-decoration:none;
+.link {
+    text-decoration: none;
     color: black;
 }
 
-.link:hover{
+.link:hover {
     color: #f44336;
 }
 
@@ -243,13 +251,13 @@ input[type=submit]:hover {
     background-color: #c2160a;
 }
 
-.form-group{
-    display:inline-block;
+.form-group {
+    display: inline-block;
     margin-right: 10px;
-    float:left;
+    float: left;
 }
 
-.form-group label{
+.form-group label {
     display: block;
 }
 
@@ -319,4 +327,149 @@ input[type=button]:hover {
 
 .selection .menu_add input[type=button]:hover {
     background-color: #c2160a;
+}
+
+.curr {
+    background-color: #c2160a;
+}
+
+a.linkbutton {
+    background-color: #f44336;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    outline: 0;
+    padding: 6px;
+    border-radius: 10px;
+}
+
+a.linkbutton:hover {
+    background-color: #c2160a;
+}
+
+.colorButton {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: -45px;
+    top: 4px;
+    border-radius:0 !important;
+    border: 1px solid lightgrey !important;
+}
+
+.ClientMLE {
+    position: absolute;
+    left: 20px;
+    background-color: #2C83D6;
+    border-radius: 30px;
+    width: 30px !important;
+}
+
+.ClientMLE:hover {
+    background-color: #20609E !important;
+}
+
+#colorpicker{
+    position:relative;
+    width:120px;
+}
+
+
+.pager {
+    margin: 30px auto 0 auto;
+    display: table;
+    color: white;
+}
+
+.pager a {
+    width: 30px;
+    text-align: center;
+    display: inline;
+    color: white;
+    background-color: #c2160a;
+    border: 1px solid #c2160a;
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.Parrow {
+    background-color: white !important;
+    border: 1px solid white !important;
+    color: #c2160a !important;
+    cursor: pointer;
+    height: 30px;
+    background-repeat: no-repeat;
+    background-position: 3px;
+}
+
+.fiarrow {
+    background-size: 16px;
+    background-image: url('../Files/Images/Arrows/LtwoRED.png');
+}
+
+.fiarrow:hover {
+    background-size: 16px;
+    background-image: url('../Files/Images/Arrows/LtwoHRED.png');
+}
+
+.barrow {
+    background-size: 9px;
+    background-image: url('../Files/Images/Arrows/LoneRED.png');
+}
+
+.barrow:hover {
+    background-size: 9px;
+    background-image: url('../Files/Images/Arrows/LoneHRED.png');
+}
+
+.frarrow {
+    background-size: 9px;
+    background-image: url('../Files/Images/Arrows/RoneRED.png');
+}
+
+.frarrow:hover {
+    background-size: 9px;
+    background-image: url('../Files/Images/Arrows/RoneHRED.png');
+}
+
+.larrow {
+    background-size: 16px;
+    background-image: url('../Files/Images/Arrows/RtwoRED.png');
+}
+
+.larrow:hover {
+    background-size: 16px;
+    background-image: url('../Files/Images/Arrows/RtwoHRED.png');
+}
+
+.pager .Parrow:hover {
+    color: lightcoral !important;
+    background-color: white !important;
+    /*border: 1px solid #2C83D6 !important;*/
+}
+
+.pager a:hover {
+    background-color: lightcoral !important;
+    border: 1px solid #c2160a;
+    color: #c2160a;
+    text-decoration:none;
+}
+
+a.current_page {
+    background-color: white !important;
+    border: 1px solid #c2160a !important;
+    color: #c2160a !important;
+}
+
+.cdisabled {
+    background: none;
+    cursor: auto;
+}
+
+.cdisabled:hover{
+    background-image:none !important;
+    cursor:auto;
 }

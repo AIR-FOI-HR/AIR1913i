@@ -1,0 +1,30 @@
+﻿.c_container {
+    position: absolute;
+}
+
+.colors {
+    width: 30px;
+    height: 30px;
+    float: left;
+    cursor: pointer;
+}
+
+.hexcolor {
+    width: 73px !important;
+    height: 25px !important;
+    margin-top: 10px;
+}
+
+.hash {
+    position: absolute;
+    left: -12px;
+    bottom: 10px;
+    font-size: 16px;
+    color: grey;
+}
+
+.hex {
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+}

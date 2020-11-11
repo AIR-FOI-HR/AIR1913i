@@ -11,7 +11,7 @@ namespace MLE.Global
 {
     public class LoginHelper
     {
-        public string username
+        public static string username
         {
             get { return HttpContext.Current.User.Identity.Name.ToString(); }
             set { }
@@ -26,7 +26,10 @@ namespace MLE.Global
             bool logged = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
 
             if (logged == true)
+            {
+                username = HttpContext.Current.User.Identity.Name.ToString();
                 return true;
+            }
             else
                 return false;
         }
@@ -43,7 +46,7 @@ namespace MLE.Global
             using (var db = new MLEEntities())
                 User = db.User.Where(x => x.Username == user).FirstOrDefault();
 
-            if(User == null)
+            if (User == null)
                 return false;
 
             if (User.IsActive == false)
@@ -95,6 +98,12 @@ namespace MLE.Global
                 else
                     return false;
             }
+        }
+
+        public static int GetUserId()
+        {
+            using (var db = new MLEEntities())
+                return db.User.Where(x => x.Username == LoginHelper.username).Select(x => x.Id).FirstOrDefault();
         }
 
         /// <summary>

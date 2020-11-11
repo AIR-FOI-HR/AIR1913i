@@ -45,7 +45,7 @@ namespace MLE.Client
                     db.SaveChanges();
 
                     var subject = "MLE zaboravljena lozinka";
-                    var body = "Da biste promijenili lozinku, potrebno je kliknuti na sljedeću poveznicu: <a href='http://localhost:50596/Client/ChangePassword.aspx?key=" + fp.GeneratedKey + "'>http://localhost:50596/Client/ChangePassword.aspx?key=" + fp.GeneratedKey + "</a>.<br>Poveznica neće biti valjana nakon 24 sata.";
+                    var body = "Da biste promijenili lozinku, potrebno je kliknuti na sljedeću poveznicu: <a href='http://mle.s15.novenaweb.info/Client/ChangePassword.aspx?key=" + fp.GeneratedKey + "'>http://mle.s15.novenaweb.info/Client/ChangePassword.aspx?key=" + fp.GeneratedKey + "</a>.<br>Poveznica neće biti valjana nakon 24 sata.";
                     LoginHelper.SendMail(u.E_mail, subject, body);
                 }
                 else

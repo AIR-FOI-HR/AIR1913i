@@ -17,30 +17,29 @@ namespace MLE.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Example()
         {
-            this.ExampleType = new HashSet<ExampleType>();
+            this.ExampleCategory = new HashSet<ExampleCategory>();
             this.Marked = new HashSet<Marked>();
-            this.UserExample = new HashSet<UserExample>();
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
+        public Nullable<int> ProjectId { get; set; }
+        public Nullable<int> StatusId { get; set; }
+        public Nullable<int> TypeId { get; set; }
+        public Nullable<int> CategoryId { get; set; }
         public string Content { get; set; }
         public string Description { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.TimeSpan> TimeSpent { get; set; }
-        public Nullable<int> ProjectId { get; set; }
-        public Nullable<int> StatusId { get; set; }
         public string FileName { get; set; }
-        public Nullable<int> CategoryId { get; set; }
+        public Nullable<int> OrdinalNumber { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual Project Project { get; set; }
         public virtual Status Status { get; set; }
+        public virtual Type Type { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ExampleType> ExampleType { get; set; }
+        public virtual ICollection<ExampleCategory> ExampleCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Marked> Marked { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserExample> UserExample { get; set; }
     }
 }

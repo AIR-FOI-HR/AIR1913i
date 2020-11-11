@@ -16,6 +16,7 @@ namespace MLE.Admin
         public string ProjectTitle { get; set; }
         public string StatusType { get; set; }
         public string CategoryTitle { get; set; }
+        public Project Project { get; set; }
 
         public IList<Marked> MarkedExamples { get; set; }
     }

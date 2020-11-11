@@ -32,7 +32,7 @@ namespace MLE.Client
                     LastName = txtLastName.Text,
                     E_mail = txtMail.Text,
                     DateCreated = DateTime.Now,
-                    IsActive = false
+                    IsActive = true
                 };
 
                 db.User.Add(u);

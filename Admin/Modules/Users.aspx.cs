@@ -1,4 +1,5 @@
-﻿using MLE.DB;
+﻿using MLE.Admin.program;
+using MLE.DB;
 using MLE.Global;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,21 @@ namespace MLE.Admin.Modules
 {
     public partial class Users : System.Web.UI.Page
     {
-
         private int userId = 0;
+        protected List<DB.Project> Projects = new List<DB.Project>();
+        public int Pages = 0;
+        private int Skip = 0;
+        public int current_page = 1;
+        private bool check_page = true;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            PopulateRepeater();
-
+            PopulateRepeater(true);
 
             if (!IsPostBack)
             {
+                PopulateProjectList();
                 PopulateDropdownList();
-                PopulateExampleList(int.Parse(projectList.SelectedValue));
-                PopulateRoleDropdownList();
             }
         }
 
@@ -31,7 +35,7 @@ namespace MLE.Admin.Modules
         {
             if (Request.QueryString["id"] != null)
             {
-                var str = Request.QueryString["id"].FirstOrDefault().ToString();
+                var str = Request.QueryString["id"].ToString();
                 userId = int.Parse(str);
 
                 if (userId == 0)
@@ -41,28 +45,33 @@ namespace MLE.Admin.Modules
             }
         }
 
-        private List<User> GetAllUsers()
+        private List<User> GetAllUsers(bool update_pager)
         {
             using (var db = new MLEEntities())
             {
-                return db.User.ToList();
+                var users = db.User.ToList();
+                var count = users.Count;
+                var default_by_page = 20;
+                current_page = 1;
+                if (check_page)
+                    if (Request.QueryString["page"] != null)
+                        int.TryParse(Request.QueryString["page"].ToString(), out current_page);
+
+                Pages = (int)Math.Ceiling((double)count / (double)default_by_page);
+                current_page = current_page > Pages ? Pages : current_page;
+                Skip = (current_page - 1) * default_by_page;
+                if (update_pager)
+                    Pager.CreatePager(Pages, current_page, phPager, "Users");
+
+                users = users.Skip(Skip).Take(default_by_page).ToList();
+                return users;
             }
         }
 
-        /*private User GetUserById(int userId)
+        private void PopulateRepeater(bool update_pager)
         {
-            using (var db = new MLEEntities())
-            {
-                return db.User.Where(u => u.Id == userId).FirstOrDefault();
-            }
-        }*/
-
-        private List<User> PopulateRepeater()
-        {
-            rpt.DataSource = GetAllUsers();
+            rpt.DataSource = GetAllUsers(update_pager);
             rpt.DataBind();
-
-            return GetAllUsers();
         }
 
         private void GetUserById(int userId)
@@ -75,57 +84,60 @@ namespace MLE.Admin.Modules
 
                 if (_dbUser != null)
                 {
+                    GetProjectsOnUser(db, _dbUser);
+
                     userRole = db.UserRole.Where(u => u.UserId == userId).FirstOrDefault();
-                    if(userRole != null)
-                        role= db.Role.Where(r => r.Id == userRole.RoleId).FirstOrDefault();
+                    if (userRole != null)
+                        role = db.Role.Where(r => r.Id == userRole.RoleId).FirstOrDefault();
 
                     txtName.Text = _dbUser.FirstName;
                     txtSurname.Text = _dbUser.LastName;
                     txtEmail.Text = _dbUser.E_mail;
                     txtUsername.Text = _dbUser.Username;
-                    txtPassword.Text = _dbUser.Password;
+                    //txtPassword.Text = _dbUser.Password;
                     txtDescription.Text = _dbUser.Description;
                     cbIsActive.Checked = _dbUser.IsActive.Value;
 
-                    if(!IsPostBack)
+                    if (!IsPostBack)
                         roleList.SelectedValue = role != null ? role.Id.ToString() : "1";
                 }
             }
+        }
+
+        private void GetProjectsOnUser(MLEEntities db, User _dbUser)
+        {
+            var u = _dbUser.UserProject.Select(x => x.ProjectId).ToList();
+            Projects = db.Project.Where(x => u.Contains(x.Id)).ToList();
         }
 
         private void Save()
         {
             using (var db = new MLEEntities())
             {
-                User _user = new User()
+                var _user = new User()
                 {
                     FirstName = txtName.Text,
                     LastName = txtSurname.Text,
                     E_mail = txtEmail.Text,
                     Username = txtUsername.Text,
-                    Password =  LoginHelper.SHA256(txtPassword.Text),
+                    Password = LoginHelper.SHA256(txtPassword.Text),
                     Description = txtDescription.Text,
                     IsActive = cbIsActive.Checked,
                     DateCreated = DateTime.Now
                 };
-
                 db.User.Attach(_user);
                 db.User.Add(_user);
-
                 db.SaveChanges();
 
-                List<User> users = db.User.OrderByDescending(u => u.Id).Take(1).ToList();
-
-                UserRole _userRole = new UserRole()
+                var users = db.User.OrderByDescending(u => u.Id).Take(1).ToList();
+                var _userRole = new UserRole()
                 {
                     UserId = users[0].Id,
                     RoleId = int.Parse(roleList.SelectedValue)
                 };
-
                 db.UserRole.Attach(_userRole);
                 db.UserRole.Add(_userRole);
-
-                db.SaveChanges();               
+                db.SaveChanges();
             }
         }
 
@@ -133,32 +145,27 @@ namespace MLE.Admin.Modules
         {
             using (var db = new MLEEntities())
             {
-                User _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
-                
-                if(_dbUser != null)
+                var _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
+                if (_dbUser != null)
                 {
                     db.User.Attach(_dbUser);
-
                     _dbUser.FirstName = txtName.Text;
-                    _dbUser.LastName = txtSurname.Text;            
+                    _dbUser.LastName = txtSurname.Text;
                     _dbUser.E_mail = txtEmail.Text;
-                    _dbUser.Username = txtUsername.Text;                   
-                    _dbUser.Password = LoginHelper.SHA256(txtPassword.Text);
+                    _dbUser.Username = txtUsername.Text;
+                    if (txtPassword.Text != "")
+                        _dbUser.Password = LoginHelper.SHA256(txtPassword.Text);
                     _dbUser.Description = txtDescription.Text;
                     _dbUser.IsActive = cbIsActive.Checked;
-
                     db.SaveChanges();
                 }
 
-                UserRole _userRole = db.UserRole.Where(u => u.UserId == _dbUser.Id).FirstOrDefault();
-
-                if(_userRole != null)
+                var _userRole = db.UserRole.Where(u => u.UserId == _dbUser.Id).FirstOrDefault();
+                if (_userRole != null)
                 {
                     db.UserRole.Attach(_userRole);
-
                     _userRole.RoleId = int.Parse(roleList.SelectedValue);
                     _userRole.UserId = _dbUser.Id;
-
                     db.SaveChanges();
                 }
             }
@@ -168,19 +175,16 @@ namespace MLE.Admin.Modules
         {
             using (var db = new MLEEntities())
             {
-                User _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
+                var _dbUser = db.User.Where(u => u.Id == userId).FirstOrDefault();
+                var userExamples = db.UserProject.Where(ue => ue.UserId == _dbUser.Id).ToList();
 
-
-                List<UserExample> userExamples = db.UserExample.Where(ue => ue.UserId == _dbUser.Id).ToList();
-
-                if(userExamples.Count != 0)
+                if (userExamples.Count != 0)
                 {
-                    db.UserExample.RemoveRange(userExamples);
+                    db.UserProject.RemoveRange(userExamples);
                     db.SaveChanges();
                 }
 
-
-                UserRole _userRole = db.UserRole.Where(ur => ur.UserId == _dbUser.Id).FirstOrDefault();
+                var _userRole = db.UserRole.Where(ur => ur.UserId == _dbUser.Id).FirstOrDefault();
 
                 db.UserRole.Attach(_userRole);
                 db.UserRole.Remove(_userRole);
@@ -194,12 +198,19 @@ namespace MLE.Admin.Modules
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            userId = int.Parse(Request.QueryString["id"]);
-            
-            if(userId != 0)
-                Update();
-            else
-                Save();
+            if (Request.QueryString["id"] != null)
+            {
+                var id = Request.QueryString["id"].ToString();
+                if (id != "")
+                {
+                    userId = int.Parse(id);
+                    if (userId == 0)
+                        Save();
+                    else
+                        Update();
+                }
+            }
+            PopulateRepeater(false);
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
@@ -212,93 +223,66 @@ namespace MLE.Admin.Modules
             Response.Redirect("Users.aspx");
         }
 
-        private IList<Project> PopulateDropdownList()
+        private IList<Project> PopulateProjectList()
         {
             IList<Project> _dbProjects = null;
-
             using (var db = new MLEEntities())
-            {
-                _dbProjects = db.Project.ToList();
-            }
-
-            projectList.DataSource = _dbProjects;
-            projectList.DataTextField = "Name";
-            projectList.DataValueField = "Id";
-            projectList.DataBind();
-
-            projectList.SelectedIndex = 0;
-
+                _dbProjects = db.Project.Where(x => x.IsActive == true).ToList();
             return _dbProjects;
         }
 
-        private IList<Example> PopulateExampleList(int projectId)
-        {
-            IList<Example> _dbExamples = null;
-
-            using (var db = new MLEEntities())
-            {
-                _dbExamples = db.Example.Where(e => e.ProjectId == projectId).ToList();
-            }
-
-           if (_dbExamples.Count != 0)
-            {
-                exampleChckList.DataSource = _dbExamples;
-                exampleChckList.DataTextField = "Name";
-                exampleChckList.DataValueField = "Id";
-                exampleChckList.DataBind();
-            }            
-
-            return _dbExamples;
-        }
-
-        private IList<Role> PopulateRoleDropdownList()
+        private void PopulateDropdownList()
         {
             IList<Role> _dbRoles = null;
+            var projects = new List<Project>();
 
             using (var db = new MLEEntities())
             {
                 _dbRoles = db.Role.ToList();
+                projects = db.Project.Where(x => x.IsActive == true).ToList();
             }
 
             roleList.DataSource = _dbRoles;
             roleList.DataTextField = "Name";
             roleList.DataValueField = "Id";
             roleList.DataBind();
-
             roleList.SelectedIndex = 0;
 
-            return _dbRoles;
+            ddlProject.DataSource = projects;
+            ddlProject.DataValueField = "Id";
+            ddlProject.DataTextField = "Name";
+            ddlProject.DataBind();
         }
 
-        protected void projectList_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnAddProject_Click(object sender, EventArgs e)
         {
-            PopulateExampleList(int.Parse(projectList.SelectedValue));
-            show_content.Value = "yes";
-        }
-
-        protected void btnSave_Click(object sender, EventArgs e)
-        {
-            userId = int.Parse(Request.QueryString["id"]);
-
-            IList<UserExample> userExampleList = new List<UserExample>();
+            userId = int.Parse(Request.QueryString["id"].ToString());
+            var projectId = int.Parse(ddlProject.SelectedValue);
 
             using (var db = new MLEEntities())
             {
-                foreach (ListItem example in exampleChckList.Items)
-                {
-                    if (example.Selected)
-                        userExampleList.Add(new UserExample()
-                        {
-                            UserId = userId,
-                            ExampleId = int.Parse(example.Value)
-                        });
-                }
-
-                db.UserExample.AddRange(userExampleList);
+                var up = new UserProject();
+                up.ProjectId = projectId;
+                up.UserId = userId;
+                db.UserProject.Add(up);
                 db.SaveChanges();
             }
+        }
 
-            Response.Redirect("Users.aspx");
+        protected void btnRemoveProject_Click(object sender, EventArgs e)
+        {
+            userId = int.Parse(Request.QueryString["id"].ToString());
+            var projectId = int.Parse(ddlProject.SelectedValue);
+
+            using (var db = new MLEEntities())
+            {
+                var up = db.UserProject.FirstOrDefault(x => x.ProjectId == projectId && x.UserId == userId);
+                if (up != null)
+                {
+                    db.UserProject.Remove(up);
+                    db.SaveChanges();
+                }
+            }
         }
     }
 }

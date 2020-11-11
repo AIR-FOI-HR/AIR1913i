@@ -17,8 +17,9 @@ namespace MLE.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.Example = new HashSet<Example>();
             this.Subcategory = new HashSet<Subcategory>();
+            this.ExampleCategory = new HashSet<ExampleCategory>();
+            this.Example = new HashSet<Example>();
         }
     
         public int Id { get; set; }
@@ -27,8 +28,10 @@ namespace MLE.DB
         public Nullable<bool> isActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Example> Example { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Subcategory> Subcategory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ExampleCategory> ExampleCategory { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Example> Example { get; set; }
     }
 }

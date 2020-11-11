@@ -17,6 +17,7 @@ namespace MLE.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Project()
         {
+            this.UserProject = new HashSet<UserProject>();
             this.Example = new HashSet<Example>();
         }
     
@@ -28,9 +29,13 @@ namespace MLE.DB
         public Nullable<System.DateTime> Start_Date { get; set; }
         public Nullable<System.DateTime> End_Date { get; set; }
         public Nullable<int> StatusId { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public Nullable<int> PerPage { get; set; }
     
+        public virtual Status Status { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserProject> UserProject { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Example> Example { get; set; }
-        public virtual Status Status { get; set; }
     }
 }

@@ -19,23 +19,25 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="ProjectId" Type="int" />
+          <Property Name="StatusId" Type="int" />
+          <Property Name="TypeId" Type="int" />
+          <Property Name="CategoryId" Type="int" />
           <Property Name="Content" Type="nvarchar(max)" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="TimeSpent" Type="time" Precision="7" />
-          <Property Name="ProjectId" Type="int" />
-          <Property Name="StatusId" Type="int" />
           <Property Name="FileName" Type="nvarchar(max)" />
-          <Property Name="CategoryId" Type="int" />
+          <Property Name="OrdinalNumber" Type="int" />
         </EntityType>
-        <EntityType Name="ExampleType">
+        <EntityType Name="ExampleCategory">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ExampleId" Type="int" />
-          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="CategoryId" Type="int" />
+          <Property Name="TypeId" Type="int" />
         </EntityType>
         <EntityType Name="ForgotPassword">
           <Key>
@@ -69,6 +71,8 @@
           <Property Name="SubcategoryId" Type="int" />
           <Property Name="SentenceId" Type="int" />
           <Property Name="EntityId" Type="int" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="Text" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -82,6 +86,8 @@
           <Property Name="Start_Date" Type="datetime" />
           <Property Name="End_Date" Type="datetime" />
           <Property Name="StatusId" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="PerPage" Type="int" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -111,6 +117,15 @@
           <Property Name="Sentiment" Type="char" MaxLength="1" />
           <Property Name="CategoryId" Type="int" />
         </EntityType>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Active" Type="bit" />
+          <Property Name="HTML_name" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
@@ -125,13 +140,13 @@
           <Property Name="IsActive" Type="bit" />
           <Property Name="DateCreated" Type="datetime" />
         </EntityType>
-        <EntityType Name="UserExample">
+        <EntityType Name="UserProject">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" />
-          <Property Name="ExampleId" Type="int" />
+          <Property Name="ProjectId" Type="int" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -177,15 +192,51 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ExampleType_Example">
+        <Association Name="FK_Example_Type">
+          <End Role="Type" Type="Self.Type" Multiplicity="0..1" />
+          <End Role="Example" Type="Self.Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Example">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleCategory_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="ExampleCategory" Type="Self.ExampleCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExampleCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleCategory_Example">
           <End Role="Example" Type="Self.Example" Multiplicity="0..1" />
-          <End Role="ExampleType" Type="Self.ExampleType" Multiplicity="*" />
+          <End Role="ExampleCategory" Type="Self.ExampleCategory" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Example">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ExampleType">
+            <Dependent Role="ExampleCategory">
               <PropertyRef Name="ExampleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleCategory_Type">
+          <End Role="Type" Type="Self.Type" Multiplicity="0..1" />
+          <End Role="ExampleCategory" Type="Self.ExampleCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExampleCategory">
+              <PropertyRef Name="TypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -222,6 +273,18 @@
             </Principal>
             <Dependent Role="Marked">
               <PropertyRef Name="SubcategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Marked_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Marked" Type="Self.Marked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Marked">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -273,26 +336,26 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserExample_Example">
-          <End Role="Example" Type="Self.Example" Multiplicity="0..1" />
-          <End Role="UserExample" Type="Self.UserExample" Multiplicity="*" />
+        <Association Name="FK_UserProject_Project">
+          <End Role="Project" Type="Self.Project" Multiplicity="0..1" />
+          <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Example">
+            <Principal Role="Project">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserExample">
-              <PropertyRef Name="ExampleId" />
+            <Dependent Role="UserProject">
+              <PropertyRef Name="ProjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserExample_User">
+        <Association Name="FK_UserProject_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="UserExample" Type="Self.UserExample" Multiplicity="*" />
+          <End Role="UserProject" Type="Self.UserProject" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="UserExample">
+            <Dependent Role="UserProject">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -300,7 +363,7 @@
         <EntityContainer Name="MLEModelStoreContainer">
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Example" EntityType="Self.Example" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ExampleType" EntityType="Self.ExampleType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExampleCategory" EntityType="Self.ExampleCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ForgotPassword" EntityType="Self.ForgotPassword" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JsonData" EntityType="Self.JsonData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Marked" EntityType="Self.Marked" Schema="dbo" store:Type="Tables" />
@@ -308,8 +371,9 @@
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subcategory" EntityType="Self.Subcategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Type" EntityType="Self.Type" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="UserExample" EntityType="Self.UserExample" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProject" EntityType="Self.UserProject" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Example_Category" Association="Self.FK_Example_Category">
             <End Role="Category" EntitySet="Category" />
@@ -323,9 +387,21 @@
             <End Role="Status" EntitySet="Status" />
             <End Role="Example" EntitySet="Example" />
           </AssociationSet>
-          <AssociationSet Name="FK_ExampleType_Example" Association="Self.FK_ExampleType_Example">
+          <AssociationSet Name="FK_Example_Type" Association="Self.FK_Example_Type">
+            <End Role="Type" EntitySet="Type" />
             <End Role="Example" EntitySet="Example" />
-            <End Role="ExampleType" EntitySet="ExampleType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleCategory_Category" Association="Self.FK_ExampleCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ExampleCategory" EntitySet="ExampleCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleCategory_Example" Association="Self.FK_ExampleCategory_Example">
+            <End Role="Example" EntitySet="Example" />
+            <End Role="ExampleCategory" EntitySet="ExampleCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleCategory_Type" Association="Self.FK_ExampleCategory_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="ExampleCategory" EntitySet="ExampleCategory" />
           </AssociationSet>
           <AssociationSet Name="FK_ForgotPassword_Users" Association="Self.FK_ForgotPassword_Users">
             <End Role="User" EntitySet="User" />
@@ -337,6 +413,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Marked_Subcategory" Association="Self.FK_Marked_Subcategory">
             <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="Marked" EntitySet="Marked" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marked_User" Association="Self.FK_Marked_User">
+            <End Role="User" EntitySet="User" />
             <End Role="Marked" EntitySet="Marked" />
           </AssociationSet>
           <AssociationSet Name="FK_Project_Status" Association="Self.FK_Project_Status">
@@ -355,13 +435,13 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserExample_Example" Association="Self.FK_UserExample_Example">
-            <End Role="Example" EntitySet="Example" />
-            <End Role="UserExample" EntitySet="UserExample" />
+          <AssociationSet Name="FK_UserProject_Project" Association="Self.FK_UserProject_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="UserProject" EntitySet="UserProject" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserExample_User" Association="Self.FK_UserExample_User">
+          <AssociationSet Name="FK_UserProject_User" Association="Self.FK_UserProject_User">
             <End Role="User" EntitySet="User" />
-            <End Role="UserExample" EntitySet="UserExample" />
+            <End Role="UserProject" EntitySet="UserProject" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -369,45 +449,13 @@
     <edmx:ConceptualModels>
       <Schema Namespace="MLEModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="MLEEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Category" EntityType="MLEModel.Category" />
-          <EntitySet Name="Example" EntityType="MLEModel.Example" />
-          <EntitySet Name="ExampleType" EntityType="MLEModel.ExampleType" />
           <EntitySet Name="Marked" EntityType="MLEModel.Marked" />
           <EntitySet Name="Project" EntityType="MLEModel.Project" />
           <EntitySet Name="Role" EntityType="MLEModel.Role" />
           <EntitySet Name="Status" EntityType="MLEModel.Status" />
           <EntitySet Name="Subcategory" EntityType="MLEModel.Subcategory" />
           <EntitySet Name="User" EntityType="MLEModel.User" />
-          <EntitySet Name="UserExample" EntityType="MLEModel.UserExample" />
           <EntitySet Name="UserRole" EntityType="MLEModel.UserRole" />
-          <AssociationSet Name="FK_Example_Category" Association="MLEModel.FK_Example_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Example" EntitySet="Example" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Subcategory_Category" Association="MLEModel.FK_Subcategory_Category">
-            <End Role="Category" EntitySet="Category" />
-            <End Role="Subcategory" EntitySet="Subcategory" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Example_Project" Association="MLEModel.FK_Example_Project">
-            <End Role="Project" EntitySet="Project" />
-            <End Role="Example" EntitySet="Example" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Example_Status" Association="MLEModel.FK_Example_Status">
-            <End Role="Status" EntitySet="Status" />
-            <End Role="Example" EntitySet="Example" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ExampleType_Example" Association="MLEModel.FK_ExampleType_Example">
-            <End Role="Example" EntitySet="Example" />
-            <End Role="ExampleType" EntitySet="ExampleType" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Marked_Example" Association="MLEModel.FK_Marked_Example">
-            <End Role="Example" EntitySet="Example" />
-            <End Role="Marked" EntitySet="Marked" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserExample_Example" Association="MLEModel.FK_UserExample_Example">
-            <End Role="Example" EntitySet="Example" />
-            <End Role="UserExample" EntitySet="UserExample" />
-          </AssociationSet>
           <AssociationSet Name="FK_Marked_Subcategory" Association="MLEModel.FK_Marked_Subcategory">
             <End Role="Subcategory" EntitySet="Subcategory" />
             <End Role="Marked" EntitySet="Marked" />
@@ -424,58 +472,66 @@
             <End Role="User" EntitySet="User" />
             <End Role="UserRole" EntitySet="UserRole" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserExample_User" Association="MLEModel.FK_UserExample_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="UserExample" EntitySet="UserExample" />
-          </AssociationSet>
           <EntitySet Name="JsonData" EntityType="MLEModel.JsonData" />
           <EntitySet Name="ForgotPassword" EntityType="MLEModel.ForgotPassword" />
           <AssociationSet Name="FK_ForgotPassword_Users" Association="MLEModel.FK_ForgotPassword_Users">
             <End Role="User" EntitySet="User" />
             <End Role="ForgotPassword" EntitySet="ForgotPassword" />
           </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="Category">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="isActive" Type="Boolean" />
-          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Category" FromRole="Category" ToRole="Example" />
-          <NavigationProperty Name="Subcategory" Relationship="MLEModel.FK_Subcategory_Category" FromRole="Category" ToRole="Subcategory" />
-        </EntityType>
-        <EntityType Name="Example">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Precision="3" />
-          <Property Name="TimeSpent" Type="Time" Precision="7" />
-          <Property Name="ProjectId" Type="Int32" />
-          <Property Name="StatusId" Type="Int32" />
-          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CategoryId" Type="Int32" />
-          <NavigationProperty Name="Category" Relationship="MLEModel.FK_Example_Category" FromRole="Example" ToRole="Category" />
-          <NavigationProperty Name="Project" Relationship="MLEModel.FK_Example_Project" FromRole="Example" ToRole="Project" />
-          <NavigationProperty Name="Status" Relationship="MLEModel.FK_Example_Status" FromRole="Example" ToRole="Status" />
-          <NavigationProperty Name="ExampleType" Relationship="MLEModel.FK_ExampleType_Example" FromRole="Example" ToRole="ExampleType" />
-          <NavigationProperty Name="Marked" Relationship="MLEModel.FK_Marked_Example" FromRole="Example" ToRole="Marked" />
-          <NavigationProperty Name="UserExample" Relationship="MLEModel.FK_UserExample_Example" FromRole="Example" ToRole="UserExample" />
-        </EntityType>
-        <EntityType Name="ExampleType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ExampleId" Type="Int32" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Example" Relationship="MLEModel.FK_ExampleType_Example" FromRole="ExampleType" ToRole="Example" />
-        </EntityType>
+          <AssociationSet Name="FK_Marked_User" Association="MLEModel.FK_Marked_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Marked" EntitySet="Marked" />
+          </AssociationSet>
+          <EntitySet Name="Type" EntityType="MLEModel.Type" />
+          <EntitySet Name="UserProject" EntityType="MLEModel.UserProject" />
+          <AssociationSet Name="FK_UserProject_Project" Association="MLEModel.FK_UserProject_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="UserProject" EntitySet="UserProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserProject_User" Association="MLEModel.FK_UserProject_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserProject" EntitySet="UserProject" />
+          </AssociationSet>
+          <EntitySet Name="Category" EntityType="MLEModel.Category" />
+          <AssociationSet Name="FK_Subcategory_Category" Association="MLEModel.FK_Subcategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Subcategory" EntitySet="Subcategory" />
+          </AssociationSet>
+          <EntitySet Name="ExampleCategory" EntityType="MLEModel.ExampleCategory" />
+          <AssociationSet Name="FK_ExampleCategory_Category" Association="MLEModel.FK_ExampleCategory_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="ExampleCategory" EntitySet="ExampleCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleCategory_Type" Association="MLEModel.FK_ExampleCategory_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="ExampleCategory" EntitySet="ExampleCategory" />
+          </AssociationSet>
+          <EntitySet Name="Example" EntityType="MLEModel.Example" />
+          <AssociationSet Name="FK_Example_Category" Association="MLEModel.FK_Example_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Example" EntitySet="Example" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Example_Project" Association="MLEModel.FK_Example_Project">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Example" EntitySet="Example" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Example_Status" Association="MLEModel.FK_Example_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Example" EntitySet="Example" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Example_Type" Association="MLEModel.FK_Example_Type">
+            <End Role="Type" EntitySet="Type" />
+            <End Role="Example" EntitySet="Example" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ExampleCategory_Example" Association="MLEModel.FK_ExampleCategory_Example">
+            <End Role="Example" EntitySet="Example" />
+            <End Role="ExampleCategory" EntitySet="ExampleCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Marked_Example" Association="MLEModel.FK_Marked_Example">
+            <End Role="Example" EntitySet="Example" />
+            <End Role="Marked" EntitySet="Marked" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Marked">
           <Key>
             <PropertyRef Name="Id" />
@@ -485,8 +541,11 @@
           <Property Name="SubcategoryId" Type="Int32" />
           <Property Name="SentenceId" Type="Int32" />
           <Property Name="EntityId" Type="Int32" />
-          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Marked_Example" FromRole="Marked" ToRole="Example" />
           <NavigationProperty Name="Subcategory" Relationship="MLEModel.FK_Marked_Subcategory" FromRole="Marked" ToRole="Subcategory" />
+          <Property Name="UserId" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="MLEModel.FK_Marked_User" FromRole="Marked" ToRole="User" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Marked_Example" FromRole="Marked" ToRole="Example" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
@@ -500,8 +559,11 @@
           <Property Name="Start_Date" Type="DateTime" Precision="3" />
           <Property Name="End_Date" Type="DateTime" Precision="3" />
           <Property Name="StatusId" Type="Int32" />
-          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Project" FromRole="Project" ToRole="Example" />
           <NavigationProperty Name="Status" Relationship="MLEModel.FK_Project_Status" FromRole="Project" ToRole="Status" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="UserProject" Relationship="MLEModel.FK_UserProject_Project" FromRole="Project" ToRole="UserProject" />
+          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Project" FromRole="Project" ToRole="Example" />
+          <Property Name="PerPage" Type="Int32" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -519,8 +581,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AdditionalKey" Type="Int32" />
-          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Status" FromRole="Status" ToRole="Example" />
           <NavigationProperty Name="Project" Relationship="MLEModel.FK_Project_Status" FromRole="Status" ToRole="Project" />
+          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Status" FromRole="Status" ToRole="Example" />
         </EntityType>
         <EntityType Name="Subcategory">
           <Key>
@@ -533,8 +595,8 @@
           <Property Name="Color" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
           <Property Name="Sentiment" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="CategoryId" Type="Int32" />
-          <NavigationProperty Name="Category" Relationship="MLEModel.FK_Subcategory_Category" FromRole="Subcategory" ToRole="Category" />
           <NavigationProperty Name="Marked" Relationship="MLEModel.FK_Marked_Subcategory" FromRole="Subcategory" ToRole="Marked" />
+          <NavigationProperty Name="Category" Relationship="MLEModel.FK_Subcategory_Category" FromRole="Subcategory" ToRole="Category" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -550,18 +612,9 @@
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <NavigationProperty Name="UserRole" Relationship="MLEModel.FK_User_UserRole" FromRole="User" ToRole="UserRole" />
-          <NavigationProperty Name="UserExample" Relationship="MLEModel.FK_UserExample_User" FromRole="User" ToRole="UserExample" />
           <NavigationProperty Name="ForgotPassword" Relationship="MLEModel.FK_ForgotPassword_Users" FromRole="User" ToRole="ForgotPassword" />
-        </EntityType>
-        <EntityType Name="UserExample">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="Int32" />
-          <Property Name="ExampleId" Type="Int32" />
-          <NavigationProperty Name="Example" Relationship="MLEModel.FK_UserExample_Example" FromRole="UserExample" ToRole="Example" />
-          <NavigationProperty Name="User" Relationship="MLEModel.FK_UserExample_User" FromRole="UserExample" ToRole="User" />
+          <NavigationProperty Name="Marked" Relationship="MLEModel.FK_Marked_User" FromRole="User" ToRole="Marked" />
+          <NavigationProperty Name="UserProject" Relationship="MLEModel.FK_UserProject_User" FromRole="User" ToRole="UserProject" />
         </EntityType>
         <EntityType Name="UserRole">
           <Key>
@@ -573,90 +626,6 @@
           <NavigationProperty Name="Role" Relationship="MLEModel.FK_Role_UserRole" FromRole="UserRole" ToRole="Role" />
           <NavigationProperty Name="User" Relationship="MLEModel.FK_User_UserRole" FromRole="UserRole" ToRole="User" />
         </EntityType>
-        <Association Name="FK_Example_Category">
-          <End Type="MLEModel.Category" Role="Category" Multiplicity="0..1" />
-          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Example">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Subcategory_Category">
-          <End Type="MLEModel.Category" Role="Category" Multiplicity="0..1" />
-          <End Type="MLEModel.Subcategory" Role="Subcategory" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Subcategory">
-              <PropertyRef Name="CategoryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Example_Project">
-          <End Type="MLEModel.Project" Role="Project" Multiplicity="0..1" />
-          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Example">
-              <PropertyRef Name="ProjectId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Example_Status">
-          <End Type="MLEModel.Status" Role="Status" Multiplicity="0..1" />
-          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Status">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Example">
-              <PropertyRef Name="StatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ExampleType_Example">
-          <End Type="MLEModel.Example" Role="Example" Multiplicity="0..1" />
-          <End Type="MLEModel.ExampleType" Role="ExampleType" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Example">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ExampleType">
-              <PropertyRef Name="ExampleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Marked_Example">
-          <End Type="MLEModel.Example" Role="Example" Multiplicity="0..1" />
-          <End Type="MLEModel.Marked" Role="Marked" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Example">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Marked">
-              <PropertyRef Name="ExampleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserExample_Example">
-          <End Type="MLEModel.Example" Role="Example" Multiplicity="0..1" />
-          <End Type="MLEModel.UserExample" Role="UserExample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Example">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserExample">
-              <PropertyRef Name="ExampleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Marked_Subcategory">
           <End Type="MLEModel.Subcategory" Role="Subcategory" Multiplicity="0..1" />
           <End Type="MLEModel.Marked" Role="Marked" Multiplicity="*" />
@@ -705,18 +674,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserExample_User">
-          <End Type="MLEModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="MLEModel.UserExample" Role="UserExample" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserExample">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="JsonData">
           <Key>
             <PropertyRef Name="Id" />
@@ -753,50 +710,228 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Marked_User">
+          <End Type="MLEModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="MLEModel.Marked" Role="Marked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Marked">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Type">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Active" Type="Boolean" />
+          <Property Name="HTML_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ExampleCategory" Relationship="MLEModel.FK_ExampleCategory_Type" FromRole="Type" ToRole="ExampleCategory" />
+          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Type" FromRole="Type" ToRole="Example" />
+        </EntityType>
+        <EntityType Name="UserProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="ProjectId" Type="Int32" />
+          <NavigationProperty Name="Project" Relationship="MLEModel.FK_UserProject_Project" FromRole="UserProject" ToRole="Project" />
+          <NavigationProperty Name="User" Relationship="MLEModel.FK_UserProject_User" FromRole="UserProject" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_UserProject_Project">
+          <End Type="MLEModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="MLEModel.UserProject" Role="UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProject">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserProject_User">
+          <End Type="MLEModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="MLEModel.UserProject" Role="UserProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProject">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" />
+          <NavigationProperty Name="Subcategory" Relationship="MLEModel.FK_Subcategory_Category" FromRole="Category" ToRole="Subcategory" />
+          <NavigationProperty Name="ExampleCategory" Relationship="MLEModel.FK_ExampleCategory_Category" FromRole="Category" ToRole="ExampleCategory" />
+          <NavigationProperty Name="Example" Relationship="MLEModel.FK_Example_Category" FromRole="Category" ToRole="Example" />
+        </EntityType>
+        <Association Name="FK_Subcategory_Category">
+          <End Type="MLEModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="MLEModel.Subcategory" Role="Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ExampleCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExampleId" Type="Int32" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="MLEModel.FK_ExampleCategory_Category" FromRole="ExampleCategory" ToRole="Category" />
+          <NavigationProperty Name="Type" Relationship="MLEModel.FK_ExampleCategory_Type" FromRole="ExampleCategory" ToRole="Type" />
+          <NavigationProperty Name="Example" Relationship="MLEModel.FK_ExampleCategory_Example" FromRole="ExampleCategory" ToRole="Example" />
+        </EntityType>
+        <Association Name="FK_ExampleCategory_Category">
+          <End Type="MLEModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="MLEModel.ExampleCategory" Role="ExampleCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExampleCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleCategory_Type">
+          <End Type="MLEModel.Type" Role="Type" Multiplicity="0..1" />
+          <End Type="MLEModel.ExampleCategory" Role="ExampleCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExampleCategory">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Example">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectId" Type="Int32" />
+          <Property Name="StatusId" Type="Int32" />
+          <Property Name="TypeId" Type="Int32" />
+          <Property Name="CategoryId" Type="Int32" />
+          <Property Name="Content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="TimeSpent" Type="Time" Precision="7" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="OrdinalNumber" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="MLEModel.FK_Example_Category" FromRole="Example" ToRole="Category" />
+          <NavigationProperty Name="Project" Relationship="MLEModel.FK_Example_Project" FromRole="Example" ToRole="Project" />
+          <NavigationProperty Name="Status" Relationship="MLEModel.FK_Example_Status" FromRole="Example" ToRole="Status" />
+          <NavigationProperty Name="Type" Relationship="MLEModel.FK_Example_Type" FromRole="Example" ToRole="Type" />
+          <NavigationProperty Name="ExampleCategory" Relationship="MLEModel.FK_ExampleCategory_Example" FromRole="Example" ToRole="ExampleCategory" />
+          <NavigationProperty Name="Marked" Relationship="MLEModel.FK_Marked_Example" FromRole="Example" ToRole="Marked" />
+        </EntityType>
+        <Association Name="FK_Example_Category">
+          <End Type="MLEModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Example">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Example_Project">
+          <End Type="MLEModel.Project" Role="Project" Multiplicity="0..1" />
+          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Example">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Example_Status">
+          <End Type="MLEModel.Status" Role="Status" Multiplicity="0..1" />
+          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Example">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Example_Type">
+          <End Type="MLEModel.Type" Role="Type" Multiplicity="0..1" />
+          <End Type="MLEModel.Example" Role="Example" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Type">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Example">
+              <PropertyRef Name="TypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ExampleCategory_Example">
+          <End Type="MLEModel.Example" Role="Example" Multiplicity="0..1" />
+          <End Type="MLEModel.ExampleCategory" Role="ExampleCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Example">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ExampleCategory">
+              <PropertyRef Name="ExampleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Marked_Example">
+          <End Type="MLEModel.Example" Role="Example" Multiplicity="0..1" />
+          <End Type="MLEModel.Marked" Role="Marked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Example">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Marked">
+              <PropertyRef Name="ExampleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="MLEModelStoreContainer" CdmEntityContainer="MLEEntities">
-          <EntitySetMapping Name="Category">
-            <EntityTypeMapping TypeName="MLEModel.Category">
-              <MappingFragment StoreEntitySet="Category">
-                <ScalarProperty Name="isActive" ColumnName="isActive" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Example">
-            <EntityTypeMapping TypeName="MLEModel.Example">
-              <MappingFragment StoreEntitySet="Example">
-                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
-                <ScalarProperty Name="FileName" ColumnName="FileName" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-                <ScalarProperty Name="TimeSpent" ColumnName="TimeSpent" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ExampleType">
-            <EntityTypeMapping TypeName="MLEModel.ExampleType">
-              <MappingFragment StoreEntitySet="ExampleType">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ExampleId" ColumnName="ExampleId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Marked">
             <EntityTypeMapping TypeName="MLEModel.Marked">
               <MappingFragment StoreEntitySet="Marked">
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="EntityId" ColumnName="EntityId" />
                 <ScalarProperty Name="SentenceId" ColumnName="SentenceId" />
                 <ScalarProperty Name="SubcategoryId" ColumnName="SubcategoryId" />
@@ -808,6 +943,8 @@
           <EntitySetMapping Name="Project">
             <EntityTypeMapping TypeName="MLEModel.Project">
               <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="PerPage" ColumnName="PerPage" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="End_Date" ColumnName="End_Date" />
                 <ScalarProperty Name="Start_Date" ColumnName="Start_Date" />
@@ -865,15 +1002,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserExample">
-            <EntityTypeMapping TypeName="MLEModel.UserExample">
-              <MappingFragment StoreEntitySet="UserExample">
-                <ScalarProperty Name="ExampleId" ColumnName="ExampleId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserRole">
             <EntityTypeMapping TypeName="MLEModel.UserRole">
               <MappingFragment StoreEntitySet="UserRole">
@@ -904,6 +1032,62 @@
                 <ScalarProperty Name="ValidUntil" ColumnName="ValidUntil" />
                 <ScalarProperty Name="DateTime" ColumnName="DateTime" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Type">
+            <EntityTypeMapping TypeName="MLEModel.Type">
+              <MappingFragment StoreEntitySet="Type">
+                <ScalarProperty Name="HTML_name" ColumnName="HTML_name" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserProject">
+            <EntityTypeMapping TypeName="MLEModel.UserProject">
+              <MappingFragment StoreEntitySet="UserProject">
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Category">
+            <EntityTypeMapping TypeName="MLEModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExampleCategory">
+            <EntityTypeMapping TypeName="MLEModel.ExampleCategory">
+              <MappingFragment StoreEntitySet="ExampleCategory">
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="ExampleId" ColumnName="ExampleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Example">
+            <EntityTypeMapping TypeName="MLEModel.Example">
+              <MappingFragment StoreEntitySet="Example">
+                <ScalarProperty Name="OrdinalNumber" ColumnName="OrdinalNumber" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="TimeSpent" ColumnName="TimeSpent" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

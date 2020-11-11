@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MLE.Admin.Modules
-{
-
-
-    public partial class Projects
-    {
-
+namespace MLE.Admin.Modules {
+    
+    
+    public partial class Projects {
+        
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
+        
         /// <summary>
         /// menu control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::MLE.Admin.Modules.Menu menu;
-
+        
         /// <summary>
         /// rpt control.
         /// </summary>
@@ -40,7 +38,16 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt;
-
+        
+        /// <summary>
+        /// phPager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phPager;
+        
         /// <summary>
         /// txtName control.
         /// </summary>
@@ -49,7 +56,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtName;
-
+        
         /// <summary>
         /// txtDescription control.
         /// </summary>
@@ -58,7 +65,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDescription;
-
+        
         /// <summary>
         /// txtDateCreated control.
         /// </summary>
@@ -67,7 +74,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDateCreated;
-
+        
         /// <summary>
         /// txtSpentTime control.
         /// </summary>
@@ -76,7 +83,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSpentTime;
-
+        
         /// <summary>
         /// txtStartDate control.
         /// </summary>
@@ -85,7 +92,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStartDate;
-
+        
         /// <summary>
         /// txtEndDate control.
         /// </summary>
@@ -94,16 +101,70 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEndDate;
-
+        
         /// <summary>
-        /// txtStatus control.
+        /// ddlStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStatus;
-
+        protected global::System.Web.UI.WebControls.DropDownList ddlStatus;
+        
+        /// <summary>
+        /// ddlType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlType;
+        
+        /// <summary>
+        /// btnAddType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddType;
+        
+        /// <summary>
+        /// btnRemoveType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnRemoveType;
+        
+        /// <summary>
+        /// ddlUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUser;
+        
+        /// <summary>
+        /// btnAddUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddUser;
+        
+        /// <summary>
+        /// btnRemoveUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnRemoveUser;
+        
         /// <summary>
         /// btnSave control.
         /// </summary>
@@ -112,7 +173,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSave;
-
+        
         /// <summary>
         /// btnDelete control.
         /// </summary>
@@ -121,7 +182,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDelete;
-
+        
         /// <summary>
         /// btnExport control.
         /// </summary>

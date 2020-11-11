@@ -31,6 +31,15 @@ namespace MLE.Admin.Modules {
         protected global::MLE.Admin.Modules.Menu menu;
         
         /// <summary>
+        /// ddlProjects control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlProjects;
+        
+        /// <summary>
         /// rpt control.
         /// </summary>
         /// <remarks>
@@ -38,6 +47,15 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt;
+        
+        /// <summary>
+        /// phPager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phPager;
         
         /// <summary>
         /// txtName control.
@@ -92,6 +110,24 @@ namespace MLE.Admin.Modules {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList categoryList;
+        
+        /// <summary>
+        /// ddlType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlType;
+        
+        /// <summary>
+        /// lbText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbText;
         
         /// <summary>
         /// txtContent control.

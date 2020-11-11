@@ -18,8 +18,8 @@
         <div class="selection">
             <asp:Repeater ID="rpt" runat="server">
                 <ItemTemplate>
-                    <div id="categories">
-                        <a href="?id=<%#Eval("id") %>">
+                    <div>
+                        <a id="link_<%# Eval("Id") %>" href="?id=<%#Eval("id") %><%= current_page > 1 ? ("&page=" + current_page) : ("")%>">
                             <div class="id"><%# Eval("id") %></div>
                             <%# Eval("Name") %>
                             <%# Eval("Description") %>
@@ -34,6 +34,13 @@
                     </div>
                 </FooterTemplate>
             </asp:Repeater>
+            <%if (Pages > 1)
+                { %>
+            <div class="pager">
+                <asp:PlaceHolder ID="phPager" runat="server"></asp:PlaceHolder>
+                <div style="clear: both;"></div>
+            </div>
+            <%} %>
         </div>
 
         <div id="input_data">
@@ -44,24 +51,41 @@
                         <asp:TextBox ID="txtCategoryName" runat="server"></asp:TextBox></td>
                 </tr>
                 <tr>
-                    <th>Opis:</th>
-                    <td>
-                        <asp:TextBox ID="txtDescription" runat="server"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
                     <th>Aktivna:</th>
                     <td>
                         <asp:CheckBox ID="cbIsActive" runat="server" />
                     </td>
                 </tr>
                 <tr>
-                    <th>Boja:</th>
+                    <th>Opis:</th>
                     <td>
-                        <asp:TextBox ID="txtColor" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtDescription" runat="server"></asp:TextBox>
                     </td>
                 </tr>
-            </table>           
+                <tr>
+                    <th>Potkategorije:</th>
+                    <td>
+                        <%= SubCategories.Count == 0 ? "None" : "" %>
+                        <% foreach (var item in SubCategories)
+                            { %>
+                        <a href="Subcategories.aspx?cId=<%= item.CategoryId %>&id=<%= item.Id %>"><%= item.Name != "" ? item.Name : "TEXT" %></a>
+                        <%} %>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><hr /></td>
+                </tr>
+                <tr>
+                    <th>Na projektima:</th>
+                    <td>
+                        <%= RelatedExamples.Count == 0 ? "None" : "" %>
+                        <% foreach (var item in RelatedExamples)
+                            { %>
+                        <a href="Projects.aspx?id=<%= item.Id %>"><%= item.Name %></a><br />
+                        <%} %>
+                    </td>
+                </tr>
+            </table>
             <div class="buttons">
                 <asp:Button ID="btnAdd" runat="server" Text="Spremi" OnClick="btnAdd_Click" />
                 <asp:Button ID="btnDelete" runat="server" Text="Obriši" OnClick="btnDelete_Click" />
@@ -80,9 +104,9 @@
         var id = getUrlParameter("id");
         if (id != null) {
             $("#input_data").show();
+            $("#link_" + id).css("text-decoration", "underline");
         }
-
-        $("#datetimepicker1").datetimepicker();
+        $("#lbCategories").addClass("curr");
     });
 
     var getUrlParameter = function getUrlParameter(sParam) {

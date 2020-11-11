@@ -25,18 +25,19 @@ namespace MLE.DB
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Category> Category { get; set; }
-        public virtual DbSet<Example> Example { get; set; }
-        public virtual DbSet<ExampleType> ExampleType { get; set; }
         public virtual DbSet<Marked> Marked { get; set; }
         public virtual DbSet<Project> Project { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Status> Status { get; set; }
         public virtual DbSet<Subcategory> Subcategory { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<UserExample> UserExample { get; set; }
         public virtual DbSet<UserRole> UserRole { get; set; }
         public virtual DbSet<JsonData> JsonData { get; set; }
         public virtual DbSet<ForgotPassword> ForgotPassword { get; set; }
+        public virtual DbSet<Type> Type { get; set; }
+        public virtual DbSet<UserProject> UserProject { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<ExampleCategory> ExampleCategory { get; set; }
+        public virtual DbSet<Example> Example { get; set; }
     }
 }

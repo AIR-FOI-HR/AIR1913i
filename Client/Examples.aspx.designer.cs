@@ -40,12 +40,39 @@ namespace MLE.Client {
         protected global::System.Web.UI.WebControls.DropDownList ddlProject;
         
         /// <summary>
-        /// cbHandleEntities control.
+        /// cbUnfinishedOnly control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbHandleEntities;
+        protected global::System.Web.UI.WebControls.CheckBox cbUnfinishedOnly;
+        
+        /// <summary>
+        /// phPager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phPager;
+        
+        /// <summary>
+        /// hfUnfinished control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfUnfinished;
+        
+        /// <summary>
+        /// hfProjectID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfProjectID;
     }
 }

@@ -11,6 +11,19 @@
         <div>
             Uspješan login
             <asp:Button ID="btnOdjava" runat="server" Text="Odjava" OnClick="btnOdjava_Click" />
+
+            <div>
+                <% foreach (var item in Examples)
+                    { %>
+                <div><%= item.Id %></div>
+                <%} %>
+            </div>
+            <div>MARKED
+                <% foreach (var item in Marked)
+                    { %>
+                <div><%= item.Id %></div>
+                <%} %>
+            </div>
         </div>
     </form>
 </body>

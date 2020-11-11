@@ -16,17 +16,16 @@
             <UC:Menu runat="server" ID="menu" />
         </div>
         <div class="selection">
+            <asp:DropDownList ID="ddlProjects" runat="server" AutoPostBack="true" AppendDataBoundItems="true" OnSelectedIndexChanged="ddlProjects_SelectedIndexChanged">
+                <%--<asp:ListItem Value="0">All</asp:ListItem>--%>
+            </asp:DropDownList>
             <asp:Repeater ID="rpt" runat="server">
                 <ItemTemplate>
-                    <div id="examples">
-                        <a href="?id=<%#Eval("id") %>">
-                            <div class="id"><%# Eval("id") %></div>
-                            <%# Eval("Name") %>
-                            <%# Eval("Description") %>
-                            <%# Eval("DateCreated") %>
-                            <%# Eval("ProjectTitle") %>
-                            <%# Eval("StatusType") %>
-                            <%# Eval("CategoryTitle") %>
+                    <div>
+                        <a id="link_<%# Eval("id") %>" href="?pId=<%# Eval("Project.Id") %>&id=<%#Eval("id") %><%= current_page > 1 ? ("&page=" + current_page) : ("")%>">
+                            <%--<div class="id"><%# Eval("id") %></div>--%>
+                            <%# Eval("Project.Name") %>, 
+                            <%# Eval("id") %>
                         </a>
                     </div>
                 </ItemTemplate>
@@ -37,6 +36,13 @@
                     </div>
                 </FooterTemplate>
             </asp:Repeater>
+            <%if (Pages > 1)
+                { %>
+            <div class="pager">
+                <asp:PlaceHolder ID="phPager" runat="server"></asp:PlaceHolder>
+                <div style="clear: both;"></div>
+            </div>
+            <%} %>
         </div>
 
         <div id="input_data">
@@ -99,12 +105,29 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>Tip</th>
+                    <td>
+                        <asp:DropDownList ID="ddlType" runat="server"
+                            AutoPostBack="true"
+                            OnSelectedIndexChanged="ddlType_SelectedIndexChanged"
+                            Height="30px" Width="200px"
+                            Style="position: static; margin-bottom: 5px; padding-left: 10px;">
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Tekst:</th>
+                    <td style="height: 50px;">
+                        <asp:Label ID="lbText" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
                     <th>Sadržaj:</th>
                     <%--<td>--%>
-                        <%--<asp:Literal ID="txtContent" Mode="PassThrough" runat="server"></asp:Literal>--%>
+                    <%--<asp:Literal ID="txtContent" Mode="PassThrough" runat="server"></asp:Literal>--%>
                     <%--</td>--%>
                     <td>
-                        <asp:TextBox ID="txtContent" TextMode="MultiLine" style="height: 500px; width: 500px" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtContent" TextMode="MultiLine" Style="height: 421px; width: 500px" runat="server"></asp:TextBox>
                     </td>
                 </tr>
             </table>
@@ -127,10 +150,12 @@
 
         if (id != null && id != 0) {
             $("#input_data").show();
+            $("#link_" + id).css("text-decoration", "underline");
         }
 
         if (id === "0")
             $("#input_data").show();
+        $("#lbExamples").addClass("curr");
     });
 
     var getUrlParameter = function getUrlParameter(sParam) {

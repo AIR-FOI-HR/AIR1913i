@@ -7,49 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MLE.Admin.Modules
-{
-
-
-    public partial class Menu
-    {
-
-        /// <summary>
-        /// lbUsers control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbUsers;
-
-        /// <summary>
-        /// lbCategories control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbCategories;
-
-        /// <summary>
-        /// lbProjects control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbProjects;
-
-        /// <summary>
-        /// lbExamples control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbExamples;
-
+namespace MLE.Admin.Modules {
+    
+    
+    public partial class Menu {
+        
         /// <summary>
         /// lbSignOut control.
         /// </summary>

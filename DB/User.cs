@@ -18,8 +18,9 @@ namespace MLE.DB
         public User()
         {
             this.UserRole = new HashSet<UserRole>();
-            this.UserExample = new HashSet<UserExample>();
             this.ForgotPassword = new HashSet<ForgotPassword>();
+            this.Marked = new HashSet<Marked>();
+            this.UserProject = new HashSet<UserProject>();
         }
     
         public int Id { get; set; }
@@ -35,8 +36,10 @@ namespace MLE.DB
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserRole> UserRole { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserExample> UserExample { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ForgotPassword> ForgotPassword { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Marked> Marked { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserProject> UserProject { get; set; }
     }
 }

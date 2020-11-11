@@ -1,0 +1,648 @@
+[{
+  "ExampleName": "Example 1",
+  "FileName": "Example_1.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 2",
+  "FileName": "Example_2.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 3",
+  "FileName": "Example_3.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 4",
+  "FileName": "Example_4.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 5",
+  "FileName": "Example_5.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 6",
+  "FileName": "Example_6.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 7",
+  "FileName": "Example_7.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 8",
+  "FileName": "Example_8.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 9",
+  "FileName": "Example_9.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 10",
+  "FileName": "Example_10.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},{
+  "ExampleName": "Example 11",
+  "FileName": "Example_11.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 12",
+  "FileName": "Example_12.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 13",
+  "FileName": "Example_13.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 14",
+  "FileName": "Example_14.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 15",
+  "FileName": "Example_15.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 16",
+  "FileName": "Example_16.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 17",
+  "FileName": "Example_17.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 18",
+  "FileName": "Example_18.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 19",
+  "FileName": "Example_19.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 20",
+  "FileName": "Example_20.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 21",
+  "FileName": "Example_21.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 22",
+  "FileName": "Example_22.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 23",
+  "FileName": "Example_23.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 24",
+  "FileName": "Example_24.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 25",
+  "FileName": "Example_25.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 26",
+  "FileName": "Example_26.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+{
+  "ExampleName": "Example 27",
+  "FileName": "Example_27.txt",
+  "Project": "New Project",
+  "ProjectID": "11",
+  "ForWords": {
+    "CategoryName": "Podaci",
+    "Type": "radio",
+    "Subcategories": [
+      {
+        "Name": "Adresa"
+      },
+      {
+        "Name": "OIB"
+      },
+      {
+        "Name": "Osoba"
+      },
+      {
+        "Name": "Institucija"
+      }
+    ]
+  }
+},
+]

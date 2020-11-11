@@ -7,13 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MLE.Admin.Modules
-{
-
-
-    public partial class Categories
-    {
-
+namespace MLE.Admin.Modules {
+    
+    
+    public partial class Categories {
+        
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -22,7 +20,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
+        
         /// <summary>
         /// menu control.
         /// </summary>
@@ -31,7 +29,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::MLE.Admin.Modules.Menu menu;
-
+        
         /// <summary>
         /// rpt control.
         /// </summary>
@@ -40,7 +38,16 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpt;
-
+        
+        /// <summary>
+        /// phPager control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder phPager;
+        
         /// <summary>
         /// txtCategoryName control.
         /// </summary>
@@ -49,16 +56,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCategoryName;
-
-        /// <summary>
-        /// txtDescription control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDescription;
-
+        
         /// <summary>
         /// cbIsActive control.
         /// </summary>
@@ -67,16 +65,16 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox cbIsActive;
-
+        
         /// <summary>
-        /// txtColor control.
+        /// txtDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtColor;
-
+        protected global::System.Web.UI.WebControls.TextBox txtDescription;
+        
         /// <summary>
         /// btnAdd control.
         /// </summary>
@@ -85,7 +83,7 @@ namespace MLE.Admin.Modules
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAdd;
-
+        
         /// <summary>
         /// btnDelete control.
         /// </summary>
